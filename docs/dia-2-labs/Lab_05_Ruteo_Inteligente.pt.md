@@ -30,7 +30,7 @@ flowchart LR
 - Configure o Kong para atuar como intermediário nas chamadas de saída.
 - Configure múltiplas rotas que escutam no mesmo caminho (`/api/v1/deliver-results`), mas encaminham o tráfego para diferentes *Upstreams* (APIs de cliente) dependendo do cabeçalho `X-Client`.
 
-## # O conceito de roteamento inteligente
+### O conceito de roteamento inteligente
 Com o **Roteamento Inteligente**, Kong pode tomar decisões de roteamento com base em vários critérios combinados de solicitações HTTP e da camada de transporte:
 - **Cabeçalhos:** Útil para testes A/B, ou como no nosso caso, para decidir para qual parceiro comercial enviar uma carga útil (por exemplo, `X-Customer: bank-a`).
 - **Regex em Paths:** Capture variáveis ​​dinâmicas (como um ID) diretamente do URL.
@@ -113,7 +113,7 @@ curl -s -H "X-Cliente: banco-a" http://localhost:8000/api/v1/entregar-resultados
 
 Ao fazer com que o Kong roteie as chamadas de saída, obtemos visibilidade imediata do comportamento das APIs de nossos clientes sem a necessidade de implementar código na nossa aplicação interna. Vamos criar gráficos customizados no Konnect para medir latências, volumetria e largura de banda de cada cliente.
 
-## # 4.1 Gerar tráfego de teste
+### 4.1 Gerar tráfego de teste
 Execute os seguintes comandos para enviar tráfego simulado para ambos os clientes:
 
 ```bash
@@ -123,7 +123,7 @@ for i in {1..20}; do curl -s -o /dev/null -H "X-Cliente: banco-a" http://localho
 # Tráfico hacia Cliente Default
 for i in {1..15}; do curl -s -o /dev/null http://localhost:8000/api/v1/entregar-resultados; done
 ```
-## # 4.2 Importar o Painel de Despesas para o Konnect
+### 4.2 Importar o Painel de Despesas para o Konnect
 Para simplificar a criação dos gráficos preparamos um Dashboard pré-configurado com as métricas mais importantes para este cenário.
 
 1. Entre no console do **Kong Konnect**.
@@ -134,7 +134,7 @@ Para simplificar a criação dos gráficos preparamos um Dashboard pré-configur
 
 ![Painel de Despesas](../assets/dashboard_egresos.png)
 
-## # O que esses gráficos nos mostram?
+### O que esses gráficos nos mostram?
 
 **Gráfico 1: Volumetria por Cliente (Contagem de Solicitações)**
 Mostra barras comparativas indicando quantas solicitações foram enviadas para cada destino. No exemplo, vemos claramente que o `client-bank-a` recebeu cerca de 20 notificações, enquanto o `client-default` recebeu cerca de 16. Isto permite auditar o volume de transações entregues a cada parceiro comercial da empresa.

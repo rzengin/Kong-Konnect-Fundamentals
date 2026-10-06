@@ -17,11 +17,11 @@ Este módulo apresenta às equipes de operações e segurança as melhores prát
 
 Antes de interagir com as ferramentas, é fundamental estabelecer os padrões arquiteturais e operacionais que garantam resiliência e segurança em ambientes complexos.
 
-## # Infraestrutura como código (IaC) e GitOps
+### Infraestrutura como código (IaC) e GitOps
 Gerenciar o Kong por meio da UI Konnect é ótimo para ambientes de desenvolvimento e para visualizar o tráfego, mas não é escalonável na produção. Erros humanos, falta de controle de versão e alterações não auditadas (“desvio”) podem causar interrupções massivas.
 Usando o **GitOps**, o estado desejado de todas as APIs e políticas de segurança reside nos repositórios Git como arquivos de texto (YAML, HCL). Ferramentas como Terraform e deck leem esses arquivos e os sincronizam automaticamente com o Kong Konnect por meio de pipelines de CI/CD.
 
-## # deck: Configuração declarativa
+### deck: Configuração declarativa
 **decK (Kong declarativo)** é uma ferramenta CLI oficial que permite gerenciar o status dos Planos de Controle. 
 Ao invés de fazer 10 chamadas REST API para criar um serviço, 5 rotas e 4 plugins, o decK pega um arquivo YAML com todo o estado desejado e calcula internamente a diferença ("diff") com o que existe atualmente no Konnect, executando apenas as atualizações necessárias.
 Comandos principais:
@@ -32,7 +32,7 @@ Comandos principais:
 - `deck gateway apply` → Adiciona/modifica o que é declarado **sem excluir** o que já existe (fusão segura).
 - `deck gateway sync` → Faz com que o estado do CP **exatamente** seja o que o arquivo diz (limpa tudo o que não está declarado, garantindo que não haja entidades "fantasmas").
 
-## # Múltiplos Planos de Controle e Separação de Responsabilidades
+### Múltiplos Planos de Controle e Separação de Responsabilidades
 
 Em organizações de médio e grande porte, um único Plano de Controle pode se tornar um gargalo organizacional e um ponto único de falha (Blast Radius). Kong Konnect permite criar **múltiplos Planos de Controle lógicos** instantaneamente, agindo como partições completamente isoladas.
 
@@ -47,13 +47,13 @@ Em organizações de médio e grande porte, um único Plano de Controle pode se 
 3. **Por Domínios de Negócios (Arquitetura Mesh/Micro-Gateways):**
    A equipa de "Pagamentos" gere o seu próprio `CP-Pagamentos` e a equipa de "Envios" gere o seu `CP-Logística`. Cada equipe tem total autonomia sobre suas rotas e plugins sem o risco de anular a configuração (reduzindo o *Blast Radius* ou raio de impacto em caso de erros).
 
-## # Infraestrutura como código (IaC) e GitOps
+### Infraestrutura como código (IaC) e GitOps
 Kong incentiva as equipes de plataforma a adotarem IaC para gerenciar esses múltiplos ambientes. Em vez de clicar em uma interface, os administradores definem o estado desejado nos repositórios Git e ferramentas como Terraform ou deck aplicam essas alterações. Isso permite auditoria, *reversões* rápidas e remoção de configurações "feitas à mão".
 
-## # deck: Configuração declarativa do gateway
+### deck: Configuração declarativa do gateway
 Kong fornece **decK** (Configuração Declarativa para Kong), uma ferramenta CLI escrita em Go focada no *Gateway* (Data Plane). Permite exportar e importar a configuração de rotas, serviços e plugins em formato YAML (conhecido como *Kong Declarative Configuration*). deckK compara o estado do YAML com o estado atual do Gateway e aplica apenas a diferença (diff) de forma idempotente.
 
-## # kongctl: Configuração declarativa da plataforma (Konnect)
+### kongctl: Configuração declarativa da plataforma (Konnect)
 Enquanto `decK` cuida de rotas e plugins (nível Gateway), **kongctl** é a nova ferramenta Kong CLI projetada especificamente para gerenciar a plataforma **Kong Konnect** em um nível superior. 
 
 Com `kongctl` você pode gerenciar recursos de nuvem "nativos" do Konnect usando YAML, como:
@@ -63,7 +63,7 @@ Com `kongctl` você pode gerenciar recursos de nuvem "nativos" do Konnect usando
 
 Nas arquiteturas Konnect modernas, `kongctl` e `decK` trabalham juntos: você usa `kongctl` para provisionar a infraestrutura base (o Plano de Controle e o Portal) e usa `decK` para preencher esse Plano de Controle com as regras de roteamento e segurança de suas APIs.
 
-## # Promoção entre Ambientes (CI/CD) e Variáveis Específicas
+### Promoção entre Ambientes (CI/CD) e Variáveis Específicas
 
 Ao trabalhar com vários ambientes (por exemplo, `Dev-CP` ➔ `QA-CP` ➔ `Prod-CP`), é essencial entender que existem **dois fluxos de informações paralelos, mas distintos** ao promover configurações:
 
@@ -81,7 +81,7 @@ Ao trabalhar com vários ambientes (por exemplo, `Dev-CP` ➔ `QA-CP` ➔ `Prod-
 
 ```
 Quando você executa `deck gateway sync` em seu pipeline (CI/CD), o deck injeta os valores específicos desse ambiente instantaneamente. Assim, o **mesmo arquivo YAML** funciona para todos os ambientes.
-## # O padrão "Plano de controle global"
+### O padrão "Plano de controle global"
 
 Imagine que você trabalha em um Grande Banco com 50 equipes de desenvolvimento diferentes (Cartões, Empréstimos, Investimentos, etc.). Para evitar gargalos, você dá a cada equipe **seu próprio Plano de Controle** no Kong Konnect para que possam gerenciar suas rotas com total autonomia.
 
@@ -173,7 +173,7 @@ Execute o seguinte na raiz do projeto para limpar tudo:
 cd docs/00-setup-entorno/terraform
 terraform destroy -var="konnect_token=$KONNECT_TOKEN" -var="demo_prefix=$DEMO_PREFIX" -auto-approve
 ```
-## # Demonstração 1: Governança de infraestrutura (Terraform)
+### Demonstração 1: Governança de infraestrutura (Terraform)
 O Terraform será usado para provisionar automaticamente o plano de controle "MockAPI" base e as equipes RBAC no Konnect.
 
 1. **Inicializar e validar o Terraform:**    
@@ -194,7 +194,7 @@ O Terraform será usado para provisionar automaticamente o plano de controle "Mo
 ```
 3. O instrutor mostrará visualmente no Konnect (**Gateway Manager** e **Teams**) que o Plano de Controle e o Grupo foram criados com sucesso em segundos, eliminando processos manuais.
 
-## # Demonstração 2: implantação do plano de dados
+### Demonstração 2: implantação do plano de dados
 Para materializar o tráfego, levantaremos o motor (Data Plane) que consumirá a configuração do Konnect de forma segura (mTLS).
 
 1. O instrutor irá gerar os certificados seguros necessários para conectar o Data Plane ao Control Plane MockAPI:    
@@ -216,13 +216,13 @@ Para materializar o tráfego, levantaremos o motor (Data Plane) que consumirá a
 ```
 3. O instrutor mostrará no Konnect como o Control Plane MockAPI reporta `1 Data Plane In Sync`, demonstrando que o nó Edge local está pronto para receber políticas.
 
-## # Demonstração 3: Isolamento de permissão (RBAC e equipes)
+### Demonstração 3: Isolamento de permissão (RBAC e equipes)
 Para testar a segurança organizacional implementada com Terraform:
 
 1. O instrutor exibirá a seção **Equipes** no Konnect.
 2. Validará que o grupo criado (`API Developers`) possui função **Admin** apenas para o Plano de Controle `MockAPI`, permitindo que os desenvolvedores operem de forma segura e delimitada.
 
-## # Demonstração 4: Sincronização declarativa com deck (rotas e políticas globais)
+### Demonstração 4: Sincronização declarativa com deck (rotas e políticas globais)
 A seguir, usaremos `decK` para carregar imutavelmente as rotas de nossos 4 microsserviços simulados (`/mock`, `/routes`, `/customers`, `/echo`) junto com logs globais (`file-log`) e políticas de rastreabilidade (`correlation-id`).
 
 1. O instrutor revisará o arquivo `deck-files/base-state.yaml`, mostrando como rotas e plugins globais são declarados em combinação.

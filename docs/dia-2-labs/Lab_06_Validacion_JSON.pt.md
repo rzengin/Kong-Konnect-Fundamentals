@@ -31,7 +31,7 @@ flowchart LR
 - Definir um contrato de dados avançado com restrições lógicas.
 - Interceptar cargas úteis que violam regras de negócios (por exemplo, e-mails inválidos ou valores negativos).
 
-## # Governança de API e segurança Shift-Left
+### Governança de API e segurança Shift-Left
 Em uma arquitetura moderna, delegar a responsabilidade de **validar o formato dos dados** a cada um dos microsserviços individuais acarreta vários riscos:
 1. **Desperdício de computação:** Os microsserviços processam e desserializam solicitações malformadas que consomem ciclos de CPU.
 2. **Superfície de Ataque:** Solicitações deliberadamente grandes ou solicitações com valores extremos podem causar problemas no back-end.
@@ -120,7 +120,7 @@ curl -s -D /dev/stderr -X POST http://localhost:8000/api/v1/echo ^
 ## Etapa 3: Cenários de rejeição de teste (governança ativa)
 Tentaremos quebrar o contrato de dados enviando solicitações que os clientes (ou invasores) possam gerar por engano ou malícia. Você não precisa sincronizar novamente.
 
-## # 3.1 Expressão regular inválida (e-mail mal formatado)
+### 3.1 Expressão regular inválida (e-mail mal formatado)
 Vamos tentar enviar uma transação com o formato de e-mail errado e um ID de transação que não esteja de acordo com o formato `TX-XXXX`:
 
 ```bash
@@ -143,7 +143,7 @@ curl -s -D /dev/stderr -X POST http://localhost:8000/api/v1/echo ^
 ```
 **Resultado:** Kong retorna um retumbante `400 Bad Request` relatando no JSON exatamente o que falhou. Ao processar as regras, Kong para no primeiro erro que encontra (por exemplo: `failed to match pattern ^TX-[0-9]{4}$ with "TX-ABC"`), bloqueando a solicitação instantaneamente.
 
-## # 3.2 Valor Negativo e Enumeração Falsa
+### 3.2 Valor Negativo e Enumeração Falsa
 Agora vamos tentar transferir uma quantia fora do intervalo e usar uma camada de usuário inventada:
 
 ```bash

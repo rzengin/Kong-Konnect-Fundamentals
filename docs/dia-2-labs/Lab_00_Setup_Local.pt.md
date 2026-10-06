@@ -73,7 +73,7 @@ flowchart LR
 
 Tudo o que faremos durante os laboratórios pressupõe que você tenha esse ambiente base funcional. Preparamos duas opções para que você possa elevar o meio ambiente:
 
-## # Opção 1 (recomendada): Codespaces GitHub
+### Opção 1 (recomendada): Codespaces GitHub
 Se seu instrutor compartilhou o arquivo `kong-workshop-assets.zip` com você para usar no laboratório:
 
 1. Abra um **Codespace em branco** (ou seu próprio repositório GitHub).
@@ -88,7 +88,7 @@ Se seu instrutor compartilhou o arquivo `kong-workshop-assets.zip` com você par
 4. Pronto! Você já tem as pastas de ativos e os scripts de configuração em seu ambiente. Vá diretamente para a **Etapa 2**.
 
 
-## # Opção 2: instalação local
+### Opção 2: instalação local
 Se preferir rodar tudo em sua própria máquina (Windows, Mac ou Linux), é necessário ter os seguintes pré-requisitos instalados:
 
 - **Docker/Docker Compose**
@@ -106,7 +106,7 @@ Para usuários de Mac/Linux, você também pode executar nosso script automatiza
 cd ../../00-setup-entorno
 ./scripts/install_prereqs.sh
 ```
-## # Etapa 2: inicializar variáveis e aumentar contêineres
+### Etapa 2: inicializar variáveis e aumentar contêineres
 1. **Credenciais**: Você precisará de um token de acesso pessoal (`kpat_...`) do Kong Konnect. Pergunte ao seu instrutor.
 2. Defina as variáveis no seu terminal:
 
@@ -136,7 +136,7 @@ cd ../../00-setup-entorno
 cd ..\..\00-setup-entorno
 scripts\setup.bat
 ```
-## # Etapa 3: Validação
+### Etapa 3: Validação
 Se tudo deu certo, você verá uma mensagem verde indicando que o ambiente está pronto. 
 
 1. **Validar contêineres:** Execute `docker ps` para confirmar se você tem os seguintes contêineres em execução:

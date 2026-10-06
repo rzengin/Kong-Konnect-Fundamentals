@@ -72,7 +72,7 @@ De acordo com a [documentação oficial do Dev Portal](https://developer.konghq.
 
 Antes de configurar nosso portal público, é importante entender as abstrações que Kong Konnect usa para separar a infraestrutura **técnica** da lógica **de negócios**.
 
-## # 1. APIs de catálogo
+### 1. APIs de catálogo
 * [Documento oficial: Catálogo de API](https://docs.konghq.com/konnect/api-management/api-catalog/)*
 
 Para entender o Portal do Desenvolvedor, devemos primeiro diferenciar dois conceitos-chave do Kong: a parte técnica e a parte comercial.
@@ -87,11 +87,11 @@ Para que esta “vitrine” seja completa e útil para um desenvolvedor externo,
 * **Visão geral e metadados**
   Aqui é definida a identidade da API (nome, descrição). Além disso, você pode atribuir **rótulos** e **atributos personalizados** que ajudam os desenvolvedores a filtrar e pesquisar APIs em portais muito grandes.
 
-* **Especificação de API (OEA)**
+* **Especificação de API (OAS)**
   É o coração da documentação técnica. É um arquivo padrão (OpenAPI/Swagger) que ensina ao portal como renderizar um console interativo ("Experimente"). Graças a isso, o desenvolvedor pode ver quais endpoints existem, quais parâmetros eles precisam e enviar solicitações de teste de seu próprio navegador.
 
 * **Documentação**
-  Ao contrário da especificação técnica (OEA), aqui você pode adicionar guias passo a passo, tutoriais ou políticas de uso escritas em formato Markdown. É ótimo para fornecer contexto humano (por exemplo, "Como obter seu primeiro token").
+  Ao contrário da especificação técnica (OAS), aqui você pode adicionar guias passo a passo, tutoriais ou políticas de uso escritas em formato Markdown. É ótimo para fornecer contexto humano (por exemplo, "Como obter seu primeiro token").
 
 * **Portal**
   É a “ponte” que liga esta entidade empresarial à realidade técnica. Aqui você vincula sua API de catálogo aos **Serviços de gateway** reais que processarão o tráfego.
@@ -102,17 +102,17 @@ Para que esta “vitrine” seja completa e útil para um desenvolvedor externo,
 * **Aplicativos**
   Mostra quais desenvolvedores e aplicativos clientes registraram, assinaram e obtiveram credenciais (chaves de API) para consumir especificamente esta API.
 
-## # 2. Controle de Versão (Versões)
+### 2. Controle de Versão (Versões)
 * [Documento oficial: versões da API](https://docs.konghq.com/konnect/api-management/api-catalog/)*
 
 As APIs evoluem com o tempo. Kong permite que você gerencie várias versões da mesma API de catálogo (por exemplo, `v1`, `v2`, `beta`). Cada versão funciona como uma subentidade que pode ter sua própria especificação vinculada, ser vinculada a um Gateway Service diferente e ser publicada de forma independente no Portal do Desenvolvedor.
 
-## # 3. Especificações (OEA)
+### 3. Especificações (OAS)
 * [Documento oficial: Especificações OpenAPI](https://docs.konghq.com/konnect/api-management/api-products/versions/specifications/)*
 
 Para que um desenvolvedor use sua API, ele precisa de documentação. Kong permite fazer upload de arquivos no padrão **OpenAPI Specification (OAS)** —anteriormente conhecido como Swagger— no formato JSON ou YAML. Esta especificação é renderizada interativamente no portal.
 
-## # 4. Portal do desenvolvedor e catálogo de API
+### 4. Portal do desenvolvedor e catálogo de API
 * [Documento oficial: Portal do desenvolvedor](https://docs.konghq.com/konnect/api-management/dev-portal/)* | * [Documento oficial: Catálogo de serviços](https://developer.konghq.com/catalog/apis/)*
 
 É vital compreender a diferença e a relação íntima entre o **Portal do Desenvolvedor** e a **API de Catálogo**:
@@ -131,7 +131,7 @@ Nesta seção, demonstraremos como criar um “Catálogo de APIs” que agrupe n
 
 > **Nota para o instrutor**: Usaremos o arquivo de especificação OpenAPI que já está incluído no repositório para não precisarmos escrevê-lo do zero. O arquivo está localizado no caminho: `workshop-assets/dia-1/03-developer-portal/openapi_mock.yaml`.
 
-## # Demonstração 1: Criando uma API no Catálogo
+### Demonstração 1: Criando uma API no Catálogo
 
 Uma API no Catálogo é a entidade lógica que agrupa um ou mais Gateway Services para serem apresentados ao consumidor final.
 
@@ -150,7 +150,7 @@ Uma API no Catálogo é a entidade lógica que agrupa um ou mais Gateway Service
     - Clique em **Adicionar serviço de gateway**.
 - Selecione o serviço criado no módulo anterior (`mock-service`) e confirme.
 
-## # Demonstração 2: Publicação de Documentação (OEA)
+### Demonstração 2: Publicação de Documentação (OAS)
 
 Para ajudar os desenvolvedores a entender como consumir nossa API, faremos upload de uma especificação OpenAPI (Swagger).
 
@@ -170,7 +170,7 @@ Para ajudar os desenvolvedores a entender como consumir nossa API, faremos uploa
     - Clique no botão de opções (três pontos) ao lado da especificação e selecione **Publicar**.
     - Agora, publique também a versão da API habilitando o switch que indica “Publicar no Portal” no canto superior direito.
 
-## # Demo 2.5: Upload de Documentação Complementar (Markdown)
+### Demo 2.5: Upload de Documentação Complementar (Markdown)
 
 Além da especificação técnica, um Produto API geralmente vem acompanhado de guias e políticas.
 
@@ -182,7 +182,7 @@ Além da especificação técnica, um Produto API geralmente vem acompanhado de 
     - Atribua o título "Manual do Usuário" e salve/publique-o.
     - Repita o processo para `legal_conditions.md`, intitulando-o "Termos e Condições".
 
-## # Demonstração 3: habilite e explore o portal do desenvolvedor
+### Demonstração 3: habilite e explore o portal do desenvolvedor
 
 Agora vamos habilitar a face pública para desenvolvedores e testar nossa documentação interativa.
 
@@ -208,7 +208,7 @@ Agora vamos habilitar a face pública para desenvolvedores e testar nossa docume
 
 ---
 
-## # Demonstração 4: Habilitar autenticação e registro de aplicativos
+### Demonstração 4: Habilitar autenticação e registro de aplicativos
 
 Para que os desenvolvedores solicitem acesso às nossas APIs, devemos primeiro proteger o Portal e ativar o registro do aplicativo.
 
@@ -229,7 +229,7 @@ Para que os desenvolvedores solicitem acesso às nossas APIs, devemos primeiro p
     - Selecione **Key Auth** (isso define que os aplicativos que solicitarem acesso receberão um token estático ou chave de API gerada pelo Kong).
     - Clique em **Salvar**.
 
-## # Demonstração 5: Fluxo do desenvolvedor (integração de autoatendimento)
+### Demonstração 5: Fluxo do desenvolvedor (integração de autoatendimento)
 
 Agora fingiremos ser um desenvolvedor terceirizado que deseja consumir a API MockAPI.
 
@@ -250,7 +250,7 @@ Agora fingiremos ser um desenvolvedor terceirizado que deseja consumir a API Moc
     - Clique nele. Ele solicitará que você selecione qual aplicativo deseja acessar (escolha `Mobile Travel App`).
     - Escolha o método de autenticação (**Key Auth**) e clique em **Solicitar Acesso**.
 
-## # Demonstração 6: Aprovação de acesso (aprovação automática vs manual)
+### Demonstração 6: Aprovação de acesso (aprovação automática vs manual)
 
 Dependendo das políticas da empresa, o acesso pode ser concedido instantaneamente ou exigir intervenção humana.
 1. **Aprovação automática (comportamento padrão)**
@@ -271,7 +271,7 @@ Dependendo das políticas da empresa, o acesso pode ser concedido instantaneamen
     - Você verá a solicitação recebida (Pendente). Selecione-o e clique em **Aprovar**.
     - *(Opcional)*: Se o desenvolvedor atualizar seu portal neste momento, ele verá sua solicitação aprovada e poderá obter sua chave de API.
 
-## # Demonstração 7: Personalização do Portal (Páginas, Aparência e Snippets)
+### Demonstração 7: Personalização do Portal (Páginas, Aparência e Snippets)
 
 Para adaptar o portal à "aparência" da nossa organização e fornecer conteúdo útil, Konnect fornece ferramentas avançadas de personalização baseadas em Markdown e YAML Frontmatter.
 

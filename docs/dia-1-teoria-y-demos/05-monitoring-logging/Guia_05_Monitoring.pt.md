@@ -19,7 +19,7 @@ As capacidades nativas do Konnect são divididas em:
 > [!NOTA]
 > Kong Konnect permite, caso a organização assim o exija, exportar todas estas métricas de forma transparente para plataformas de terceiros (Dynatrace, Datadog, Prometheus, Splunk, Kafka) através de plugins, garantindo total flexibilidade no futuro.
 
-## # Arquitetura de telemetria: como os dados fluem?
+### Arquitetura de telemetria: como os dados fluem?
 
 É vital entender o que acontece por baixo da interface do Konnect ao monitorar nossas APIs.
 
@@ -78,7 +78,7 @@ Para que os painéis analíticos do Konnect exibam dados relevantes (e não fiqu
 
 O instrutor fará um tour de demonstração do console **Konnect -> Observabilidade**.
 
-## # Demonstração 1: Resumo (Resumo Executivo)
+### Demonstração 1: Resumo (Resumo Executivo)
 **Objetivo:** Mostrar uma visão geral (pássaro) da integridade do sistema.
 
 1. No Konnect, navegue até **Observabilidade -> Resumo**.
@@ -92,7 +92,7 @@ O instrutor fará um tour de demonstração do console **Konnect -> Observabilid
     - **Tráfego total ao longo do tempo (Centro-Esquerda):** Gráfico histórico que permite detectar rapidamente picos anômalos ou quedas abruptas no serviço (DDoS ou apagões).
     - **Kong vs latência upstream ao longo do tempo (abaixo):** Gráfico vital. Separe a latência do Kong versus a latência de back-end em diferentes cronogramas. Se a linha `Upstream` apresentar picos, os microsserviços foram degradados. Se `Kong` tiver picos, há uma sobrecarga na avaliação do plugin.
 
-## # Demonstração 2: Painéis (Métricas Detalhadas)
+### Demonstração 2: Painéis (Métricas Detalhadas)
 **Objetivo:** aprofundar-se em métricas específicas.
 
 1. Navegue até **Observabilidade -> Painéis**.
@@ -100,7 +100,7 @@ O instrutor fará um tour de demonstração do console **Konnect -> Observabilid
 3. **Latência do painel:** analise como os tempos de resposta variam ao longo do tempo.
 4. **Dashboard AI Analytics:** Menciona que Konnect possui gráficos dedicados para AI Gateway (consumo de tokens LLM, fornecedores usados), prontos para quando habilitarmos plug-ins de IA.
 
-## # Demo 3: Explorer (Análise Multidimensional)
+### Demo 3: Explorer (Análise Multidimensional)
 **Objetivo:** realizar consultas interativas complexas.
 
 1. Navegue até **Observabilidade -> Explorador**.
@@ -110,7 +110,7 @@ O instrutor fará um tour de demonstração do console **Konnect -> Observabilid
 5. Altere **Agrupar por** para `Serviço`.
 6. A ferramenta revelará exatamente qual serviço está rejeitando tráfego! (Neste caso, deve apontar para `/clientes` no DP Interno).
 
-## # Demonstração 4: Relatórios (relatórios personalizados)
+### Demonstração 4: Relatórios (relatórios personalizados)
 **Objetivo:** Criar um relatório operacional personalizado.
 
 1. Navegue até **Observabilidade -> Relatórios**.
@@ -123,7 +123,7 @@ O instrutor fará um tour de demonstração do console **Konnect -> Observabilid
 4. Clique em **Salvar**.
 5. **Valor do Negócio:** Mostre o gráfico gerado ao grupo e explique que esses relatórios (que podem ser baixados como CSV) são a ferramenta essencial para as equipes de Finanças e Produto auditarem taxas, cobrarem de terceiros (monetização) e medirem a adoção de cada API.
 
-## # Demonstração 5: Solicitações (inspeção de log de gateway)
+### Demonstração 5: Solicitações (inspeção de log de gateway)
 **Objetivo:** visualizar os detalhes no nível da transação individual sem precisar usar SSH para o servidor.
 
 1. Navegue até **Observabilidade -> Solicitações**.
@@ -139,7 +139,7 @@ O instrutor fará um tour de demonstração do console **Konnect -> Observabilid
     - **Método HTTP e URI de solicitação:** O endpoint exato que o invasor (ou usuário) tentou acessar.
     - **Tamanho da solicitação:** Mostra o peso da solicitação recebida. Muito útil para detectar anomalias onde enviam grandes cargas para saturar a API.
 
-## # Demonstração 6: Depurador (rastreamento ativo)
+### Demonstração 6: Depurador (rastreamento ativo)
 **Objetivo:** demonstrar o poder de diagnosticar problemas internos complexos em tempo real.
 
 1. Navegue até **Observabilidade -> Depurador**.

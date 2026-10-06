@@ -48,7 +48,7 @@ consumir instalando ferramentas básicas ou resolvendo falhas de rede.
 
 #3. Instalação por sistema operacional
 
-## # 3.1 Windows (CMD)
+### 3.1 Windows (CMD)
 
 Se você usa Windows e pretende executar o workshop a partir da linha de comando `cmd.exe`:
 
@@ -75,7 +75,7 @@ Se você usa Windows e pretende executar o workshop a partir da linha de comando
   
 
 ```
-## # 3.2 macOS (Intel ou Apple Silicon)
+### 3.2 macOS (Intel ou Apple Silicon)
 
 As instruções a seguir são práticas. Se KONG usar
 empacotadores corporativos, Intune, SCCM, Jamf, repositórios internos ou
@@ -142,14 +142,14 @@ use pacotes dnf e rpm equivalentes. No Linux você pode usar Docker
 Desktop ou Docker Engine; para o workshop, Docker Engine com Docker
 Compor geralmente é suficiente.
 
-## # 3.3.1 Ubuntu/Debian - ferramentas básicas
+### 3.3.1 Ubuntu/Debian - ferramentas básicas
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl gnupg lsb-release git 
 unzip python3 python3-pip
 ```
-## # 3.3.2 Ubuntu/Debian - Docker Engine e Docker Compose
+### 3.3.2 Ubuntu/Debian - Docker Engine e Docker Compose
 
 ```bash
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -170,7 +170,7 @@ sudo usermod -aG docker $USER
 
 # Cerrar sesión y volver a entrar para que aplique el grupo docker.
 ```
-## # 3.3.3 Ubuntu/Debian - Terraform
+### 3.3.3 Ubuntu/Debian - Terraform
 
 ```bash
 wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor
@@ -184,7 +184,7 @@ tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt-get update
 sudo apt-get install -y terraform
 ```
-## # 3.3.4 Ubuntu/Debian - Node.js LTS
+### 3.3.4 Ubuntu/Debian - Node.js LTS
 
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
@@ -192,7 +192,7 @@ sudo apt-get install -y nodejs
 node -v
 npm -v
 ```
-## # 3.3.5 Ubuntu/Debian - deck
+### 3.3.5 Ubuntu/Debian - deck
 
 ```bash
 DECK_VERSION="1.59.1"
@@ -205,7 +205,7 @@ rm deck.tar.gz
 
 deck version
 ```
-## # 3.3.6 Ubuntu/Debian - Insônia
+### 3.3.6 Ubuntu/Debian - Insônia
 
 Baixe o pacote Linux do site oficial da Insomnia. Se
 baixe um .deb, instale-o assim na pasta Downloads:

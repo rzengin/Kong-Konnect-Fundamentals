@@ -1326,7 +1326,7 @@ Usando curl (alternativa):
 
 Ao longo deste laboratório, injetamos solicitações válidas e inválidas, ativamos bloqueios de segurança e forçamos o roteamento dinâmico. Kong captura a telemetria de todos esses eventos e a envia para o plano de controle na nuvem.
 
-## # Passo a passo no Konnect Analytics Explorer
+### Passo a passo no Konnect Analytics Explorer
 
 1. **Acesse o Painel de Análise:**
     - Abra seu navegador e verifique se você está conectado ao console do **Kong Konnect**.

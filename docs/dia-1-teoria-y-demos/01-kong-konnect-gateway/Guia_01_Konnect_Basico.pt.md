@@ -32,7 +32,7 @@ flowchart LR
 
 Antes de entrar em prática, é vital compreender os blocos de construção básicos que Kong usa para controlar o tráfego. O Plano de Controle gerencia diversas **Entidades Lógicas**; Estes são os principais:
 
-## # 1. Serviços de gateway
+### 1. Serviços de gateway
 * [Documento oficial: Serviços](https://docs.konghq.com/gateway/latest/admin-api/#service-object)*
 
 Um **Serviço** em Kong é a representação lógica de sua API ou microsserviço de back-end. 
@@ -41,7 +41,7 @@ Um **Serviço** em Kong é a representação lógica de sua API ou microsserviç
 - Contém informações cruciais como protocolo (`http` ou `https`), host (IP ou nome de domínio), porta e caminho base do seu backend real.
 - **Analogia**: Se Kong fosse um aeroporto, o Gateway Service seria o “Avião” ou destino final ao qual os passageiros (solicitações) devem chegar.
 
-## # 2. Rotas
+### 2. Rotas
 * [Documento oficial: Rotas](https://docs.konghq.com/gateway/latest/admin-api/#route-object)*
 
 Uma **Rota** define as regras sobre *como* solicitações externas podem acessar um serviço de gateway.
@@ -51,20 +51,20 @@ Uma **Rota** define as regras sobre *como* solicitações externas podem acessar
 - Cada Rota deverá estar associada a um Serviço Gateway.
 - **Analogia**: Seguindo o exemplo do aeroporto, a Rota seria o “Portão de Embarque”.
 
-## # 3. Plug-ins
+### 3. Plug-ins
 * [Documento oficial: Plugins](https://docs.konghq.com/hub/)*
 **Plugins** são partes da lógica do interceptador que adicionam funcionalidades (segurança, transformações, observabilidade, *limitação de taxa* etc.) em tempo real, sem modificar o código dos seus microsserviços.
 
 - Podem ser aplicados Globalmente, ou especificamente a um Serviço, a uma Rota ou a um Consumidor.
 
-## # 4. Consumidores
+### 4. Consumidores
 * [Documento oficial: Consumidores](https://docs.konghq.com/gateway/latest/admin-api/#consumer-object)*
 
 Um **Consumidor** representa um usuário, aplicativo cliente ou dispositivo externo que consome suas APIs.
 
 - A identificação de consumidores permite aplicar políticas personalizadas (por exemplo, diferentes limites de cota dependendo do plano de assinatura) e é a base da autenticação (chaves API, JWT, OIDC).
 
-## # 5. Upstreams e alvos
+### 5. Upstreams e alvos
 * [Documento oficial: Upstreams](https://docs.konghq.com/gateway/latest/admin-api/#upstream-object) |  [Alvos](https://docs.konghq.com/gateway/latest/admin-api/#target-object)*
 
 Enquanto um serviço aponta para um endereço, um **Upstream** representa um balanceador de carga virtual (Load Balancer) dentro do próprio Kong.
@@ -72,7 +72,7 @@ Enquanto um serviço aponta para um endereço, um **Upstream** representa um bal
 - **Alvos**: Estes são os IPs/portas físicas reais de cada instância do seu backend.
 - Kong distribuirá o tráfego entre os Targets de um Upstream de forma inteligente, monitorando seu status de saúde (Checks de Saúde Ativos/Passivos).
 
-## # 6. Certificados e SNIs (Certificados)
+### 6. Certificados e SNIs (Certificados)
 * [Documento Oficial: Certificados](https://docs.konghq.com/gateway/latest/admin-api/#certificate-object) |  [SNIs](https://docs.konghq.com/gateway/latest/admin-api/#sni-object)*
 
 Kong gerencia centralmente certificados TLS/SSL para habilitar HTTPS para clientes finais (terminação TLS), determinando qual certificado apresentar com base no domínio (Server Name Indication - SNI).
@@ -86,7 +86,7 @@ Nesta seção, o instrutor demonstrará ao vivo como o Kong gerencia o tráfego 
 
 ---
 
-## # Pré-requisitos
+### Pré-requisitos
 
 Abra seu terminal na raiz do repositório e navegue até o diretório deste módulo:
 
@@ -95,7 +95,7 @@ cd workshop-assets/dia-1/01-kong-konnect-gateway
 ```
 ---
 
-## # Demonstração 1: Serviços e rotas de gateway (o fluxo básico)
+### Demonstração 1: Serviços e rotas de gateway (o fluxo básico)
 
 ```mermaid
 sequenceDiagram
@@ -140,7 +140,7 @@ Primeiro, conectaremos o Kong ao nosso backend simulado que já está em execuç
 
 ---
 
-## # Demonstração 2: Plugins (Governança)
+### Demonstração 2: Plugins (Governança)
 
 ```mermaid
 sequenceDiagram
@@ -179,7 +179,7 @@ Adicionaremos governança à nossa rota aplicando limites de solicitação sem t
 
 ---
 
-## # Demonstração 3: Consumidores e Segurança
+### Demonstração 3: Consumidores e Segurança
 
 ```mermaid
 sequenceDiagram
@@ -227,7 +227,7 @@ Protegeremos a API exigindo que os usuários (Consumidores) se identifiquem para
 
 ---
 
-## # Demonstração 4: Upstreams e destinos (balanceamento de carga)
+### Demonstração 4: Upstreams e destinos (balanceamento de carga)
 
 ```mermaid
 sequenceDiagram
@@ -271,7 +271,7 @@ Para nos prepararmos para picos de tráfego, abstrairemos o back-end por trás d
 
 ---
 
-## # Demonstração 5: Teste integrativo de ponta a ponta
+### Demonstração 5: Teste integrativo de ponta a ponta
 
 ```mermaid
 sequenceDiagram

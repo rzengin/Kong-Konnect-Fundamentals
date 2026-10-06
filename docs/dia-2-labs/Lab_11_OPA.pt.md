@@ -1,12 +1,12 @@
 #Laboratório 11: Agente de Política Aberta (OPA)
 
-## # O que é OPA?
+### O que é OPA?
 **Open Policy Agent (OPA)** é um mecanismo de política de uso geral de código aberto. Nas arquiteturas modernas (Cloud Native), é comum adotar o paradigma **Policy as Code**. 
 Em vez de programar a lógica de autorização (por exemplo, *"user 
 
 Kong se integra ao OPA de maneira elegante: quando chega uma solicitação, Kong pausa a execução, empacota o contexto HTTP (cabeçalhos, corpo, método, caminho) em um grande objeto JSON e faz uma consulta ao OPA. A OPA avalia suas regras `.rego` e responde ao Kong, decidindo em tempo real o destino da solicitação.
 
-## # Diagrama de sequência (fluxo de autorização)
+### Diagrama de sequência (fluxo de autorização)
 
 ```mermaid
 sequenceDiagram

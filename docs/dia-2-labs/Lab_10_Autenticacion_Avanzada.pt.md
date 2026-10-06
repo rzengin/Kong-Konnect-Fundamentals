@@ -34,12 +34,12 @@ flowchart LR
 
 
 
-## # Autenticação vs Autorização
+### Autenticação vs Autorização
 É crucial entender a diferença entre esses dois conceitos:
 - **Autenticação (Autenticação - OIDC):** Responda a pergunta *"Quem é você?"*. Para isso, delegaremos a responsabilidade a um provedor de identidade (IdP) moderno usando o fluxo **Código de Autorização** do OpenID Connect. O Gateway atua como uma “Parte Confiante”, redirecionando os usuários ao IdP para efetuar login.
 - **Autorização (ACL):** Responda à pergunta *"O que você tem permissão para fazer?"*. Depois de sabermos quem é o usuário (via JWT ou token de sessão), Kong (por meio de seu plugin ACL) verifica se esse usuário pertence ao grupo apropriado (por exemplo, "admin" ou "premium") antes de passar a solicitação para o backend.
 
-## # Fluxo OIDC e ACL (diagrama de sequência)
+### Fluxo OIDC e ACL (diagrama de sequência)
 
 ```mermaid
 sequenceDiagram
@@ -145,10 +145,10 @@ Ao contrário do Laboratório 08, onde usamos um token estático pré-assinado, 
 
 Vamos dividir esse processo em três subetapas para entender exatamente o que acontece nos bastidores de uma integração B2B (máquina a máquina).
 
-## # Etapa 3.1: Preparar o URL do provedor de identidade
+### Etapa 3.1: Preparar o URL do provedor de identidade
 Primeiro, precisamos saber qual URL solicitar o token. No ambiente Konnect, o Emissor expõe um endpoint `/token`. Como estamos executando parte deste laboratório em contêineres Docker locais, faremos alguns ajustes para garantir que nosso comando `curl` aponte para o lugar certo:
 
-## # Etapa 3.2: Solicitar o token do IdP (fluxo de credenciais do cliente)
+### Etapa 3.2: Solicitar o token do IdP (fluxo de credenciais do cliente)
 Em uma integração backend a backend, não há usuário humano digitando senhas. O fluxo OAuth2/OIDC **Credenciais de cliente** é usado. 
 
 Enviaremos ao nosso IdP o `client_id` e `client_secret` da nossa aplicação. Em troca, se as credenciais forem válidas, o IdP retornará um JWT (Access Token).
@@ -167,7 +167,7 @@ echo "$ACCESS_TOKEN"
 ```
 *(Nota: O comando `jq -r .access_token` no final simplesmente extrai a string do token da resposta JSON para armazená-la de forma limpa na variável `ACCESS_TOKEN`).*
 
-## # Etapa 3.3: Chame a API usando o Token Bearer
+### Etapa 3.3: Chame a API usando o Token Bearer
 Agora que nosso aplicativo tem um token novo e válido, podemos finalmente fazer a chamada comercial para Kong, injetando o token no cabeçalho `Authorization`.
 
 ```bash

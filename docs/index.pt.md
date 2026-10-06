@@ -13,14 +13,14 @@ Este curso presencial de dois dias tem como objetivo fornecer treinamento práti
 
 Todo o workshop usa uma abordagem **GitOps** com gerenciamento declarativo via **decK**, automação com **Terraform** e back-ends simulados com Docker.
 
-## # Testar back-end: httpbin
+### Testar back-end: httpbin
 Como fio condutor de nossas práticas e demonstrações, usaremos **httpbin** como nosso back-end de teste simulado. Em nosso ambiente local, este serviço já está pré-implantado usando Docker (no contêiner `httpbin-backend`). `httpbin` é uma ferramenta genérica amplamente utilizada para testar solicitações HTTP; Ele nos permite verificar facilmente quais cabeçalhos, métodos e corpos de mensagens estão realmente chegando ao back-end após passar pelo API Gateway. 
 
 Nosso trabalho durante o workshop será expor, proteger e gerenciar o tráfego para essas APIs de teste usando Kong Konnect, permitindo-nos focar em roteamento, transformações e políticas de segurança sem depender de lógica de negócios complexa no backend.
 
 
 
-## # Dia 1: Bloco Teórico — Fundamentos, Operações e Segurança
+### Dia 1: Bloco Teórico — Fundamentos, Operações e Segurança
 **Teoria Integral de Kong Konnect**
 
 - **Arquitetura conceitual**: Entenda a separação entre plano de controle (Konnect) e plano de dados (Kong Gateway baseado em NGINX/OpenResty) e comunicação via túnel gRPC mTLS.
@@ -28,11 +28,11 @@ Nosso trabalho durante o workshop será expor, proteger e gerenciar o tráfego p
 - **Operations Track**: Governança declarativa com deck/Terraform, monitoramento de tráfego e observabilidade avançada com OpenTelemetry (OpenObserve + Arize Phoenix).
 - **Security Track**: Zero Trust, OIDC, RBAC e estratégias de controle de acesso através de OPA.
 
-## # Dia 2: Bloco Prático — Laboratórios práticos e desafio final
+### Dia 2: Bloco Prático — Laboratórios práticos e desafio final
 **Laboratórios e práticas guiadas**
 
 - **Configuração e Roteamento**: Inicialização do ambiente local e implantação declarativa de rotas.
-- **Plugins e Portais**: Transformações de payload, roteamento inteligente e publicação de catálogos da OEA.
+- **Plugins e Portais**: Transformações de payload, roteamento inteligente e publicação de catálogos OAS.
 - **Operações e Segurança**: Implantação de observabilidade local (OTel Collector + OpenObserve + Phoenix), aplicação Key Auth, restrição de IP e OIDC.
 - **Event Gateway**: Integração assíncrona enviando mensagens para tópicos Kafka (Event-Driven Architecture).
 
@@ -42,7 +42,7 @@ Nosso trabalho durante o workshop será expor, proteger e gerenciar o tráfego p
 
 O workshop está planejado em dois dias estruturados das **08h00 às 17h00**:
 
-## # Dia 1: Teórico e Demonstrações
+### Dia 1: Teórico e Demonstrações
 | Cronograma | Bloco | Tópico/Módulo |
 |--------|--------|---------------|
 | **08:00 - 08:30** | Amanhã (todos) | Bem-vindo, Arquitetura e Configuração Conceitual |
@@ -59,7 +59,7 @@ O workshop está planejado em dois dias estruturados das **08h00 às 17h00**:
 | **16h45 - 17h30** | Tarde (seg) | Módulo 07: Protegendo o tráfego da API (Key Auth, ACL, OIDC, IP Restriction) |
 | **17h30 - 17h45** | Tarde (Todos) | **Verificação de Saúde Ambiental** (Dia de Preparação 2) |
 
-## # Dia 2: Prática — Laboratórios práticos e encerramento
+### Dia 2: Prática — Laboratórios práticos e encerramento
 | Cronograma | Bloco | Laboratório/Atividade Prática |
 |--------|--------|----------------------------------|
 | **08:00 - 08:15** | Amanhã (todos) | Bem-vindo ao Dia Prático, credenciais e revisão do GitOps |

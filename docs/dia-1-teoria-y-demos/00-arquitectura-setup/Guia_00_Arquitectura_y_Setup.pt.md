@@ -27,11 +27,11 @@ flowchart TD
   DP -.->|"Autenticación"| B2
   DP -.->|"Autorización (OPA)"| B3
 ```
-## # Elementos de arquitetura híbrida
+### Elementos de arquitetura híbrida
 
 A imagem descreve a arquitetura do modo híbrido Kong (arquitetura do modo híbrido Kong). Neste modelo, a gestão e processamento do tráfego são divididos em componentes bem específicos, conforme detalhado a seguir:
 
-## ## 1. Plano de controle Konnect (CP)
+#### 1. Plano de controle Konnect (CP)
 É o “cérebro” centralizado gerido na nuvem (SaaS) pela Kong, com alcance global. Seus componentes internos são:
 
 - **Console de gerenciamento (UI)**: interface gráfica da web onde os administradores interagem para configurar e monitorar o ciclo de vida das APIs.
@@ -41,13 +41,13 @@ A imagem descreve a arquitetura do modo híbrido Kong (arquitetura do modo híbr
 - **Policy Engine**: Motor lógico que valida e compila regras, plugins e políticas de segurança antes de distribuí-los.
 - **Control Plane DB**: banco de dados gerenciado pelo Kong que atua como a única fonte de verdade para todas as configurações.
 
-## ## 2. Conexões do plano de dados
+#### 2. Conexões do plano de dados
 É o link que conecta com segurança a nuvem à sua infraestrutura local:
 - **túnel gRPC**: túnel persistente bidirecional que conecta cada plano de dados ao plano de controle. **gRPC** (*gRPC Remote Procedure Calls*) é uma estrutura de código aberto de alto desempenho (originalmente desenvolvida pelo Google). Este protocolo é usado em vez das APIs REST tradicionais por vários motivos principais: sendo baseado em HTTP/2, ele suporta **streaming bidirecional** e conexões de longa duração. Isso permite que o Plano de Controle envie instantaneamente qualquer alteração de configuração para os Planos de Dados sem que eles tenham que pesquisar continuamente, reduzindo drasticamente a latência de propagação, minimizando o consumo da rede e oferecendo suporte nativo à segurança mTLS.
 - **TLS mútuo (mTLS)**: Protocolo de segurança implementado no túnel gRPC que garante que ambas as extremidades (CP e DP) apresentem e validem certificados digitais (Certificates) autenticando-se mutuamente.
 - **CP <--> DP Sync**: Através desta conexão, o Plano de Controle sincroniza **Configurações**, **Políticas** e **Certificados** para baixo com os Planos de Dados. *Observação: a carga útil do cliente nunca viaja aqui.*
 
-## ## 3. Plano de dados local (DP)
+#### 3. Plano de dados local (DP)
 É a infraestrutura de execução local que você mesmo hospeda (auto-hospedado/no local) em formato de contêiner Docker. Aqui convergem as solicitações do cliente (**Solicitações do cliente/Tráfego de API**) e as respostas retornadas (**Respostas da API**).
 
 - **Kong Gateway Nodes (1, 2, 3)**: Instâncias individuais que compõem o cluster de processamento local.
@@ -55,7 +55,7 @@ A imagem descreve a arquitetura do modo híbrido Kong (arquitetura do modo híbr
 - **NGINX/OpenResty (Data Plane)**: Componente que está "nos bastidores" (desde Kong 3.x). Kong Gateway é construído em NGINX e OpenResty (LuaJIT), sendo altamente otimizado para lidar com a entrada/saída de conexões no nível da rede com latências de microssegundos.
 - **Processos de trabalho**: são os vários processos de trabalho subjacentes responsáveis ​​pela execução paralela das regras de negócios (plugins, autenticação, limitação de taxa) em cada solicitação simultânea que chega por meio do NGINX/OpenResty.
 
-## ## 4. Microsserviços de back-end e ambiente subjacente
+#### 4. Microsserviços de back-end e ambiente subjacente
 
 - **Microsserviços de back-end (serviço A, B, C)**: são seus aplicativos reais, APIs de negócios ou sistemas legados para os quais o Kong roteia o tráfego depois de validado e inspecionado.
 - **Backend de teste (httpbin)**: Ao longo deste workshop usaremos **httpbin** como nosso backend simulado. É uma ferramenta genérica que nos permite verificar facilmente quais solicitações chegam ao backend, sem depender de lógicas de negócios complexas.
@@ -94,7 +94,7 @@ Neste workshop usaremos uma topologia híbrida:
 1. **Avião de Controle (Kong Konnect)**: Reside na nuvem gerenciada por Kong. É onde configuraremos nossas APIs, Plugins e Políticas de Segurança de forma declarativa. Você terá um único plano de controle atribuído (por exemplo, `TUPREFIX_MockAPI`).
 2. **Data Plane (Kong Gateway)**: é executado localmente em sua máquina usando contêineres Docker. É o nó que realmente recebe o tráfego das aplicações e o encaminha para os backends. Está exposto na porta local `8000`.
 
-## # Infraestrutura Básica
+### Infraestrutura Básica
 
 ```mermaid
 flowchart LR
@@ -188,7 +188,7 @@ Durante o Dia 1, você não precisa instalar ou configurar o ambiente na sua est
 
 O instrutor usará seu próprio ambiente pré-configurado para demonstrar a arquitetura ao vivo.
 
-## # Script de demonstração (passo a passo)
+### Script de demonstração (passo a passo)
 
 > **Nota sobre ferramentas de teste**: As demonstrações deste e dos próximos módulos mostram comandos `curl` para testar APIs. Alternativamente, se preferir utilizar uma interface gráfica, preparamos uma coleção Insomnia com todas as solicitações prontas para serem executadas. Você pode importá-lo do arquivo `docs/insomnia_collection.json`.
 

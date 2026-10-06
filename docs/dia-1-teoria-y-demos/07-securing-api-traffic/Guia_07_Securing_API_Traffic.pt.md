@@ -6,7 +6,7 @@ Neste módulo abordaremos a aplicação prática do paradigma **Zero Trust** em 
 
 ## 1. Conceitos Teóricos (Confiança Zero)
 
-## # A. Segurança de Transporte (mTLS)
+### A. Segurança de Transporte (mTLS)
 
 !!! info "Princípio de Confiança Zero"
   O paradigma Zero Trust determina que **a rede interna é tão hostil quanto a externa**. Não basta proteger o perímetro externo; cada salto de rede interna deve ser validado e criptografado.
@@ -37,7 +37,7 @@ flowchart LR
 ```
 ---
 
-## # B. Identidade e Autenticação (Autenticação)
+### B. Identidade e Autenticação (Autenticação)
 
 Quem está chamando a API? Kong atua como um ponto centralizado para validar a identidade antes que o tráfego chegue aos microsserviços.
 
@@ -76,7 +76,7 @@ sequenceDiagram
 ```
 ---
 
-## # C. Autorização
+### C. Autorização
 
 Saber *quem* é o usuário não é suficiente; devemos saber *o que ele pode fazer*.
 
@@ -115,7 +115,7 @@ Para regras de negócios extremamente dinâmicas ou complexas (por exemplo, *"Pe
 
 ---
 
-## # D. Segurança de rede de perímetro (restrição de IP)
+### D. Segurança de rede de perímetro (restrição de IP)
 
 **Defesa em Profundidade** requer controles sobrepostos. Mesmo que uma API tenha autenticação forte, a implementação de controles de rede adiciona uma camada crítica que mitiga o roubo de credenciais.
 
@@ -128,7 +128,7 @@ Para regras de negócios extremamente dinâmicas ou complexas (por exemplo, *"Pe
 
 Durante o **Dia 2**, o instrutor usará o script de demonstração automatizado para ilustrar como esses plug-ins funcionam em um ambiente real. 
 
-## # Demonstração 1: Autenticação Forte e Controle de Acesso (Key Auth + ACL)
+### Demonstração 1: Autenticação Forte e Controle de Acesso (Key Auth + ACL)
 **Objetivo:** demonstrar como uma rota é protegida bloqueando solicitações anônimas e diferenciando permissões entre dois consumidores diferentes.
 
 1. **Injeção:** Um arquivo declarativo (`03-b3-acl.yaml`) que aplica os plugins `key-auth` e `acl` é sincronizado:  
@@ -190,7 +190,7 @@ Usando curl (alternativa):
 ```
 **Resultado:** `200 OK`. Acesso permitido.
 
-## # Demonstração 2: Defesa de Perímetro (Restrição de IP)
+### Demonstração 2: Defesa de Perímetro (Restrição de IP)
 **Objetivo:** Proteger o perímetro bloqueando o acesso a IPs indesejados, verificando a eficácia da Defesa em Profundidade (mesmo que a chave tenha sido roubada).
 
 1. **Injeção:** Para aplicar a política `08-b8-ip-restriction.yaml` precisamos exportar o IP do gateway Docker. Este é o verdadeiro IP que Kong vê como a origem dos nossos pedidos.  
@@ -231,10 +231,10 @@ Usando curl (alternativa):
 **Resultado:** `200 OK`. Acesso permitido porque vem de uma rede confiável.
 
 
-## # Demonstração 3: TLS mútuo e OpenID Connect
+### Demonstração 3: TLS mútuo e OpenID Connect
 **Objetivo:** Demonstrar como o Kong permite empilhar camadas de segurança (Transporte + Identidade do usuário) sem modificar o código do microsserviço. Implementaremos um fluxo onde primeiro é necessário um certificado de cliente válido (mTLS) e, em seguida, adicionalmente um Token JWT válido emitido pela Konnect (OIDC).
 
-## ## Fase A: Autenticação do cliente (mTLS)
+#### Fase A: Autenticação do cliente (mTLS)
 
 1. **Geração de Certificados "On the Fly":**
   
@@ -308,7 +308,7 @@ Usando curl (alternativa):
 ```
 **Resultado:** `200 OK`. Kong valida o certificado contra a CA, identifica o Assunto, associa-o ao `App-External` e permite a passagem.
 
-## ## Fase B: Segurança em profundidade (mTLS + OIDC)
+#### Fase B: Segurança em profundidade (mTLS + OIDC)
 
 Neste ponto, o tráfego é criptografado e autenticado no nível da máquina. Agora, adicionaremos a identidade do aplicativo/usuário delegando a autenticação ao Kong Konnect Issuer (OIDC).
 

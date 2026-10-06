@@ -30,6 +30,6 @@ O documento a seguir detalha os requisitos de conectividade necessários para a 
 
 ---
 
-## # Notas Adicionais
+### Notas Adicionais
 * **Serviços internos:** Quando a stack de observabilidade roda na máquina de cada participante, a ingestão OpenTelemetry (`4317`, `4318`) e o health check do Collector (`13133`, somente `127.0.0.1`) operam na rede privada virtual Docker (`kong-workshop` / `otel-stack`). Não há necessidade de expô-los no nível do firewall corporativo; só é preciso abrir a `4318` se o instrutor usar uma stack centralizada.
 * **Execução em Codespaces/Local:** Se este ambiente estiver sendo executado estritamente em GitHub Codespaces ou na estação de trabalho pessoal de cada participante, as regras *Inbound* devem apenas garantir que o ambiente não bloqueie portas de escuta locais. As regras de *saída* ainda são obrigatórias no nível do perímetro.

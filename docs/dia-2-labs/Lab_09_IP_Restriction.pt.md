@@ -32,7 +32,7 @@ flowchart LR
 
 
 
-## # Defesa em profundidade
+### Defesa em profundidade
 A cibersegurança moderna não depende de um único muro, mas de múltiplas camadas defensivas. **A restrição de IP (camadas 3 e 4 do modelo OSI)** é uma das defesas de primeira linha mais eficazes e computacionalmente mais baratas.
 
 Antes que Kong desperdice CPU verificando assinaturas criptográficas de tokens JWT ou avaliando regras de roteamento complexas, o plug-in **Restrição de IP** pode descartar imediatamente o tráfego se ele vier de:
@@ -40,7 +40,7 @@ Antes que Kong desperdice CPU verificando assinaturas criptográficas de tokens 
 - Geografias não autorizadas ou intervalos CIDR.
 - Solicitações que não vêm da intranet corporativa (Whitelisting).
 
-## # Fluxo de restrição de IP (diagrama de sequência)
+### Fluxo de restrição de IP (diagrama de sequência)
 
 ```mermaid
 sequenceDiagram

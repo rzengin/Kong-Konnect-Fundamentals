@@ -1,4 +1,4 @@
-# Laboratório 03: Publicação do Catálogo API e Especificações da OEA
+# Laboratório 03: Publicação do Catálogo API e Especificações OAS
 
 Neste laboratório usaremos o arquivo `lab_03_1.yaml` (uma especificação OpenAPI) para publicar nossa API de catálogo (MockAPI) no Portal do Desenvolvedor.
 
@@ -25,11 +25,11 @@ flowchart LR
 
 
 
-## # Por que um Portal do Desenvolvedor é importante?
+### Por que um Portal do Desenvolvedor é importante?
 Um API Gateway expõe seus serviços com segurança, mas para que outras equipes (internas ou externas) os consumam, elas precisam **descobri-los e entender como usá-los**. O Portal do Desenvolvedor funciona como vitrine para seus produtos digitais (APIs). Este processo é denominado **"Produtização de API"**.
 Ao usar especificações padrão como **OAS (Especificação OpenAPI)** ou Swagger, você pode gerar automaticamente documentação interativa, permitindo que os consumidores entendam seus endpoints, testem solicitações e reduzam o tempo de integração.
 
-## # Fluxo de Consumo (Diagrama de Sequência)
+### Fluxo de Consumo (Diagrama de Sequência)
 
 ```mermaid
 sequenceDiagram
