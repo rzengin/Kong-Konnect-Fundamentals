@@ -9,7 +9,7 @@ echo ======================================================
 echo.
 
 if exist "..\..\mkdocs.yml" (
-    echo [1/2] Levantando portal de documentacion local...
+    echo [1/1] Levantando portal de documentacion local...
     taskkill /F /IM "mkdocs.exe" >nul 2>&1
     
     cd ..\..
@@ -19,13 +19,7 @@ if exist "..\..\mkdocs.yml" (
         start /b python -m mkdocs serve -a 0.0.0.0:8001 > %TMP%\mkdocs.log 2>&1
     )
 
-    echo.
-    echo [2/2] Desplegando documentacion en GitHub Pages...
-    if exist ".venv\Scripts\mkdocs.exe" (
-        .venv\Scripts\mkdocs.exe gh-deploy --force || echo No se pudo desplegar en GitHub Pages.
-    ) else (
-        python -m mkdocs gh-deploy --force || echo No se pudo desplegar en GitHub Pages.
-    )
+    REM La publicacion en GitHub Pages la hace CI (.github/workflows/deploy-docs.yml) al hacer push a main.
     cd docs\00-setup-entorno
     
     echo.

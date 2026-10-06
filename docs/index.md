@@ -3,7 +3,7 @@
 
 
 Bienvenido al material oficial del Workshop de **Kong API Gateway & Konnect**. 
-Este curso presencial de dos días está orientado a proporcionar formación práctica en API Gateway, GitOps, Seguridad y Observabilidad.
+Este curso presencial de dos días está orientado a proporcionar formación práctica en API Gateway, GitOps, Seguridad y Observabilidad: el **Día 1** combina teoría y demostraciones, y el **Día 2** está dedicado a laboratorios hands-on.
 
 ![Kong Konnect Overview](./public/konnect_unified_api_platform.png)
 
@@ -27,14 +27,18 @@ Nuestro trabajo durante el workshop será exponer, asegurar y gestionar el tráf
 - **Developer Track**: Conceptos de Gateway Services, Routes, Plugins, Developer Portal y publicación de Catalog APIs.
 - **Operations Track**: Gobierno declarativo con decK/Terraform, monitoreo de tráfico y observabilidad avanzada con OpenTelemetry (OpenObserve + Arize Phoenix).
 - **Security Track**: Estrategias Zero Trust, OIDC, RBAC y control de acceso mediante OPA.
+- **Demos complementarias**: Integración ITSM, Gestión de Secretos (Vaults) y Seguridad OWASP / WAF.
 
-### Día 2: Bloque Práctico — Hands-On Labs y Desafío Final
+### Día 2: Bloque Práctico — Hands-On Labs
 **Laboratorios Guiados y Práctica**
 
 - **Setup y Ruteo**: Inicialización del entorno local y despliegue declarativo de rutas.
 - **Plugins y Portales**: Transformaciones de payload, ruteo inteligente y publicación de catálogos OAS.
 - **Operaciones y Seguridad**: Despliegue de observabilidad local (OTel Collector + OpenObserve + Phoenix), aplicación de Key Auth, restricción de IPs y OIDC.
 - **Event Gateway**: Integración asíncrona enviando mensajes a tópicos de Kafka (Event-Driven Architecture).
+
+!!! info "Próximamente: Días 3 y 4 — AI Gateway"
+    El curso se está ampliando con dos jornadas dedicadas a **Kong AI Gateway**. Su contenido se incorporará a este sitio en una próxima versión.
 
 ---
 
@@ -75,3 +79,6 @@ El workshop está planificado en dos jornadas estructuradas de **08:00 a 17:00**
 | **15:25 - 15:40** | - | *Coffee Break* |
 | **15:40 - 16:25** | Tarde (Sec) | **Lab:** Restricción de IPs + OPA Authorization |
 | **16:25 - 17:00** | Tarde (Todos)| Cierre del taller, resolución de dudas y próximos pasos |
+
+!!! note "Contenido opcional"
+    Las demos complementarias del Día 1 (ITSM, Secretos, OWASP / WAF) y el Lab 12 (Event Gateway con Kafka) no figuran en la agenda base: se programan según el tiempo disponible y el perfil de la audiencia.

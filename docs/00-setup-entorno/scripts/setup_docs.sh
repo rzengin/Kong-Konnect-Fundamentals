@@ -14,12 +14,12 @@ echo -e "${YELLOW} Preparando Portal de Documentación (Solo Instructor) ${NC}"
 echo -e "${YELLOW}======================================================${NC}\n"
 
 if [ -f "../../mkdocs.yml" ]; then
-    echo -e "\n${GREEN}[1/2] Levantando portal de documentación local...${NC}"
+    echo -e "\n${GREEN}[1/1] Levantando portal de documentación local...${NC}"
     pkill -f "mkdocs serve" > /dev/null 2>&1 || true
     (cd ../.. && if [ -f .venv/bin/mkdocs ]; then nohup .venv/bin/mkdocs serve -a 0.0.0.0:8001 > /tmp/mkdocs.log 2>&1 & else nohup python3 -m mkdocs serve -a 0.0.0.0:8001 > /tmp/mkdocs.log 2>&1 & fi)
 
-    echo -e "\n${GREEN}[2/2] Desplegando documentación en GitHub Pages...${NC}"
-    (cd ../.. && if [ -f .venv/bin/mkdocs ]; then .venv/bin/mkdocs gh-deploy --force || echo -e "${YELLOW}No se pudo desplegar en GitHub Pages. ¿Tienes permisos en el repositorio?${NC}"; else python3 -m mkdocs gh-deploy --force || echo -e "${YELLOW}No se pudo desplegar en GitHub Pages. ¿Tienes permisos en el repositorio?${NC}"; fi)
+    # La publicación en GitHub Pages la hace CI (.github/workflows/deploy-docs.yml) al hacer push a main,
+    # después de validar el sitio con `mkdocs build --strict` y el chequeo de enlaces.
     
     echo -e "\n${GREEN}======================================================${NC}"
     echo -e "${GREEN} ¡Portal de documentación listo!${NC}"
