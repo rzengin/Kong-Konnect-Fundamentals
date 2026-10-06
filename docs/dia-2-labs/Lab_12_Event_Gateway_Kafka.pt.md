@@ -1,4 +1,4 @@
-#Laboratório 12: Gateway de eventos com Kafka
+# Laboratório 12: Gateway de eventos com Kafka
 
 Neste laboratório, usaremos o Kong Gateway como **Event Gateway**. 
 Ao contrário do proxy HTTP para HTTP tradicional, Kong interceptará uma solicitação REST recebida e a transformará em uma mensagem enviada de forma assíncrona para um tópico do Apache Kafka. 

@@ -1,4 +1,4 @@
-#Laboratório 08: Segurança Zero Trust (Chave, Autenticação Básica, JWT e HMAC)
+# Laboratório 08: Segurança Zero Trust (Chave, Autenticação Básica, JWT e HMAC)
 
 O modelo de segurança **Zero Trust** é baseado em um princípio fundamental: *"Nunca confie, sempre verifique"*. Não importa se uma solicitação vem da Internet pública, de um sistema legado interno ou de um microsserviço moderno dentro da mesma VPC; O API Gateway bloqueará todo o tráfego por padrão, a menos que uma credencial criptográfica válida seja apresentada.
 

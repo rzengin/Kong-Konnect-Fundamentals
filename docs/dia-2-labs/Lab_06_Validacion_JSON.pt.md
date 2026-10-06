@@ -1,4 +1,4 @@
-#Laboratório 06: Governança e validação avançadas do esquema JSON
+# Laboratório 06: Governança e validação avançadas do esquema JSON
 
 Neste laboratório, garantiremos que as solicitações POST para nosso serviço cumpram um contrato de dados rigoroso antes mesmo de tocar em nosso back-end. Para demonstrar o verdadeiro poder do Kong, usaremos o padrão **JSON Schema Draft 4**, que nos permite avaliar Expressões Regulares (Regex), intervalos numéricos e restrições de tamanho em arrays.
 

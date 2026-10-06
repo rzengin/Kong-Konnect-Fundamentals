@@ -1,4 +1,4 @@
-#Módulo 05: Observabilidade da API (Konnect Analytics)
+# Módulo 05: Observabilidade da API (Konnect Analytics)
 
 Em arquiteturas distribuídas baseadas em microsserviços ou arquiteturas Cloud-Native, a perda de visibilidade do tráfego é um dos maiores riscos operacionais. Este módulo foi projetado para demonstrar como o **Kong Konnect** fornece telemetria, métricas e rastreabilidade *prontas para uso*, sem a necessidade de configurar e manter pilhas externas complexas (como ELK ou Datadog) desde o primeiro dia.
 

@@ -1,4 +1,4 @@
-#Laboratório 09: Restrição de IP
+# Laboratório 09: Restrição de IP
 
 Neste laboratório vamos proteger uma API no nível da rede (camada 3/4) usando o plugin `ip-restriction`, garantindo que apenas endereços específicos possam consumir serviços de back-office.
 

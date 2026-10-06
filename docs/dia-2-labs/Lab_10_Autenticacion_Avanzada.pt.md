@@ -1,4 +1,4 @@
-#Laboratório 10: Autenticação Avançada (OIDC) e Autorização (ACL)
+# Laboratório 10: Autenticação Avançada (OIDC) e Autorização (ACL)
 
 Neste laboratório daremos o salto em direção à identidade empresarial. Substituiremos os tokens estáticos pelo padrão **OpenID Connect (OIDC)** usando o provedor de identidade nativo (Application Auth) do Kong Konnect.
 
