@@ -1,0 +1,67 @@
+_format_version: "3.0"
+
+services:
+  - name: mock-default
+    url: http://httpbin-backend:9081/anything/mock-default
+    plugins:
+      - name: request-transformer
+        config:
+          add:
+            headers:
+              - "x-inter-env: lab"
+    routes:
+      - name: mock-default-route
+        paths: 
+          - /api/v1/mock
+        methods: [GET]
+        plugins:
+          - name: response-transformer
+            config:
+              add:
+                headers:
+                  - "x-empresa: kong-kong"
+          - name: rate-limiting
+            config:
+              minute: 5
+              policy: local
+
+  - name: mock-latam
+    url: http://httpbin-backend:9081/anything/mock-latam
+    plugins:
+      - name: request-transformer
+        config:
+          add:
+            headers:
+              - "x-inter-env: lab"
+    routes:
+      - name: mock-latam-route
+        paths: 
+          - /api/v1/mock
+        methods: [GET]
+        headers:
+          x-region:
+            - latam
+        plugins:
+          - name: response-transformer
+            config:
+              add:
+                headers:
+                  - "x-empresa: kong-kong"
+          - name: rate-limiting
+            config:
+              minute: 5
+              policy: local
+
+  - name: mock-echo
+    url: http://httpbin-backend:9081/anything/echo
+    routes:
+      - name: echo-post-route
+        paths: 
+          - /api/v1/echo
+        methods: [POST]
+        plugins:
+          - name: request-validator
+            config:
+              body_schema: '[{"user_name": {"type":"string","required":true}},{"transaction_id": {"type":"string","required":true}},{"tier": {"type":"string","required":true, "one_of":["standard","premium"]}}]'
+              verbose_response: true
+              allowed_content_types: ["application/json"]

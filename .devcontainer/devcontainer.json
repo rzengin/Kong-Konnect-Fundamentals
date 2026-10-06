@@ -1,0 +1,19 @@
+{
+    "name": "Kong Konnect Workshop",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "moby": true
+        }
+    },
+    "postCreateCommand": "bash docs/00-setup-entorno/scripts/install_prereqs.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "konghq.kong-api-gateway-deck",
+                "redhat.vscode-yaml"
+            ]
+        }
+    }
+}

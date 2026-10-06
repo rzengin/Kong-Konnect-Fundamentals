@@ -1,0 +1,17 @@
+_format_version: "3.0"
+
+
+services:
+  - name: mock
+    url: http://httpbin-backend:9081/anything/mock
+    routes:
+      - name: mock-route
+        paths:
+          - /mock
+
+  - name: routes
+    url: http://httpbin-backend:9081/anything/routes
+    routes:
+      - name: routes-route
+        paths:
+          - /routes

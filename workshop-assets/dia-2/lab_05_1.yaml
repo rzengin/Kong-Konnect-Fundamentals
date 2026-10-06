@@ -1,0 +1,53 @@
+_format_version: '3.0'
+services:
+- name: cliente-default
+  url: http://httpbin-backend:9081/anything/cliente-default
+  plugins:
+  - name: request-transformer
+    config:
+      add:
+        headers:
+        - 'x-inter-env: lab'
+  routes:
+  - name: cliente-default-route
+    paths:
+    - /api/v1/entregar-resultados
+    methods:
+    - GET
+    plugins:
+    - name: response-transformer
+      config:
+        add:
+          headers:
+          - 'x-empresa: kong-kong'
+    - name: rate-limiting
+      config:
+        minute: 5
+        policy: local
+- name: cliente-banco-a
+  url: http://httpbin-backend:9081/anything/webhook-banco-a
+  plugins:
+  - name: request-transformer
+    config:
+      add:
+        headers:
+        - 'x-inter-env: lab'
+  routes:
+  - name: cliente-banco-a-route
+    paths:
+    - /api/v1/entregar-resultados
+    methods:
+    - GET
+    headers:
+      x-cliente:
+      - banco-a
+    plugins:
+    - name: response-transformer
+      config:
+        add:
+          headers:
+          - 'x-empresa: kong-kong'
+    - name: rate-limiting
+      config:
+        minute: 5
+        policy: local

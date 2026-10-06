@@ -1,0 +1,87 @@
+:root {
+  /* Kong Lime Green for highlights (darker version for light mode contrast) */
+  --md-primary-fg-color: #00b345;
+  --md-primary-fg-color--light: #33ffa0;
+  --md-primary-fg-color--dark: #008f37; 
+  
+  /* Fonts */
+  --md-text-font: "Inter", "Funnel Sans", -apple-system, Helvetica, Arial, sans-serif;
+  --md-code-font: "Roboto Mono", SFMono-Regular, Consolas, Menlo, monospace;
+}
+
+[data-md-color-scheme="default"] {
+  /* Kindle-like warm off-white background */
+  --md-default-bg-color: #f6f4ef;
+  /* Dark charcoal text instead of pure black */
+  --md-typeset-color: #333333;
+  --md-primary-fg-color: #00993b;
+  --md-accent-fg-color: #00993b;
+  --md-typeset-a-color: #0056b3; /* Distinct blue for links */
+}
+
+/* Make hyperlinks look like traditional hyperlinks */
+.md-typeset a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Normalize font style for links that were wrapped in markdown italics (*) */
+.md-typeset em a,
+.md-typeset a em {
+  font-style: normal !important;
+  font-size: 1rem !important;
+}
+
+/* Headings in Lime Green */
+.md-typeset h1, 
+.md-typeset h2, 
+.md-typeset h3 {
+  color: var(--md-primary-fg-color);
+}
+
+/* Adjust header to look more like Vitepress/Reference but adapted for light mode */
+.md-header {
+  background-color: rgba(246, 244, 239, 0.9) !important;
+  color: #333333 !important;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 153, 59, 0.2);
+}
+
+.md-header__button {
+  color: #333333 !important;
+}
+
+.md-tabs {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 1. Achicar la columna derecha (Índice) y darle más espacio al medio */
+.md-grid {
+  max-width: 1500px; /* Aumentamos el ancho general disponible */
+}
+
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--secondary {
+    width: 200px; /* Reducimos el ancho del índice derecho */
+  }
+}
+
+/* 2. Agrandar diagramas Mermaid para que sean impactantes y legibles */
+.md-typeset .mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 2em 0;
+}
+
+.md-typeset .mermaid svg {
+  width: 100% !important;
+  max-width: 1200px !important;
+  height: auto !important;
+}
+
+/* Ocultar el símbolo de permalink [¶] en los títulos */
+.md-typeset .headerlink {
+  display: none !important;
+}
+

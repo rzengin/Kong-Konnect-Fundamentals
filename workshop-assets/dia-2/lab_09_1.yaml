@@ -1,0 +1,15 @@
+_format_version: "3.0"
+services:
+  - name: mock-internal-reports
+    url: http://httpbin-backend:9081/anything/reports
+    routes:
+      - name: internal-reports-route
+        paths: 
+          - /api/internal/reports
+        plugins:
+          - name: ip-restriction
+            config:
+              allow:
+                - 127.0.0.1
+ # decK permite interpolar variables de entorno de tu máquina local
+                - ${{ env "DECK_DOCKER_HOST_IP" }}

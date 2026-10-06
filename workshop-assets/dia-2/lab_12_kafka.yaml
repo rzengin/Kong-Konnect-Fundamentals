@@ -1,0 +1,31 @@
+_format_version: "3.0"
+services:
+- name: event-gateway
+  host: mockbin.org # Dummy host, won't be reached
+  port: 80
+  protocol: http
+  routes:
+  - name: async-orders
+    paths:
+    - /api/v1/async-orders
+    methods:
+    - POST
+    plugins:
+    - name: kafka-upstream
+      config:
+        bootstrap_servers:
+        - host: kafka
+          port: 9092
+        topic: orders
+        producer_request_acks: 1
+        producer_request_timeout: 2000
+        forward_body: true
+        forward_headers: true
+        forward_method: true
+        forward_uri: true
+    - name: response-transformer-advanced
+      config:
+        replace:
+          body: '{"message": "su solicitud fue recibida y va a ser procesada"}'
+          headers:
+          - "Content-Type: application/json"

@@ -1,0 +1,15 @@
+_format_version: "3.0"
+
+services:
+  - name: mock-service
+    url: http://httpbin-backend:9081/anything
+    routes:
+      - name: mock-route
+        paths:
+          - /api/v1/mock
+
+plugins:
+  - name: rate-limiting
+    config:
+      minute: 5
+      policy: local

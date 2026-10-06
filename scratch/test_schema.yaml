@@ -1,0 +1,35 @@
+_format_version: '3.0'
+services:
+- name: mock-echo
+  url: http://httpbin-backend:9081/anything/echo
+  routes:
+  - name: echo-post-route
+    paths:
+    - /api/v1/echo
+    methods:
+    - POST
+    plugins:
+    - name: request-validator
+      config:
+        version: draft4
+        body_schema: |
+          {
+            "type": "object",
+            "properties": {
+              "user_name": { "type": "string", "minLength": 3 },
+              "email": { "type": "string", "pattern": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$" },
+              "transaction_id": { "type": "string", "pattern": "^TX-[0-9]{4}$" },
+              "tier": { "type": "string", "enum": ["standard", "premium"] },
+              "amount": { "type": "number", "minimum": 1.0, "maximum": 10000.0 },
+              "tags": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 1,
+                "maxItems": 5
+              }
+            },
+            "required": ["user_name", "email", "transaction_id", "tier", "amount"]
+          }
+        verbose_response: true
+        allowed_content_types:
+        - application/json

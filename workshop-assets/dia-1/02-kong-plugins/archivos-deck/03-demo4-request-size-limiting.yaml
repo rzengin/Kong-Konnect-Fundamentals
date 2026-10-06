@@ -1,0 +1,132 @@
+_format_version: "3.0"
+
+# ==============================================================================
+# C.4 - Request Size Limiting
+# Agrega: plugin request-size-limiting en el servicio echo-external
+# ==============================================================================
+
+services:
+  - name: Healthcheck-Service
+    url: http://localhost:8000
+    routes:
+      - name: Healthcheck-Route
+        paths:
+          - /healthcheck
+        plugins:
+          - name: request-termination
+            config:
+              status_code: 200
+              message: "Kong Gateway is Alive! Control Plane Sync is working."
+  - name: mock
+    url: http://httpbin-backend:9081/anything/mock
+    plugins:
+      - name: key-auth
+        config:
+          key_names:
+            - apikey
+      - name: acl
+        config:
+          allow:
+            - external
+      - name: cors
+        config:
+          origins:
+            - "https://mock.example.com"
+            - "http://localhost:3000"
+          methods:
+            - GET
+            - POST
+            - OPTIONS
+          headers:
+            - Authorization
+            - Content-Type
+            - apikey
+          max_age: 3600
+          credentials: true
+    routes:
+      - name: mock-route
+        paths:
+          - /mock
+        methods:
+          - GET
+          - OPTIONS
+        plugins:
+          - name: response-transformer
+            config:
+              add:
+                headers:
+                  - "x-kong: true"
+              remove:
+                headers:
+                  - "Via"
+
+  - name: echo-external
+    url: http://httpbin-backend:9081/anything/echo
+    plugins:
+      - name: jwt
+        config:
+          claims_to_verify:
+            - exp
+      - name: request-size-limiting
+        config:
+          allowed_payload_size: 1
+          size_unit: megabytes
+          require_content_length: false
+    routes:
+      - name: echo-get-route
+        paths:
+          - /echo
+        methods:
+          - GET
+      - name: echo-post-route
+        paths:
+          - /echo
+        methods:
+          - POST
+
+  - name: routes
+    url: http://httpbin-backend:9081/anything/routes
+    routes:
+      - name: routes-route
+        paths:
+          - /routes
+
+  - name: get-test
+    url: http://httpbin-backend:9081/anything/get
+    routes:
+      - name: get-route
+        paths:
+          - /get
+        plugins:
+          - name: request-transformer
+            config:
+              add:
+                headers:
+                  - "x-inter-env: lab"
+
+consumers:
+  - username: App-External
+    acls:
+      - group: external
+    keyauth_credentials:
+      - key: external-secret-123
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 20
+          policy: local
+  - username: App-Internal
+    acls:
+      - group: internal
+    keyauth_credentials:
+      - key: internal-secret-123
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 3
+          policy: local
+  - username: App-JWT
+    jwt_secrets:
+      - algorithm: HS256
+        key: "mock-jwt-issuer"
+        secret: "my-super-secret-key-for-workshop"

@@ -1,0 +1,115 @@
+site_name: Kong Konnect Workshop
+site_description: Formación práctica en API Gateway, GitOps, Seguridad y Observabilidad
+site_url: https://rzengin.github.io/Kong-Konnect-Fundamentals/
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      languages:
+        - locale: es
+          default: true
+          name: Español
+          build: true
+        - locale: pt
+          name: Português
+          build: true
+          nav_translations:
+            Inicio: Início
+            Día 1 - Teórico (Devs & Ops): Dia 1 - Teórico (Devs & Ops)
+            Día 2 - Práctico (Labs): Dia 2 - Prático (Labs)
+            Evaluación del Curso: Avaliação do Curso
+            Setup Inicial: Setup Inicial
+            OPS (30 min) Integración ITSM: OPS (30 min) Integração ITSM
+            SEC (30 min) Gestión de Secretos: SEC (30 min) Gerenciamento de Segredos
+            SEC (45 min) Seguridad OWASP WAF: SEC (45 min) Segurança OWASP WAF
+            OPS (45 min) Observabilidad Avanzada (OTel): OPS (45 min) Observabilidade Avançada (OTel)
+        - locale: en
+          name: English
+          build: true
+          nav_translations:
+            Inicio: Home
+            Día 1 - Teórico (Devs & Ops): Day 1 - Theory (Devs & Ops)
+            Día 2 - Práctico (Labs): Day 2 - Practical (Labs)
+            Evaluación del Curso: Course Evaluation
+            Setup Inicial: Initial Setup
+            OPS (30 min) Integración ITSM: OPS (30 min) ITSM Integration
+            SEC (30 min) Gestión de Secretos: SEC (30 min) Secrets Management
+            SEC (45 min) Seguridad OWASP WAF: SEC (45 min) OWASP WAF Security
+            OPS (45 min) Observabilidad Avanzada (OTel): OPS (45 min) Advanced Observability (OTel)
+
+
+extra_css:
+  - extra.css
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+  font:
+    text: Inter
+    code: Roboto Mono
+  logo: public/kong-logomark-lime.svg
+  favicon: public/favicon.png
+  palette:
+    - scheme: default
+      primary: custom
+      accent: teal
+
+docs_dir: docs
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Inicio: index.md
+
+  - Día 1 - Teórico (Devs & Ops):
+    - DEV (45 min) Arquitectura y Setup: dia-1-teoria-y-demos/00-arquitectura-setup/Guia_00_Arquitectura_y_Setup.md
+    - DEV (45 min) Kong Konnect Gateway: dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico.md
+    - DEV (120 min) Kong Plugins: dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins.md
+    - DEV (30 min) Developer Portal: dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal.md
+    - OPS (60 min) Gateway Operations (IaC): dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations.md
+    - OPS (30 min) Monitoring & Logging: dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring.md
+    - OPS (45 min) Observabilidad Avanzada (OTel): dia-1-teoria-y-demos/06-observability/Guia_06_Observability.md
+    - SEC (30 min) Securing API Traffic: dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic.md
+    - OPS (30 min) Integración ITSM: dia-1-teoria-y-demos/08-integracion-itsm/Dia1_Demo_Integracion_ITSM.md
+    - SEC (30 min) Gestión de Secretos: dia-1-teoria-y-demos/09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos.md
+    - SEC (45 min) Seguridad OWASP WAF: dia-1-teoria-y-demos/10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF.md
+  - Día 2 - Práctico (Labs):
+    - Setup Inicial:
+      - Prerrequisitos de Instalación: 00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion.md
+      - Requerimientos de Red: 00-setup-entorno/Requerimientos_Red_Workshop.md
+    - DEV (45 min) Lab Setup Local: dia-2-labs/Lab_00_Setup_Local.md
+    - DEV (20 min) Lab Routing Declarativo: dia-2-labs/Lab_01_Declarative_Routing.md
+    - DEV (30 min) Lab Upstreams & Health Checks: dia-2-labs/Lab_02_Upstreams_Health_Checks.md
+    - DEV (30 min) Lab Catalog APIs & OAS: dia-2-labs/Lab_03_Catalog_APIs_OAS.md
+    - DEV (45 min) Lab Transformaciones: dia-2-labs/Lab_04_Transformaciones.md
+    - DEV (30 min) Lab Ruteo Inteligente: dia-2-labs/Lab_05_Ruteo_Inteligente.md
+    - DEV (30 min) Lab Validación JSON: dia-2-labs/Lab_06_Validacion_JSON.md
+    - OPS (60 min) Lab OTel, OpenObserve & Phoenix: dia-2-labs/Lab_07_Observabilidad_Avanzada.md
+    - SEC (25 min) Lab Zero Trust (Key Auth): dia-2-labs/Lab_08_Zero_Trust_Security.md
+    - SEC (45 min) Lab OIDC & ACL: dia-2-labs/Lab_10_Autenticacion_Avanzada.md
+    - SEC (15 min) Lab Restricción de IPs: dia-2-labs/Lab_09_IP_Restriction.md
+    - SEC (30 min) Lab OPA Authorization: dia-2-labs/Lab_11_OPA.md
+    - DEV (20 min) Lab Event Gateway (Kafka): dia-2-labs/Lab_12_Event_Gateway_Kafka.md
+  - Evaluación del Curso: Evaluacion_del_Curso.md
+exclude_docs: |
+  **/*.tar
+  **/*.tar.gz
+  **/docker-images/

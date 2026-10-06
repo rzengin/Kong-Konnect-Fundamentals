@@ -1,0 +1,31 @@
+
+*.tar
+*.tar.gz
+.terraform/
+.terraform.lock.hcl
+terraform-provider-konnect*
+*.tfstate
+*.tfstate.*
+site/
+.venv/
+
+# --- Secretos y artefactos locales (no versionar) ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+endpoints.env
+*.tfstate*
+.terraform/
+node_modules/
+venv/
+.venv/
+__pycache__/
+.DS_Store
+site/
+dist/
+kong-workshop-assets.zip
+
+# --- Imágenes Docker offline del stack de observabilidad (save-images.sh) ---
+docker-images/

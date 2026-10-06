@@ -1,0 +1,18 @@
+_format_version: "3.0"
+services:
+  - name: mock-service
+    host: mock-upstream # Apuntamos al upstream en vez de un host directo
+    path: /anything
+    protocol: http
+    routes:
+      - name: mock-route
+        paths:
+          - /api/v1/mock
+upstreams:
+  - name: mock-upstream
+    algorithm: round-robin
+    targets:
+      - target: httpbin-backend:9081
+        weight: 100
+      - target: 127.0.0.1:8000
+        weight: 100

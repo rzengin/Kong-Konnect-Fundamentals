@@ -1,0 +1,113 @@
+# ==============================================================================
+# OpenTelemetry Collector - Stack de observabilidad del workshop
+#
+#   Kong (plugin opentelemetry) --OTLP--> Collector --+--> OpenObserve (traces, metrics, logs)
+#                                                     +--> Arize Phoenix (traces)
+#
+# Recepción: OTLP gRPC :4317 y OTLP HTTP :4318
+# Las credenciales de OpenObserve llegan por variables de entorno (ver docker-compose.yml).
+# ==============================================================================
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+  # OpenObserve exige Basic Auth en la ingesta OTLP: la hace el Collector, no Kong.
+  basicauth/openobserve:
+    client_auth:
+      username: ${env:ZO_ROOT_USER_EMAIL}
+      password: ${env:ZO_ROOT_USER_PASSWORD}
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  # Protege al Collector (límite de contenedor: 200 MiB)
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 160
+    spike_limit_mib: 40
+
+  # FILTRO: elimina trazas de ruido operativo (health checks, status, etc.).
+  # Patrón común en producción para reducir volumen y costo de almacenamiento.
+  filter/health_checks:
+    error_mode: ignore
+    traces:
+      span:
+        - 'IsMatch(attributes["http.url"], ".*/health")'
+        - 'IsMatch(attributes["url.full"], ".*/health")'
+        - 'IsMatch(attributes["http.url"], ".*/internal/status")'
+        - 'IsMatch(attributes["url.full"], ".*/internal/status")'
+
+  # ENRIQUECIMIENTO: agrega metadatos del pipeline a cada span
+  # (útil para saber por qué Collector pasó la telemetría).
+  attributes/enrich:
+    actions:
+      - key: pipeline.processed_by
+        value: "otel-collector-workshop"
+        action: upsert
+      - key: pipeline.version
+        value: "2.0-workshop"
+        action: upsert
+
+  # TRANSFORMACIÓN: deriva peer.service para que los backends identifiquen
+  # el servicio upstream llamado por Kong.
+  transform/kong_spans:
+    error_mode: ignore
+    trace_statements:
+      - context: span
+        statements:
+          - set(attributes["peer.service"], attributes["net.peer.name"]) where attributes["net.peer.name"] != nil
+
+  # PHOENIX: agrupa las trazas en un "proyecto" de Phoenix por service.name
+  # (si la app ya trae openinference.project.name, se respeta).
+  transform/phoenix_project:
+    error_mode: ignore
+    trace_statements:
+      - context: resource
+        statements:
+          - set(attributes["openinference.project.name"], attributes["service.name"]) where attributes["openinference.project.name"] == nil and attributes["service.name"] != nil
+
+  batch:
+    send_batch_size: 512
+    timeout: 2s
+
+exporters:
+  # OpenObserve: organización "default", stream "default".
+  # otlphttp agrega /v1/traces, /v1/metrics y /v1/logs al endpoint.
+  otlphttp/openobserve:
+    endpoint: http://openobserve:5080/api/default
+    auth:
+      authenticator: basicauth/openobserve
+    headers:
+      stream-name: default
+
+  # Phoenix recibe OTLP/HTTP en el mismo puerto de la UI (6006): /v1/traces
+  otlphttp/phoenix:
+    endpoint: http://phoenix:6006
+    compression: none
+
+service:
+  telemetry:
+    logs:
+      level: info
+      encoding: json
+  extensions: [health_check, basicauth/openobserve]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      # memory_limiter -> filter -> enrich -> transform -> batch
+      processors: [memory_limiter, filter/health_checks, attributes/enrich, transform/kong_spans, transform/phoenix_project, batch]
+      exporters: [otlphttp/openobserve, otlphttp/phoenix]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlphttp/openobserve]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlphttp/openobserve]

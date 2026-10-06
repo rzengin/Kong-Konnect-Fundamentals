@@ -1,0 +1,19 @@
+_format_version: "3.0"
+
+# ==============================================================================
+# B.4 - Estándares Globales (promovidos desde el Control Plane Global)
+# Plugins transversales:
+#   - file-log: logging estructurado JSON de cada petición
+#   - correlation-id: trazabilidad end-to-end con UUID único
+# ==============================================================================
+
+plugins:
+  - name: file-log
+    config:
+      path: /tmp/kong-requests.log
+      reopen: true
+  - name: correlation-id
+    config:
+      header_name: x-correlation-id
+      echo_downstream: true
+      generator: uuid

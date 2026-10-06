@@ -1,0 +1,139 @@
+name: Evaluación del Curso
+description: Completa esta evaluación detallada del curso Kong API Gateway.
+title: "[EVALUACION] Feedback del Curso - "
+labels: ["feedback", "evaluacion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Gracias por participar! Por favor, evalúa los diferentes aspectos del curso para ayudarnos a mejorar.
+        
+  - type: markdown
+    attributes:
+      value: "### 1. Entorno y Setup"
+  - type: dropdown
+    id: eval_setup
+    attributes:
+      label: ¿Cómo calificarías el entorno local y setup provisto para el curso (Docker, decK, Kong)?
+      options:
+        - "⭐⭐⭐⭐⭐ Excelente, funcionó sin problemas"
+        - "⭐⭐⭐⭐ Muy Bueno, pequeños detalles solucionables"
+        - "⭐⭐⭐ Bueno"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "### 2. Módulos Teóricos (Día 1)"
+  - type: dropdown
+    id: eval_dia1
+    attributes:
+      label: Calidad general del contenido teórico y demostraciones del Día 1
+      options:
+        - "⭐⭐⭐⭐⭐ Excelente"
+        - "⭐⭐⭐⭐ Muy Bueno"
+        - "⭐⭐⭐ Bueno"
+    validations:
+      required: true
+  - type: checkboxes
+    id: top_modulos_dia1
+    attributes:
+      label: ¿Cuáles módulos del Día 1 consideras que aportaron más valor? (Selecciona los que quieras)
+      options:
+        - label: "Arquitectura y Setup"
+        - label: "Kong Konnect Gateway"
+        - label: "Kong Plugins"
+        - label: "Developer Portal"
+        - label: "Gateway Operations (GitOps/IaC)"
+        - label: "Monitoring & Logging"
+        - label: "Observabilidad Avanzada"
+        - label: "Securing API Traffic"
+
+  - type: markdown
+    attributes:
+      value: "### 3. Laboratorios Prácticos (Día 2)"
+  - type: dropdown
+    id: eval_dia2
+    attributes:
+      label: Calidad general de los laboratorios prácticos (Hands-on) del Día 2
+      options:
+        - "⭐⭐⭐⭐⭐ Excelente"
+        - "⭐⭐⭐⭐ Muy Bueno"
+        - "⭐⭐⭐ Bueno"
+    validations:
+      required: true
+  - type: checkboxes
+    id: top_labs_dia2
+    attributes:
+      label: ¿Cuáles laboratorios del Día 2 disfrutaste o te sirvieron más?
+      options:
+        - label: "Routing Declarativo"
+        - label: "Upstreams & Health Checks"
+        - label: "Catalog APIs & OAS"
+        - label: "Transformaciones"
+        - label: "Ruteo Inteligente"
+        - label: "Observabilidad (OTel, OpenObserve & Phoenix)"
+        - label: "Seguridad Zero Trust"
+        - label: "Autenticación Avanzada (OIDC & ACL)"
+        - label: "Autorización Avanzada (OPA)"
+
+  - type: markdown
+    attributes:
+      value: "### 4. Evaluación del Instructor"
+  - type: dropdown
+    id: inst_claridad
+    attributes:
+      label: Claridad en la exposición y facilidad para explicar conceptos complejos
+      options:
+        - "⭐⭐⭐⭐⭐ Excelente"
+        - "⭐⭐⭐⭐ Muy Bueno"
+        - "⭐⭐⭐ Bueno"
+    validations:
+      required: true
+  - type: dropdown
+    id: inst_dominio
+    attributes:
+      label: Dominio del tema y experiencia técnica
+      options:
+        - "⭐⭐⭐⭐⭐ Excelente"
+        - "⭐⭐⭐⭐ Muy Bueno"
+        - "⭐⭐⭐ Bueno"
+    validations:
+      required: true
+  - type: dropdown
+    id: inst_dudas
+    attributes:
+      label: Disposición y capacidad para resolver dudas
+      options:
+        - "⭐⭐⭐⭐⭐ Excelente"
+        - "⭐⭐⭐⭐ Muy Bueno"
+        - "⭐⭐⭐ Bueno"
+    validations:
+      required: true
+  - type: dropdown
+    id: inst_tiempo
+    attributes:
+      label: Manejo del tiempo y ritmo de la clase
+      options:
+        - "⭐⭐⭐⭐⭐ Excelente"
+        - "⭐⭐⭐⭐ Muy Bueno"
+        - "⭐⭐⭐ Bueno"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "### 5. Comentarios Finales"
+  - type: textarea
+    id: feedback_general
+    attributes:
+      label: ¿Qué podríamos mejorar para la próxima edición?
+      placeholder: Escribe aquí cualquier sugerencia...
+    validations:
+      required: false
+  - type: input
+    id: nombre
+    attributes:
+      label: Tu Nombre (Opcional)
+    validations:
+      required: false

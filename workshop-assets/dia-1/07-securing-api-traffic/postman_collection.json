@@ -1,0 +1,157 @@
+{
+  "info": {
+    "name": "MockAPI Workshop API",
+    "description": "Colección de Postman para probar el ejercicio final de consolidación en la instancia local de Docker de Kong Gateway.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. GET /mock (Sin API Key - No Autorizado)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:8443/mock",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "8443",
+          "path": [
+            "mock"
+          ]
+        },
+        "description": "Prueba sin autenticación. Al no enviar el header `apikey`, Kong debería devolver un `401 Unauthorized`."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 401 Unauthorized', function () {",
+              "    pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. GET /mock (App-Internal - Denegado por ACL)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "internal-secret-123",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://localhost:8443/mock",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "8443",
+          "path": [
+            "mock"
+          ]
+        },
+        "description": "Prueba denegada. Consume la ruta `/mock` utilizando la key `internal-secret-123` (App-Internal). Este consumidor NO pertenece al grupo `external`, por lo que Kong debería devolver un `403 Forbidden`."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 403 Forbidden', function () {",
+              "    pm.response.to.have.status(403);",
+              "});",
+              "pm.test('Error message is correct', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.message).to.include('You cannot consume this service');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. GET /mock (App-External - Exitoso)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "external-secret-123",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://localhost:8443/mock",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "8443",
+          "path": [
+            "mock"
+          ]
+        },
+        "description": "Prueba exitosa. Consume la ruta `/mock` utilizando la key `external-secret-123` (App-External). Este consumidor pertenece al grupo `external` de ACL, por lo que tiene acceso permitido."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. GET /get (Transformación de Headers)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:8443/get",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "8443",
+          "path": [
+            "get"
+          ]
+        },
+        "description": "Prueba de transformaciones si aplica. Llama al endpoint libre `/get`."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

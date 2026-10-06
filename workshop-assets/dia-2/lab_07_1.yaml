@@ -1,0 +1,31 @@
+_format_version: "3.0"
+services:
+- name: mock-default
+  url: http://httpbin-backend:9081/anything/mock-default
+  routes:
+  - name: mock-default-route
+    paths:
+    - /api/v1/mock
+    methods:
+    - GET
+plugins:
+  - name: opentelemetry
+    tags: ["core"]
+    config:
+      header_type: w3c
+ # Collector del stack local (red Docker kong-workshop). Si el instructor usa un
+ # stack centralizado, reemplaza "otel-collector" por su IP (ej. http://203.0.113.50:4318/v1/traces)
+      traces_endpoint: http://otel-collector:4318/v1/traces
+      logs_endpoint: http://otel-collector:4318/v1/logs
+      access_logs_endpoint: http://otel-collector:4318/v1/logs
+      access_logs:
+        endpoint: http://otel-collector:4318/v1/logs
+      metrics:
+        enable_request_metrics: true
+        enable_latency_metrics: true
+        enable_bandwidth_metrics: true
+        endpoint: http://otel-collector:4318/v1/metrics
+      resource_attributes:
+ # Usa TU prefijo para identificar tus datos en OpenObserve y Phoenix
+        service.name: TUPREFIJO_kong_dp
+        alumno_id: TUPREFIJO

@@ -1,0 +1,66 @@
+_format_version: "3.0"
+services:
+  - name: mock-public
+    url: http://httpbin-backend:9081/anything/public
+    routes:
+      - name: public-route
+        paths:
+          - /api/v1/public
+    plugins:
+      - name: key-auth
+        config:
+          key_names: ["apikey"]
+          hide_credentials: true
+
+  - name: mock-legacy
+    url: http://httpbin-backend:9081/anything/legacy
+    routes:
+      - name: legacy-route
+        paths:
+          - /api/v1/legacy
+    plugins:
+      - name: basic-auth
+        config:
+          hide_credentials: true
+
+  - name: mock-internal
+    url: http://httpbin-backend:9081/anything/internal
+    routes:
+      - name: internal-route
+        paths:
+          - /api/v1/internal
+    plugins:
+      - name: jwt
+
+  - name: mock-b2b
+    url: http://httpbin-backend:9081/anything/b2b
+    routes:
+      - name: b2b-route
+        paths:
+          - /api/v1/b2b
+    plugins:
+      - name: hmac-auth
+        config:
+          enforce_headers: ["date"]
+          algorithms: ["hmac-sha256"]
+
+consumers:
+  - username: partner-app
+    keyauth_credentials:
+      - key: "secreto-123"
+
+  - username: legacy-app
+    basicauth_credentials:
+      - username: "admin"
+        password: "password"
+
+  - username: internal-app
+    jwt_secrets:
+      - key: "internal-app"
+        secret: "super-secret-jwt"
+        algorithm: "HS256"
+
+  - username: b2b-app
+    hmacauth_credentials:
+      - username: "banco-b"
+        secret: "secreto-bancario"

@@ -1,0 +1,17 @@
+_format_version: "3.0"
+
+
+services:
+  - name: customers
+    url: http://httpbin-backend:9081/anything/customers
+    routes:
+      - name: customers-route
+        paths:
+          - /customers
+
+  - name: echo
+    url: http://httpbin-backend:9081/anything/echo
+    routes:
+      - name: echo-route
+        paths:
+          - /echo

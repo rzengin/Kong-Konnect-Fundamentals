@@ -1,0 +1,33 @@
+_format_version: "3.0"
+services:
+  - name: mock-service
+    host: mock-upstream
+    path: /anything
+    protocol: http
+    routes:
+      - name: mock-route
+        paths:
+          - /api/v1/mock
+upstreams:
+  - name: mock-upstream
+    algorithm: round-robin
+    healthchecks:
+      active:
+        concurrency: 10
+        healthy:
+          http_statuses: [200, 302]
+          interval: 5
+          successes: 0
+        http_path: /status/200
+        timeout: 1
+        unhealthy:
+          http_failures: 2
+          http_statuses: [429, 404, 405, 500, 501, 502, 503, 504, 505]
+          interval: 5
+          tcp_failures: 2
+          timeouts: 3
+    targets:
+      - target: httpbin-backend:9081
+        weight: 100
+      - target: kong-dp:8000
+        weight: 100

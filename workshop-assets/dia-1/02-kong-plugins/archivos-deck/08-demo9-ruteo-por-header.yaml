@@ -1,0 +1,215 @@
+_format_version: "3.0"
+
+# ==============================================================================
+# C.9 - Ruteo por Headers
+# Agrega: servicios mock-latam y mock-europe con ruteo por header
+#         X-Client-Region para dirigir trafico a backends regionales
+# ==============================================================================
+
+plugins:
+  - name: bot-detection
+    config:
+      deny:
+        - "Googlebot"
+        - "Bingbot"
+        - "Baiduspider"
+      allow:
+        - "curl"
+        - "insomnia"
+        - "postman"
+
+services:
+  - name: Healthcheck-Service
+    url: http://localhost:8000
+    routes:
+      - name: Healthcheck-Route
+        paths:
+          - /healthcheck
+        plugins:
+          - name: request-termination
+            config:
+              status_code: 200
+              message: "Kong Gateway is Alive! Control Plane Sync is working."
+  # --- MOCK: Ruteo regional por header X-Client-Region ---
+
+  - name: mock
+    url: http://httpbin-backend:9081/anything/mock
+    plugins:
+      - name: key-auth
+        config:
+          key_names:
+            - apikey
+      - name: acl
+        config:
+          allow:
+            - external
+      - name: cors
+        config:
+          origins:
+            - "https://mock.example.com"
+            - "http://localhost:3000"
+          methods:
+            - GET
+            - POST
+            - OPTIONS
+          headers:
+            - Authorization
+            - Content-Type
+            - apikey
+            - X-Client-Region
+          max_age: 3600
+          credentials: true
+    routes:
+      - name: mock-route
+        paths:
+          - /mock
+        methods:
+          - GET
+          - OPTIONS
+        plugins:
+          - name: response-transformer
+            config:
+              add:
+                headers:
+                  - "x-kong: true"
+              remove:
+                headers:
+                  - "Via"
+          - name: proxy-cache
+            config:
+              strategy: memory
+              content_type:
+                - "application/json"
+                - "application/json; charset=utf-8"
+                - "text/plain; charset=utf-8"
+              cache_ttl: 30
+              cache_control: false
+              response_code:
+                - 200
+              request_method:
+                - GET
+
+  - name: mock-latam
+    url: http://httpbin-backend:9081/anything/mock-latam
+    plugins:
+      - name: key-auth
+        config:
+          key_names:
+            - apikey
+      - name: acl
+        config:
+          allow:
+            - external
+    routes:
+      - name: mock-latam-route
+        paths:
+          - /mock
+        methods:
+          - GET
+        headers:
+          x-client-region:
+            - latam
+
+  - name: mock-europe
+    url: http://httpbin-backend:9081/anything/mock-europe
+    plugins:
+      - name: key-auth
+        config:
+          key_names:
+            - apikey
+      - name: acl
+        config:
+          allow:
+            - external
+    routes:
+      - name: mock-europe-route
+        paths:
+          - /mock
+        methods:
+          - GET
+        headers:
+          x-client-region:
+            - europe
+
+  # --- ECHO ---
+
+  - name: echo-external
+    url: http://httpbin-backend:9081/anything/echo
+    plugins:
+      - name: jwt
+        config:
+          claims_to_verify:
+            - exp
+      - name: request-size-limiting
+        config:
+          allowed_payload_size: 1
+          size_unit: megabytes
+          require_content_length: false
+    routes:
+      - name: echo-get-route
+        paths:
+          - /echo
+        methods:
+          - GET
+      - name: echo-post-route
+        paths:
+          - /echo
+        methods:
+          - POST
+        plugins:
+          - name: request-validator
+            config:
+              body_schema: '[{"user_name":{"type":"string","required":true}},{"transaction_id":{"type":"string","required":true}},{"tier":{"type":"string","required":true,"one_of":["standard","premium","vip"]}},{"preference":{"type":"string","one_of":["window","aisle","middle"]}}]'
+              verbose_response: true
+              allowed_content_types:
+                - "application/json"
+                - "application/json; charset=utf-8"
+
+  # --- OTROS SERVICIOS ---
+
+  - name: routes
+    url: http://httpbin-backend:9081/anything/routes
+    routes:
+      - name: routes-route
+        paths:
+          - /routes
+
+  - name: get-test
+    url: http://httpbin-backend:9081/anything/get
+    routes:
+      - name: get-route
+        paths:
+          - /get
+        plugins:
+          - name: request-transformer
+            config:
+              add:
+                headers:
+                  - "x-inter-env: lab"
+
+consumers:
+  - username: App-External
+    acls:
+      - group: external
+    keyauth_credentials:
+      - key: external-secret-123
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 20
+          policy: local
+  - username: App-Internal
+    acls:
+      - group: internal
+    keyauth_credentials:
+      - key: internal-secret-123
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 3
+          policy: local
+  - username: App-JWT
+    jwt_secrets:
+      - algorithm: HS256
+        key: "mock-jwt-issuer"
+        secret: "my-super-secret-key-for-workshop"

@@ -1,0 +1,26 @@
+_format_version: '3.0'
+services:
+- name: mock-default
+  url: http://httpbin-backend:9081/anything/mock-default
+  plugins:
+  - name: request-transformer
+    config:
+      add:
+        headers:
+        - 'x-inter-env: lab'
+  routes:
+  - name: mock-default-route
+    paths:
+    - /api/v1/mock
+    methods:
+    - GET
+    plugins:
+    - name: response-transformer
+      config:
+        add:
+          headers:
+          - 'x-empresa: kong-kong'
+    - name: rate-limiting
+      config:
+        minute: 5
+        policy: local

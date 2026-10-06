@@ -1,0 +1,33 @@
+openapi: 3.0.0
+info:
+  title: MockAPI Gateway
+  version: 1.0.0
+  description: API genérica simulada para pruebas.
+servers:
+  - url: http://localhost:8000
+paths:
+  /mock:
+    get:
+      summary: Obtener vuelos disponibles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  mock:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        transaction_id:
+                          type: string
+                          example: "KA-100"
+                        destination:
+                          type: string
+                          example: "CDMX"

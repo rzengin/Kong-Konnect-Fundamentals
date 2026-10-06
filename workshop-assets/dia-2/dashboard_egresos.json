@@ -1,0 +1,111 @@
+{
+  "template_id": "CUSTOM",
+  "tiles": [
+    {
+      "id": "11111111-1111-4111-8111-111111111111",
+      "type": "chart",
+      "layout": {
+        "size": {
+          "cols": 3,
+          "rows": 2
+        },
+        "position": {
+          "col": 0,
+          "row": 0
+        }
+      },
+      "definition": {
+        "chart": {
+          "type": "horizontal_bar",
+          "stacked": true,
+          "chart_title": "1. Volumetría por Cliente (Request Count)"
+        },
+        "query": {
+          "limit": 10,
+          "filters": [],
+          "metrics": [
+            "request_count"
+          ],
+          "datasource": "api_usage",
+          "dimensions": [
+            "gateway_service"
+          ],
+          "time_range": {
+            "type": "relative",
+            "time_range": "15m"
+          }
+        }
+      }
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222222",
+      "type": "chart",
+      "layout": {
+        "size": {
+          "cols": 3,
+          "rows": 2
+        },
+        "position": {
+          "col": 3,
+          "row": 0
+        }
+      },
+      "definition": {
+        "chart": {
+          "type": "horizontal_bar",
+          "stacked": true,
+          "chart_title": "2. Latencia Promedio de Webhooks (ms)"
+        },
+        "query": {
+          "limit": 10,
+          "filters": [],
+          "metrics": [
+            "upstream_latency_average"
+          ],
+          "datasource": "api_usage",
+          "dimensions": [
+            "gateway_service"
+          ],
+          "time_range": {
+            "type": "relative",
+            "time_range": "15m"
+          }
+        }
+      }
+    },
+    {
+      "id": "33333333-3333-4333-8333-333333333333",
+      "type": "chart",
+      "layout": {
+        "size": {
+          "cols": 6,
+          "rows": 2
+        },
+        "position": {
+          "col": 0,
+          "row": 2
+        }
+      },
+      "definition": {
+        "chart": {
+          "type": "timeseries_line",
+          "chart_title": "3. Tráfico a lo largo del tiempo"
+        },
+        "query": {
+          "filters": [],
+          "metrics": [
+            "request_count"
+          ],
+          "datasource": "api_usage",
+          "dimensions": [
+            "time"
+          ],
+          "time_range": {
+            "type": "relative",
+            "time_range": "15m"
+          }
+        }
+      }
+    }
+  ]
+}

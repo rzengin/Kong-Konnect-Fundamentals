@@ -1,0 +1,31 @@
+_format_version: "3.0"
+services:
+  - name: mock-echo-secure
+    url: http://httpbin-backend:9081/anything/echo
+    routes:
+      - name: echo-secure-route
+        paths: 
+          - /api/v1/echo
+    plugins:
+      - name: openid-connect
+        config:
+          issuer: ${{ env "DECK_KONNECT_AUTH_ISSUER" }}
+          auth_methods:
+            - bearer
+          consumer_claim:
+            - sub
+          cache_tokens_salt: ${{ env "DECK_KONNECT_AUTH_CLIENT_ID" }}
+          session_secret: ${{ env "DECK_KONNECT_AUTH_CLIENT_SECRET" }}
+          ssl_verify: true
+      - name: acl
+        config:
+          allow:
+            - partners-vip
+
+consumers:
+  - username: app-b2b
+    custom_id: ${{ env "DECK_KONNECT_AUTH_CLIENT_ID" }}
+    acls:
+      - group: partners-vip
+# Nota: La validación de credenciales la hace el plugin OIDC contra el Issuer.
+# Kong enlazará automáticamente el token validado con este Consumer si los claims coinciden.

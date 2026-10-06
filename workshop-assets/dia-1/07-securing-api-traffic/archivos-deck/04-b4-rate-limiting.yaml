@@ -1,0 +1,51 @@
+_format_version: "3.0"
+
+
+
+services:
+  - name: mock
+    url: http://httpbin-backend:9081/anything/mock
+    plugins:
+      - name: key-auth
+        config:
+          key_names:
+            - apikey
+      - name: acl
+        config:
+          allow:
+            - external
+    routes:
+      - name: mock-route
+        paths:
+          - /mock
+        methods:
+          - GET
+
+  - name: routes
+    url: http://httpbin-backend:9081/anything/routes
+    routes:
+      - name: routes-route
+        paths:
+          - /routes
+
+consumers:
+  - username: App-External
+    acls:
+      - group: external
+    keyauth_credentials:
+      - key: external-secret-123
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 20
+          policy: local
+  - username: App-Internal
+    acls:
+      - group: internal
+    keyauth_credentials:
+      - key: internal-secret-123
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 3
+          policy: local

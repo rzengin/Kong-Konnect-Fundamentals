@@ -1,0 +1,75 @@
+_format_version: '3.0'
+ca_certificates:
+- id: 11111111-1111-1111-1111-111111111111
+  cert: ${{ env "DECK_MTLS_CA_CERT" }}
+plugins:
+- name: correlation-id
+  config:
+    header_name: x-correlation-id
+    echo_downstream: true
+    generator: uuid
+services:
+- name: mock
+  url: http://httpbin-backend:9081/anything/mock
+  plugins:
+  - name: mtls-auth
+    config:
+      ca_certificates:
+      - 11111111-1111-1111-1111-111111111111
+      skip_consumer_lookup: false
+      ssl_verify: true
+      revocation_check_mode: SKIP
+  - name: acl
+    config:
+      allow:
+      - external
+  routes:
+  - name: mock-route
+    paths:
+    - /mock
+    methods:
+    - GET
+    plugins:
+    - name: response-transformer
+      config:
+        add:
+          headers:
+          - 'x-kong: true'
+        remove:
+          headers:
+          - Via
+- name: routes
+  url: http://httpbin-backend:9081/anything/routes
+  routes:
+  - name: routes-route
+    paths:
+    - /routes
+- name: get-test
+  url: http://httpbin-backend:9081/anything/get
+  routes:
+  - name: get-route
+    paths:
+    - /get
+    plugins:
+    - name: request-transformer
+      config:
+        add:
+          headers:
+          - 'x-inter-env: lab'
+consumers:
+- username: App-External
+  acls:
+  - group: external
+  plugins:
+  - name: rate-limiting
+    config:
+      minute: 20
+      policy: local
+- username: App-Internal
+  acls:
+  - group: internal
+  plugins:
+  - name: rate-limiting
+    config:
+      minute: 3
+      policy: local

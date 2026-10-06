@@ -1,0 +1,88 @@
+# ==============================================================================
+# Stack de observabilidad del workshop (OpenTelemetry)
+#
+#   otel-collector  OTLP gRPC :4317 / HTTP :4318  -> traces: OpenObserve + Phoenix
+#                                                  -> metrics, logs: OpenObserve
+#   openobserve     UI :5080  (traces, métricas, logs, dashboards, búsqueda de logs)
+#   phoenix         UI :6006  (Arize Phoenix: vista de trazas orientada a LLM/IA)
+#
+# Memoria total aproximada: ~1.2 GB (512m + 512m + 200m).
+# El Collector se une a la red "kong-workshop" para que el Data Plane (kong-dp)
+# lo alcance como http://otel-collector:4318. Usa scripts/setup-observability.sh
+# para levantarlo (crea la red si no existe y espera a que todo esté sano).
+#
+# Credenciales: variables ZO_ROOT_USER_EMAIL / ZO_ROOT_USER_PASSWORD
+# (archivo .env junto a este compose; ver .env.example).
+# ==============================================================================
+name: otel-stack
+
+x-zo-credentials: &zo-credentials
+  ZO_ROOT_USER_EMAIL: ${ZO_ROOT_USER_EMAIL:-admin@kong.com}
+  ZO_ROOT_USER_PASSWORD: ${ZO_ROOT_USER_PASSWORD:-Kong12345678!}
+
+services:
+  openobserve:
+    image: openobserve/openobserve:v1.0.4
+    container_name: openobserve
+    restart: unless-stopped
+    environment:
+      <<: *zo-credentials
+      ZO_DATA_DIR: /data
+      ZO_TELEMETRY: "false"
+      # Mantener el consumo dentro del límite del contenedor (MB)
+      ZO_MEMORY_CACHE_MAX_SIZE: "128"
+      ZO_MEMORY_CACHE_DATAFUSION_MAX_SIZE: "128"
+    ports:
+      - "5080:5080"
+    volumes:
+      - openobserve-data:/data
+    mem_limit: 512m
+    networks:
+      - otel
+
+  phoenix:
+    image: arizephoenix/phoenix:20.19.0
+    container_name: phoenix
+    restart: unless-stopped
+    environment:
+      PHOENIX_WORKING_DIR: /mnt/data
+      PHOENIX_TELEMETRY_ENABLED: "false"
+    ports:
+      - "6006:6006"
+    volumes:
+      - phoenix-data:/mnt/data
+    mem_limit: 512m
+    networks:
+      - otel
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.161.0
+    container_name: otel-collector
+    restart: unless-stopped
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    environment:
+      <<: *zo-credentials
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "127.0.0.1:13133:13133"   # health_check (solo local)
+    depends_on:
+      - openobserve
+      - phoenix
+    mem_limit: 200m
+    networks:
+      - otel
+      - kong-workshop
+
+networks:
+  otel:
+    name: otel-stack
+  kong-workshop:
+    name: kong-workshop
+    external: true
+
+volumes:
+  openobserve-data:
+  phoenix-data:

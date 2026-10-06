@@ -1,0 +1,85 @@
+_format_version: '3.0'
+services:
+- name: Healthcheck-Service
+  url: http://localhost:8000
+  routes:
+  - name: Healthcheck-Route
+    paths:
+    - /healthcheck
+    plugins:
+    - name: request-termination
+      config:
+        status_code: 200
+        message: Kong Gateway is Alive! Control Plane Sync is working.
+- name: mock
+  url: http://httpbin-backend:9081/anything/mock
+  plugins:
+  - name: key-auth
+    config:
+      key_names:
+      - apikey
+  - name: acl
+    config:
+      allow:
+      - external
+  routes:
+  - name: mock-route
+    paths:
+    - /mock
+    methods:
+    - GET
+    - OPTIONS
+    plugins:
+    - name: response-transformer
+      config:
+        add:
+          headers:
+          - 'x-kong: true'
+        remove:
+          headers:
+          - Via
+- name: routes
+  url: http://httpbin-backend:9081/anything/routes
+  routes:
+  - name: routes-route
+    paths:
+    - /routes
+- name: get-test
+  url: http://httpbin-backend:9081/anything/get
+  routes:
+  - name: get-route
+    paths:
+    - /get
+    plugins:
+    - name: request-transformer
+      config:
+        add:
+          headers:
+          - 'x-inter-env: lab'
+consumers:
+- username: App-External
+  acls:
+  - group: external
+  keyauth_credentials:
+  - key: external-secret-123
+  plugins:
+  - name: rate-limiting
+    config:
+      minute: 20
+      policy: local
+- username: App-Internal
+  acls:
+  - group: internal
+  keyauth_credentials:
+  - key: internal-secret-123
+  plugins:
+  - name: rate-limiting
+    config:
+      minute: 3
+      policy: local
+plugins:
+- name: opentelemetry
+  config:
+    endpoint: http://host.docker.internal:4318/v1/traces
+    resource_attributes:
+      service.name: kong-gateway

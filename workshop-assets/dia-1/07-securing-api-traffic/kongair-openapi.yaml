@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: MockAPI API
+  description: Especificación de la API de MockAPI para el ejercicio de consolidación del workshop.
+  version: 1.0.0
+  contact:
+    name: Soporte MockAPI
+    email: soporte@mock.com
+servers:
+  - url: http://localhost:28000
+    description: Kong API Gateway (External Data Plane)
+  - url: http://localhost:18000
+    description: Kong API Gateway (Internal Data Plane)
+tags:
+  - name: Mock
+  - name: Routes
+  - name: Customers
+  - name: Echo
+  - name: Testing
+paths:
+  /mock:
+    get:
+      summary: Obtener vuelos
+      description: Retorna una lista de vuelos disponibles. Requiere autenticación con API Key y permisos del grupo 'external'.
+      operationId: getMock
+      tags:
+        - Mock
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Respuesta exitosa con datos de vuelos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    origin:
+                      type: string
+                    destination:
+                      type: string
+                    price:
+                      type: number
+        '401':
+          description: No autorizado (Falta API Key o es inválida)
+        '403':
+          description: Prohibido (El consumidor no pertenece al grupo de ACL requerido)
+        '429':
+          description: Demasiadas peticiones (Rate Limit excedido)
+  /get:
+    get:
+      summary: Endpoint de prueba (MockAPI)
+      description: Endpoint utilizado para validar transformaciones de headers (Request Transformer).
+      operationId: testGet
+      tags:
+        - Testing
+      responses:
+        '200':
+          description: Respuesta exitosa
+  /routes:
+    get:
+      summary: Obtener rutas
+      description: Retorna una lista de rutas disponibles. Endpoint público en Data Plane External.
+      operationId: getRoutes
+      tags:
+        - Routes
+      responses:
+        '200':
+          description: Respuesta exitosa
+  /customers:
+    get:
+      summary: Obtener clientes
+      description: Retorna una lista de clientes. Endpoint privado en Data Plane Internal.
+      operationId: getCustomers
+      tags:
+        - Customers
+      responses:
+        '200':
+          description: Respuesta exitosa
+  /echo:
+    get:
+      summary: Obtener reservas
+      description: Retorna una lista de reservas. Endpoint privado en Data Plane Internal.
+      operationId: getEcho
+      tags:
+        - Echo
+      responses:
+        '200':
+          description: Respuesta exitosa
+          
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey

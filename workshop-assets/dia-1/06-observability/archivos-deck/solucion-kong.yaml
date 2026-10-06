@@ -1,0 +1,50 @@
+_format_version: "3.0"
+
+# ==============================================================================
+# ESTADO FINAL - Módulo 06 Observabilidad Avanzada (OpenTelemetry)
+# Incluye: servicio/ruta /mock + OpenTelemetry completo (traces, logs, métricas)
+#          + Correlation ID + Resource/Custom Attributes
+#
+# Destino: OpenTelemetry Collector del stack local (otel-stack), alcanzable desde
+# el Data Plane por la red Docker "kong-workshop" como http://otel-collector:4318.
+# Si el instructor usa un stack centralizado, reemplaza "otel-collector" por su IP.
+# ==============================================================================
+
+services:
+  - name: mock
+    url: http://httpbin-backend:9081/anything/mock
+    routes:
+      - name: mock-route
+        paths:
+          - /mock
+
+plugins:
+  - name: opentelemetry
+    config:
+      header_type: w3c
+      traces_endpoint: http://otel-collector:4318/v1/traces
+      logs_endpoint: http://otel-collector:4318/v1/logs
+      access_logs:
+        endpoint: http://otel-collector:4318/v1/logs
+        custom_attributes_by_lua:
+          client.ip: "return kong.client.get_ip()"
+          client.consumer: "return (kong.client.get_consumer() or {}).username or 'anonymous'"
+          request.user_agent: "return kong.request.get_header('user-agent') or 'unknown'"
+          request.id: "return kong.request.get_header('x-correlation-id') or kong.request.get_header('x-kong-request-id') or 'none'"
+      metrics:
+        endpoint: http://otel-collector:4318/v1/metrics
+        enable_request_metrics: true
+        enable_latency_metrics: true
+        enable_bandwidth_metrics: true
+      resource_attributes:
+        service.name: kong-gateway
+        service.namespace: mock
+        service.version: "1.0"
+        deployment.environment: workshop
+        cloud.region: us-east-1
+        team: platform-engineering
+  - name: correlation-id
+    config:
+      header_name: x-correlation-id
+      echo_downstream: true
+      generator: uuid

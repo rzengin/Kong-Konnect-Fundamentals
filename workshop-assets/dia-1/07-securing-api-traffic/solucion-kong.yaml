@@ -1,0 +1,105 @@
+_format_version: "3.0"
+
+services:
+  - name: mock
+    url: http://httpbin-backend:9081/anything/mock
+    plugins:
+      # B.5 Seguridad: autenticación con Key Auth
+      - name: key-auth
+        config:
+          key_names:
+            - apikey
+      # B.6 Seguridad: autorización con ACL
+      - name: acl
+        config:
+          allow:
+            - external
+      # B.10 Trazabilidad: correlation identifier
+      - name: correlation-id
+        config:
+          header_name: x-correlation-id
+          echo_downstream: true
+          generator: uuid
+    routes:
+      - name: mock-route
+        paths:
+          - /mock
+        # B.4 Control de exposición: matching por método HTTP
+        methods:
+          - GET
+        plugins:
+          # B.8 Transformación: Response Transformer
+          - name: response-transformer
+            config:
+              add:
+                headers:
+                  - "x-kong: true"
+              remove:
+                headers:
+                  - "Via"
+          # B.11 Seguridad adicional: IP Restriction
+          - name: ip-restriction
+            config:
+              allow:
+                - 127.0.0.1
+                - 192.168.65.1
+
+  # B.9 Transformación: Request Transformer (OPCIONAL)
+  - name: mock-service
+    url: http://httpbin-backend:9081/anything
+    routes:
+      - name: mock-route
+        paths:
+          - /get
+        plugins:
+          - name: request-transformer
+            config:
+              add:
+                headers:
+                  - "x-inter-env: lab"
+
+consumers:
+  - username: App-External
+    # B.6 ACL Group
+    acls:
+      - group: external
+    keyauth_credentials:
+      - key: my-external-key
+    plugins:
+      # B.7 Control de tráfico: rate limiting diferenciado
+      - name: rate-limiting
+        config:
+          minute: 20
+          policy: local
+
+  - username: App-Internal
+    # B.6 ACL Group
+    acls:
+      - group: internal
+    keyauth_credentials:
+      - key: my-internal-key
+    plugins:
+      # B.7 Control de tráfico: rate limiting diferenciado
+      - name: rate-limiting
+        config:
+          minute: 3
+          policy: local
+
+plugins:
+  # B.15 Observabilidad Global: OTel Collector -> OpenObserve + Phoenix
+  - name: opentelemetry
+    config:
+      header_type: w3c
+      traces_endpoint: http://otel-collector:4318/v1/traces
+      logs_endpoint: http://otel-collector:4318/v1/logs
+      access_logs_endpoint: http://otel-collector:4318/v1/logs
+      access_logs:
+        endpoint: http://otel-collector:4318/v1/logs
+      metrics:
+        enable_request_metrics: true
+        enable_latency_metrics: true
+        enable_bandwidth_metrics: true
+        endpoint: http://otel-collector:4318/v1/metrics
+      resource_attributes:
+        service.name: kong-api-gateway
+        deployment.environment: workshop

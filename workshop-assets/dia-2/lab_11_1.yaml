@@ -1,0 +1,14 @@
+_format_version: "3.0"
+services:
+  - name: mock-service
+    url: http://httpbin-backend:9081/anything
+    plugins:
+      - name: opa
+        config:
+          opa_host: opa
+          opa_port: 8181
+          opa_path: /v1/data/authz_advanced/allow
+    routes:
+      - name: mock-route
+        paths:
+          - /api/v1/mock
