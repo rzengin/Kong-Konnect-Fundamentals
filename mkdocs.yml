@@ -1,5 +1,5 @@
 site_name: Kong Konnect Workshop
-site_description: Formación práctica en API Gateway, GitOps, Seguridad y Observabilidad
+site_description: Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad
 site_url: https://rzengin.github.io/Kong-Konnect-Fundamentals/
 plugins:
   - search
@@ -24,6 +24,28 @@ plugins:
             SEC (30 min) Gestión de Secretos: SEC (30 min) Gerenciamento de Segredos
             SEC (45 min) Seguridad OWASP WAF: SEC (45 min) Segurança OWASP WAF
             OPS (45 min) Observabilidad Avanzada (OTel): OPS (45 min) Observabilidade Avançada (OTel)
+            Día 3 - AI Gateway (Teoría y Demos): Dia 3 - AI Gateway (Teoria e Demos)
+            Día 4 - AI Gateway (Labs): Dia 4 - AI Gateway (Labs)
+            DEV (45 min) IA 00 Arquitectura AI Gateway 2.x y kongctl: DEV (45 min) IA 00 Arquitetura AI Gateway 2.x e kongctl
+            DEV (45 min) IA 01 Un endpoint, muchos LLMs: DEV (45 min) IA 01 Um endpoint, muitos LLMs
+            SEC (45 min) IA 02 Gobierno, cuotas y presupuesto: SEC (45 min) IA 02 Governança, cotas e orçamento
+            SEC (45 min) IA 03 Guardrails y PII: SEC (45 min) IA 03 Guardrails e PII
+            DEV (40 min) IA 04 Ruteo semántico, caché y compresión: DEV (40 min) IA 04 Roteamento semântico, cache e compressão
+            DEV (25 min) IA 05 RAG gestionado: DEV (25 min) IA 05 RAG gerenciado
+            DEV (50 min) IA 06 MCP (APIs como tools): DEV (50 min) IA 06 MCP (APIs como tools)
+            DEV (25 min) IA 07 Agentes y A2A: DEV (25 min) IA 07 Agentes e A2A
+            OPS (45 min) IA 08 Observabilidad y FinOps de IA: OPS (45 min) IA 08 Observabilidade e FinOps de IA
+            DEV (20 min) IA 09 Novedades AI Summit 2026: DEV (20 min) IA 09 Novidades AI Summit 2026
+            DEV (45 min) Lab IA Setup AI Gateway: DEV (45 min) Lab IA Setup do AI Gateway
+            DEV (35 min) Lab IA Multi-LLM y Failover: DEV (35 min) Lab IA Multi-LLM e Failover
+            SEC (40 min) Lab IA Gobierno y Cuotas: SEC (40 min) Lab IA Governança e Cotas
+            SEC (35 min) Lab IA Guardrails: SEC (35 min) Lab IA Guardrails
+            DEV (35 min) Lab IA Semántica y Caché: DEV (35 min) Lab IA Semântica e Cache
+            DEV (30 min) Lab IA RAG: DEV (30 min) Lab IA RAG
+            DEV (45 min) Lab IA MCP: DEV (45 min) Lab IA MCP
+            DEV (25 min) Lab IA A2A: DEV (25 min) Lab IA A2A
+            OPS (45 min) Lab IA Observabilidad (OpenObserve & Phoenix): OPS (45 min) Lab IA Observabilidade (OpenObserve & Phoenix)
+            DEV (45 min) Desafío IA Asistente de Crédito: DEV (45 min) Desafio IA Assistente de Crédito
         - locale: en
           name: English
           build: true
@@ -37,6 +59,28 @@ plugins:
             SEC (30 min) Gestión de Secretos: SEC (30 min) Secrets Management
             SEC (45 min) Seguridad OWASP WAF: SEC (45 min) OWASP WAF Security
             OPS (45 min) Observabilidad Avanzada (OTel): OPS (45 min) Advanced Observability (OTel)
+            Día 3 - AI Gateway (Teoría y Demos): Day 3 - AI Gateway (Theory & Demos)
+            Día 4 - AI Gateway (Labs): Day 4 - AI Gateway (Labs)
+            DEV (45 min) IA 00 Arquitectura AI Gateway 2.x y kongctl: DEV (45 min) AI 00 AI Gateway 2.x Architecture and kongctl
+            DEV (45 min) IA 01 Un endpoint, muchos LLMs: DEV (45 min) AI 01 One endpoint, many LLMs
+            SEC (45 min) IA 02 Gobierno, cuotas y presupuesto: SEC (45 min) AI 02 Governance, quotas and budget
+            SEC (45 min) IA 03 Guardrails y PII: SEC (45 min) AI 03 Guardrails and PII
+            DEV (40 min) IA 04 Ruteo semántico, caché y compresión: DEV (40 min) AI 04 Semantic routing, caching and compression
+            DEV (25 min) IA 05 RAG gestionado: DEV (25 min) AI 05 Managed RAG
+            DEV (50 min) IA 06 MCP (APIs como tools): DEV (50 min) AI 06 MCP (APIs as tools)
+            DEV (25 min) IA 07 Agentes y A2A: DEV (25 min) AI 07 Agents and A2A
+            OPS (45 min) IA 08 Observabilidad y FinOps de IA: OPS (45 min) AI 08 AI Observability and FinOps
+            DEV (20 min) IA 09 Novedades AI Summit 2026: DEV (20 min) AI 09 AI Summit 2026 Announcements
+            DEV (45 min) Lab IA Setup AI Gateway: DEV (45 min) AI Lab AI Gateway Setup
+            DEV (35 min) Lab IA Multi-LLM y Failover: DEV (35 min) AI Lab Multi-LLM and Failover
+            SEC (40 min) Lab IA Gobierno y Cuotas: SEC (40 min) AI Lab Governance and Quotas
+            SEC (35 min) Lab IA Guardrails: SEC (35 min) AI Lab Guardrails
+            DEV (35 min) Lab IA Semántica y Caché: DEV (35 min) AI Lab Semantics and Caching
+            DEV (30 min) Lab IA RAG: DEV (30 min) AI Lab RAG
+            DEV (45 min) Lab IA MCP: DEV (45 min) AI Lab MCP
+            DEV (25 min) Lab IA A2A: DEV (25 min) AI Lab A2A
+            OPS (45 min) Lab IA Observabilidad (OpenObserve & Phoenix): OPS (45 min) AI Lab Observability (OpenObserve & Phoenix)
+            DEV (45 min) Desafío IA Asistente de Crédito: DEV (45 min) AI Challenge Governed Credit Assistant
 
 
 extra_css:
@@ -108,6 +152,28 @@ nav:
     - SEC (15 min) Lab Restricción de IPs: dia-2-labs/Lab_09_IP_Restriction.md
     - SEC (30 min) Lab OPA Authorization: dia-2-labs/Lab_11_OPA.md
     - DEV (20 min) Lab Event Gateway (Kafka): dia-2-labs/Lab_12_Event_Gateway_Kafka.md
+  - Día 3 - AI Gateway (Teoría y Demos):
+    - DEV (45 min) IA 00 Arquitectura AI Gateway 2.x y kongctl: dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl.md
+    - DEV (45 min) IA 01 Un endpoint, muchos LLMs: dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs.md
+    - SEC (45 min) IA 02 Gobierno, cuotas y presupuesto: dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas.md
+    - SEC (45 min) IA 03 Guardrails y PII: dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII.md
+    - DEV (40 min) IA 04 Ruteo semántico, caché y compresión: dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion.md
+    - DEV (25 min) IA 05 RAG gestionado: dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado.md
+    - DEV (50 min) IA 06 MCP (APIs como tools): dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP.md
+    - DEV (25 min) IA 07 Agentes y A2A: dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A.md
+    - OPS (45 min) IA 08 Observabilidad y FinOps de IA: dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps.md
+    - DEV (20 min) IA 09 Novedades AI Summit 2026: dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026.md
+  - Día 4 - AI Gateway (Labs):
+    - DEV (45 min) Lab IA Setup AI Gateway: dia-4-ai-gateway-labs/Lab_IA_00_Setup.md
+    - DEV (35 min) Lab IA Multi-LLM y Failover: dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover.md
+    - SEC (40 min) Lab IA Gobierno y Cuotas: dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas.md
+    - SEC (35 min) Lab IA Guardrails: dia-4-ai-gateway-labs/Lab_IA_03_Guardrails.md
+    - DEV (35 min) Lab IA Semántica y Caché: dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache.md
+    - DEV (30 min) Lab IA RAG: dia-4-ai-gateway-labs/Lab_IA_05_RAG.md
+    - DEV (45 min) Lab IA MCP: dia-4-ai-gateway-labs/Lab_IA_06_MCP.md
+    - DEV (25 min) Lab IA A2A: dia-4-ai-gateway-labs/Lab_IA_07_A2A.md
+    - OPS (45 min) Lab IA Observabilidad (OpenObserve & Phoenix): dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad.md
+    - DEV (45 min) Desafío IA Asistente de Crédito: dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito.md
   - Evaluación del Curso: Evaluacion_del_Curso.md
 exclude_docs: |
   **/*.tar
