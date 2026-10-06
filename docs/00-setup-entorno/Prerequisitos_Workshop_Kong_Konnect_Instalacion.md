@@ -31,6 +31,27 @@ El documento no reemplaza la guía del laboratorio. Su propósito es
 servir como checklist previo para evitar que el tiempo del workshop se
 consuma instalando herramientas básicas o resolviendo bloqueos de red.
 
+# Elige tu camino: Codespaces (A) o instalación local (B)
+
+!!! tip "Camino A — GitHub Codespaces (recomendado)"
+    Un entorno Linux en la nube, listo en ~5 minutos, con **Docker, decK, kongctl, inso, Terraform, Node.js, Python y jq** ya instalados. Solo necesitas un navegador y una cuenta de GitHub con acceso al repositorio del curso. Evita las restricciones típicas de laptops corporativas (Docker Desktop sin licencia o bloqueado, Windows sin WSL2, proxies, permisos de administrador).
+
+    [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/rzengin/Kong-Konnect-Fundamentals?quickstart=1)
+
+    1. Pulsa el botón (o en GitHub: **Code → Codespaces → Create codespace on main**). Elige una máquina de **4 núcleos / 8 GB** o más.
+    2. Espera a que termine la creación: el contenedor ejecuta `docs/00-setup-entorno/scripts/install_prereqs.sh` automáticamente.
+    3. Define tus variables (mejor como [secretos de Codespaces](https://github.com/settings/codespaces) `KONNECT_TOKEN` y `DEMO_PREFIX`, o en la terminal):
+       ```bash
+       export KONNECT_TOKEN="kpat_..."   # entregado por el instructor
+       export DEMO_PREFIX="tu_nombre"
+       ```
+    4. Los puertos del laboratorio se reenvían solos (pestaña **Ports**): 8000/8443 proxy de Kong, 8001 Admin API, 5080 OpenObserve, 6006 Phoenix, 4318 OTLP. Donde las guías digan `http://localhost:<puerto>`, usa `curl` desde la terminal del Codespace o abre la URL reenviada desde la pestaña **Ports**.
+
+    Con el camino A puedes saltar directamente a la [sección 4](#4-configuracion-requerida-en-kong-konnect) (configuración en Konnect); las secciones 2–3 solo aplican a la instalación local.
+
+!!! note "Camino B — Instalación local"
+    Si prefieres trabajar en tu laptop (o no tienes acceso a Codespaces), instala las herramientas siguiendo las secciones 2 y 3. En macOS y Linux el script `docs/00-setup-entorno/scripts/install_prereqs.sh` automatiza la mayor parte.
+
 # 2. Checklist mínimo antes del workshop
 
 | **Categoría** | **Requisito (Versión Mínima)** | **Uso en los ejercicios** |

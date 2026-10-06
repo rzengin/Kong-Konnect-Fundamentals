@@ -30,6 +30,27 @@ The document does not replace the lab guide. Its purpose is to
 serve as a preliminary checklist to prevent workshop time from being
 consumed by installing basic tools or resolving network blocks.
 
+# Choose your path: Codespaces (A) or local install (B)
+
+!!! tip "Path A — GitHub Codespaces (recommended)"
+    A cloud Linux environment, ready in ~5 minutes, with **Docker, decK, kongctl, inso, Terraform, Node.js, Python and jq** preinstalled. All you need is a browser and a GitHub account with access to the course repository. It avoids the usual corporate-laptop restrictions (unlicensed or blocked Docker Desktop, Windows without WSL2, proxies, missing admin rights).
+
+    [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/rzengin/Kong-Konnect-Fundamentals?quickstart=1)
+
+    1. Click the button (or on GitHub: **Code → Codespaces → Create codespace on main**). Pick a **4-core / 8 GB** machine or larger.
+    2. Wait for creation to finish: the container runs `docs/00-setup-entorno/scripts/install_prereqs.sh` automatically.
+    3. Set your variables (preferably as [Codespaces secrets](https://github.com/settings/codespaces) `KONNECT_TOKEN` and `DEMO_PREFIX`, or in the terminal):
+       ```bash
+       export KONNECT_TOKEN="kpat_..."   # provided by the instructor
+       export DEMO_PREFIX="your_name"
+       ```
+    4. Lab ports are forwarded automatically (**Ports** tab): 8000/8443 Kong proxy, 8001 Admin API, 5080 OpenObserve, 6006 Phoenix, 4318 OTLP. Wherever the guides say `http://localhost:<port>`, use `curl` from the Codespace terminal or open the forwarded URL from the **Ports** tab.
+
+    With path A you can jump straight to [section 4](#4-required-configuration-in-kong-konnect) (Konnect configuration); sections 2–3 only apply to a local install.
+
+!!! note "Path B — Local install"
+    If you prefer to work on your laptop (or have no Codespaces access), install the tools following sections 2 and 3. On macOS and Linux the `docs/00-setup-entorno/scripts/install_prereqs.sh` script automates most of it.
+
 # 2. Minimum Checklist Before the Workshop
 
 | **Category** | **Requirement (Minimum Version)** | **Usage in Exercises** |

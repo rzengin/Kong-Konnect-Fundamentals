@@ -15,6 +15,8 @@ echo -e "${YELLOW}======================================================${NC}\n"
 
 OS="$(uname -s)"
 DECK_VERSION="1.65.1"
+KONGCTL_VERSION="1.20.0"
+INSO_VERSION="13.3.0"
 
 if [ "$OS" = "Darwin" ]; then
   echo -e "${GREEN}Detectado macOS. Usando Homebrew...${NC}"
@@ -42,6 +44,8 @@ if [ "$OS" = "Darwin" ]; then
   
   if ! command -v python3 &> /dev/null; then brew install python@3.12 || true; else echo "python3 ya instalado"; fi
   if ! command -v deck &> /dev/null; then brew install kong/deck/deck || true; else echo "deck ya instalado"; fi
+  if ! command -v kongctl &> /dev/null; then brew install kong/kongctl/kongctl || true; else echo "kongctl ya instalado"; fi
+  if ! command -v inso &> /dev/null; then brew install --cask inso || true; else echo "inso ya instalado"; fi
   
   if ! command -v terraform &> /dev/null; then
     brew tap hashicorp/tap || true
@@ -59,7 +63,8 @@ elif [ "$OS" = "Linux" ]; then
   echo -e "${GREEN}Detectado Linux. Usando apt-get...${NC}"
   
   sudo apt-get update
-  sudo apt-get install -y ca-certificates curl gnupg lsb-release git unzip python3 python3-pip
+  sudo apt-get install -y ca-certificates curl wget gnupg lsb-release git unzip xz-utils jq python3 python3-pip python3-venv
+  ARCH="$(dpkg --print-architecture)"   # amd64 | arm64 (Codespaces: amd64)
   
   # Docker
   if ! command -v docker &> /dev/null; then
@@ -92,10 +97,35 @@ elif [ "$OS" = "Linux" ]; then
   # decK
   if ! command -v deck &> /dev/null; then
     echo "Instalando decK..."
-    curl -sL "https://github.com/Kong/deck/releases/download/v${DECK_VERSION}/deck_${DECK_VERSION}_linux_amd64.tar.gz" -o deck.tar.gz
-    tar -xf deck.tar.gz
-    sudo mv deck /usr/local/bin/deck
-    rm deck.tar.gz
+    curl -fsSL "https://github.com/Kong/deck/releases/download/v${DECK_VERSION}/deck_${DECK_VERSION}_linux_${ARCH}.tar.gz" -o /tmp/deck.tar.gz
+    rm -rf /tmp/deck-x && mkdir -p /tmp/deck-x
+    tar -xzf /tmp/deck.tar.gz -C /tmp/deck-x
+    sudo install -m 0755 "$(find /tmp/deck-x -type f -name deck | head -n 1)" /usr/local/bin/deck
+    rm -rf /tmp/deck.tar.gz /tmp/deck-x
+  fi
+
+  # kongctl (CLI de Konnect)
+  if ! command -v kongctl &> /dev/null; then
+    echo "Instalando kongctl..."
+    curl -fsSL "https://github.com/Kong/kongctl/releases/download/v${KONGCTL_VERSION}/kongctl_linux_${ARCH}.zip" -o /tmp/kongctl.zip
+    rm -rf /tmp/kongctl-x && mkdir -p /tmp/kongctl-x
+    unzip -o -q /tmp/kongctl.zip -d /tmp/kongctl-x
+    sudo install -m 0755 "$(find /tmp/kongctl-x -type f -name kongctl | head -n 1)" /usr/local/bin/kongctl
+    rm -rf /tmp/kongctl.zip /tmp/kongctl-x
+  fi
+
+  # inso (Insomnia CLI) - binario oficial solo para x64
+  if ! command -v inso &> /dev/null; then
+    if [ "$ARCH" = "amd64" ]; then
+      echo "Instalando inso..."
+      curl -fsSL "https://github.com/Kong/insomnia/releases/download/core%40${INSO_VERSION}/inso-linux-x64-${INSO_VERSION}.tar.xz" -o /tmp/inso.tar.xz
+      rm -rf /tmp/inso-x && mkdir -p /tmp/inso-x
+      tar -xJf /tmp/inso.tar.xz -C /tmp/inso-x
+      sudo install -m 0755 "$(find /tmp/inso-x -type f -name inso | head -n 1)" /usr/local/bin/inso
+      rm -rf /tmp/inso.tar.xz /tmp/inso-x
+    else
+      echo -e "${YELLOW}inso no tiene binario oficial para ${ARCH}; se omite (opcional).${NC}"
+    fi
   fi
   
   echo -e "${YELLOW}Nota para Linux: Descarga Insomnia manualmente desde https://insomnia.rest/download${NC}"
@@ -117,6 +147,9 @@ npm -v || echo -e "${RED}npm falló${NC}"
 docker version --format 'Docker Client: {{.Client.Version}}' || echo -e "${RED}docker falló (¿el daemon está corriendo?)${NC}"
 docker compose version || echo -e "${RED}docker compose falló${NC}"
 deck version || echo -e "${RED}deck falló${NC}"
+kongctl version || echo -e "${RED}kongctl falló${NC}"
+inso --version || echo -e "${YELLOW}inso no disponible (opcional)${NC}"
+jq --version || echo -e "${RED}jq falló${NC}"
 terraform version | head -n 1 || echo -e "${RED}terraform falló${NC}"
 
 echo -e "\n${GREEN}¡Instalación y Validación Completada!${NC}"

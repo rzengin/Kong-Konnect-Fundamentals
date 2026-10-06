@@ -31,6 +31,27 @@ O documento não substitui as orientações laboratoriais. Seu propósito é
 servir como checklist prévio para evitar que o horário do workshop seja
 consumir instalando ferramentas básicas ou resolvendo falhas de rede.
 
+# Escolha seu caminho: Codespaces (A) ou instalação local (B)
+
+!!! tip "Caminho A — GitHub Codespaces (recomendado)"
+    Um ambiente Linux na nuvem, pronto em ~5 minutos, com **Docker, decK, kongctl, inso, Terraform, Node.js, Python e jq** já instalados. Você só precisa de um navegador e de uma conta GitHub com acesso ao repositório do curso. Evita as restrições típicas de laptops corporativos (Docker Desktop sem licença ou bloqueado, Windows sem WSL2, proxies, falta de permissões de administrador).
+
+    [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/rzengin/Kong-Konnect-Fundamentals?quickstart=1)
+
+    1. Clique no botão (ou no GitHub: **Code → Codespaces → Create codespace on main**). Escolha uma máquina de **4 núcleos / 8 GB** ou maior.
+    2. Aguarde o fim da criação: o contêiner executa `docs/00-setup-entorno/scripts/install_prereqs.sh` automaticamente.
+    3. Defina suas variáveis (de preferência como [segredos do Codespaces](https://github.com/settings/codespaces) `KONNECT_TOKEN` e `DEMO_PREFIX`, ou no terminal):
+       ```bash
+       export KONNECT_TOKEN="kpat_..."   # fornecido pelo instrutor
+       export DEMO_PREFIX="seu_nome"
+       ```
+    4. As portas do laboratório são encaminhadas automaticamente (aba **Ports**): 8000/8443 proxy do Kong, 8001 Admin API, 5080 OpenObserve, 6006 Phoenix, 4318 OTLP. Onde os guias disserem `http://localhost:<porta>`, use `curl` no terminal do Codespace ou abra a URL encaminhada na aba **Ports**.
+
+    Com o caminho A você pode ir direto para a [seção 4](#4-configuracoes-necessarias-no-kong-konnect) (configuração no Konnect); as seções 2–3 só se aplicam à instalação local.
+
+!!! note "Caminho B — Instalação local"
+    Se preferir trabalhar no seu laptop (ou não tiver acesso ao Codespaces), instale as ferramentas seguindo as seções 2 e 3. No macOS e no Linux o script `docs/00-setup-entorno/scripts/install_prereqs.sh` automatiza a maior parte.
+
 # 2. Lista de verificação mínima antes do workshop
 
 | **Categoria** | **Requisito (versão mínima)** | **Uso em exercícios** |
@@ -46,7 +67,7 @@ consumir instalando ferramentas básicas ou resolvendo falhas de rede.
 | Node.js/npm/inso | Node.js LTS (v18+) e, se aplicável, Insomnia CLI | Execute testes através do terminal com utilitários inso e de suporte. |
 | Editora | VS Code ou outro editor de texto | Edite YAML, OpenAPI, .env e scripts. |
 
-#3. Instalação por sistema operacional
+# 3. Instalação por sistema operacional
 
 ### 3.1 Windows (CMD)
 
@@ -135,7 +156,8 @@ docker compose version
 deck version
 terraform version
 ```
-## 3.3Linux
+
+## 3.3 Linux
 
 As instruções a seguir cobrem Ubuntu/Debian. Para Fedora/RHEL,
 use pacotes dnf e rpm equivalentes. No Linux você pode usar Docker
@@ -228,7 +250,8 @@ docker compose version
 deck version
 terraform version
 ```
-#4. Configurações necessárias no Kong Konnect
+
+# 4. Configurações necessárias no Kong Konnect
 
 Cada aluno deve ter acesso à organização Konnect utilizada no
 workshop e o Plano de Controle atribuído para os exercícios. O instrutor
@@ -273,7 +296,8 @@ EOF
 # Validar
 deck gateway ping
 ```
-#5. Conectividade necessária da estação de trabalho
+
+# 5. Conectividade necessária da estação de trabalho
 
 Antes do workshop, valide se a rede corporativa, VPN, proxy,
 antivírus e firewall local não bloqueiam a comunicação necessária. Sim
@@ -312,7 +336,7 @@ variáveis alternativas do instrutor.
 | 13133 | OpenTelemetry Collector | Health check (somente `127.0.0.1`). |
 | 9092 | Kafka | Corretor de testes do Event Gateway (Laboratório 12). |
 
-#6. Validação antes do workshop
+# 6. Validação antes do workshop
 
 Execute esta validação pelo menos um dia antes do workshop. Se falhar
 qualquer ponto, levante-o como uma trava operacional.
@@ -354,7 +378,8 @@ curl -i http://localhost:8000/qualquer-rota
 # HTTP/1.1 404 Not Found
 # {"message":"no Route matched with those values"}
 ```
-#7. Problemas comuns e solução rápida
+
+# 7. Problemas comuns e solução rápida
 
 | **Sintoma** | **Causa provável** | **Ação sugerida** |
 |---|---|---|

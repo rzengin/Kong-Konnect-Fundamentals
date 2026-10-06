@@ -1,5 +1,8 @@
 {
-    "name": "Kong Konnect Workshop",
+    // Entorno del asistente para GitHub Codespaces / Dev Containers (camino A recomendado).
+    // Incluye Docker (docker-in-docker), decK, kongctl, inso, Terraform, Node.js, Python y jq.
+    // Las herramientas CLI las instala el mismo script que se usa en una instalación local.
+    "name": "Kong Konnect Fundamentals",
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
         "ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -7,7 +10,31 @@
             "moby": true
         }
     },
+    // Kong DP + OIDC/OPA/Kafka + stack de observabilidad (~1.2 GB) necesitan memoria.
+    "hostRequirements": {
+        "cpus": 4,
+        "memory": "8gb"
+    },
     "postCreateCommand": "bash docs/00-setup-entorno/scripts/install_prereqs.sh",
+    "forwardPorts": [8000, 8001, 8443, 5080, 6006, 4318],
+    "portsAttributes": {
+        "8000": { "label": "Kong proxy (HTTP)", "onAutoForward": "notify" },
+        "8001": { "label": "Kong Admin API / docs locales", "onAutoForward": "silent" },
+        "8443": { "label": "Kong proxy (HTTPS)", "protocol": "https", "onAutoForward": "notify" },
+        "5080": { "label": "OpenObserve", "onAutoForward": "notify" },
+        "6006": { "label": "Arize Phoenix", "onAutoForward": "notify" },
+        "4318": { "label": "OTLP HTTP (Collector)", "onAutoForward": "silent" }
+    },
+    // KONNECT_TOKEN y DEMO_PREFIX: definirlos como secretos de Codespaces del usuario
+    // (github.com/settings/codespaces) o exportarlos en la terminal; nunca en el repo.
+    "secrets": {
+        "KONNECT_TOKEN": {
+            "description": "Personal Access Token de Konnect (kpat_...) entregado por el instructor."
+        },
+        "DEMO_PREFIX": {
+            "description": "Prefijo personal para tus recursos en Konnect (ej. tu nombre, sin espacios)."
+        }
+    },
     "customizations": {
         "vscode": {
             "extensions": [
