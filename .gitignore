@@ -30,3 +30,7 @@ kong-workshop-assets.zip
 
 # --- Imágenes Docker offline del stack de observabilidad (save-images.sh) ---
 docker-images/
+
+# --- Listas de asistentes (datos personales): nunca versionar ---
+attendees*.csv
+!attendees.example.csv
