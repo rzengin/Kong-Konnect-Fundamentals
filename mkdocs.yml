@@ -113,3 +113,10 @@ exclude_docs: |
   **/*.tar
   **/*.tar.gz
   **/docker-images/
+
+# Validación estricta de enlaces (con `mkdocs build --strict` los avisos hacen fallar el build)
+validation:
+  omitted_files: info
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
