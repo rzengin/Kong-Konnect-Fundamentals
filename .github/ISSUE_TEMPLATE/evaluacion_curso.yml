@@ -79,7 +79,67 @@ body:
 
   - type: markdown
     attributes:
-      value: "### 4. Evaluación del Instructor"
+      value: "### 4. Módulos de AI Gateway (Día 3)"
+  - type: dropdown
+    id: eval_dia3
+    attributes:
+      label: Calidad general del contenido teórico y demostraciones de AI Gateway del Día 3
+      options:
+        - "⭐⭐⭐⭐⭐ Excelente"
+        - "⭐⭐⭐⭐ Muy Bueno"
+        - "⭐⭐⭐ Bueno"
+        - "No asistí al Día 3"
+    validations:
+      required: false
+  - type: checkboxes
+    id: top_modulos_dia3
+    attributes:
+      label: ¿Cuáles módulos del Día 3 consideras que aportaron más valor?
+      options:
+        - label: "Arquitectura AI Gateway 2.x y kongctl"
+        - label: "Un endpoint, muchos LLMs"
+        - label: "Gobierno, cuotas y presupuesto"
+        - label: "Guardrails y PII"
+        - label: "Ruteo semántico, caché y compresión"
+        - label: "RAG gestionado"
+        - label: "MCP (APIs como tools)"
+        - label: "Agentes y A2A"
+        - label: "Observabilidad y FinOps de IA"
+        - label: "Novedades AI Summit 2026"
+
+  - type: markdown
+    attributes:
+      value: "### 5. Laboratorios de AI Gateway (Día 4)"
+  - type: dropdown
+    id: eval_dia4
+    attributes:
+      label: Calidad general de los laboratorios de AI Gateway del Día 4
+      options:
+        - "⭐⭐⭐⭐⭐ Excelente"
+        - "⭐⭐⭐⭐ Muy Bueno"
+        - "⭐⭐⭐ Bueno"
+        - "No asistí al Día 4"
+    validations:
+      required: false
+  - type: checkboxes
+    id: top_labs_dia4
+    attributes:
+      label: ¿Cuáles laboratorios del Día 4 disfrutaste o te sirvieron más?
+      options:
+        - label: "Setup del AI Gateway"
+        - label: "Multi-LLM y Failover"
+        - label: "Gobierno y Cuotas"
+        - label: "Guardrails"
+        - label: "Semántica y Caché"
+        - label: "RAG"
+        - label: "MCP"
+        - label: "A2A"
+        - label: "Observabilidad (OpenObserve & Phoenix)"
+        - label: "Desafío: Asistente de Crédito"
+
+  - type: markdown
+    attributes:
+      value: "### 6. Evaluación del Instructor"
   - type: dropdown
     id: inst_claridad
     attributes:
@@ -123,7 +183,7 @@ body:
 
   - type: markdown
     attributes:
-      value: "### 5. Comentarios Finales"
+      value: "### 7. Comentarios Finales"
   - type: textarea
     id: feedback_general
     attributes:

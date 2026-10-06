@@ -158,7 +158,63 @@ Your feedback is essential to help us improve. Please take a moment to complete 
     </div>
   </div>
 
-  <h3>5. Instructor Evaluation</h3>
+  <h3>5. AI Gateway Modules (Day 3)</h3>
+  <div class="form-group">
+    <label>Overall quality of the Day 3 AI Gateway theory content and demos</label>
+    <select name="eval_dia3_general">
+      <option value="" disabled selected>Select an option...</option>
+      <option value="Excellent">Excellent</option>
+      <option value="Good">Good</option>
+      <option value="Fair">Fair</option>
+      <option value="Poor">Poor</option>
+      <option value="No opinion">No opinion / Not applicable</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Which Day 3 modules do you think provided the most value?</label>
+    <div class="checkbox-group">
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="AI Gateway 2.x Architecture and kongctl"> AI Gateway 2.x Architecture and kongctl</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="One endpoint, many LLMs"> One endpoint, many LLMs</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="Governance, quotas and budget"> Governance, quotas and budget</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="Guardrails and PII"> Guardrails and PII</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="Semantic routing, caching and compression"> Semantic routing, caching and compression</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="Managed RAG"> Managed RAG</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="MCP (APIs as tools)"> MCP (APIs as tools)</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="Agents and A2A"> Agents and A2A</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="AI Observability and FinOps"> AI Observability and FinOps</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia3_modulos[]" value="AI Summit 2026 Announcements"> AI Summit 2026 Announcements</label>
+    </div>
+  </div>
+
+  <h3>6. AI Gateway Labs (Day 4)</h3>
+  <div class="form-group">
+    <label>Overall quality of the Day 4 AI Gateway labs</label>
+    <select name="eval_dia4_general">
+      <option value="" disabled selected>Select an option...</option>
+      <option value="Excellent">Excellent</option>
+      <option value="Good">Good</option>
+      <option value="Fair">Fair</option>
+      <option value="Poor">Poor</option>
+      <option value="No opinion">No opinion / Not applicable</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Which Day 4 labs did you enjoy or find most useful?</label>
+    <div class="checkbox-group">
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="AI Gateway Setup"> AI Gateway Setup</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="Multi-LLM and Failover"> Multi-LLM and Failover</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="Governance and Quotas"> Governance and Quotas</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="Guardrails"> Guardrails</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="Semantics and Caching"> Semantics and Caching</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="RAG"> RAG</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="MCP"> MCP</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="A2A"> A2A</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="Observability (OpenObserve & Phoenix)"> Observability (OpenObserve & Phoenix)</label>
+      <label class="checkbox-label"><input type="checkbox" name="dia4_labs[]" value="Challenge: Governed Credit Assistant"> Challenge: Governed Credit Assistant</label>
+    </div>
+  </div>
+
+  <h3>7. Instructor Evaluation</h3>
   <div class="form-group">
     <label>Clarity in presentation and ease of explaining complex concepts *</label>
     <select name="inst_claridad" required>
@@ -204,7 +260,7 @@ Your feedback is essential to help us improve. Please take a moment to complete 
     </select>
   </div>
 
-  <h3>6. Final Comments</h3>
+  <h3>8. Final Comments</h3>
   <div class="form-group">
     <label>What could we improve for the next edition? (Optional)</label>
     <textarea name="comentarios_finales" rows="4" placeholder="Write any suggestions here..."></textarea>
