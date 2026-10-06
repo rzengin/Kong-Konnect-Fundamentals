@@ -1,0 +1,3718 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/pt/dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins/">
+      
+      
+        <link rel="prev" href="../../01-kong-konnect-gateway/Guia_01_Konnect_Basico/">
+      
+      
+        <link rel="next" href="../../03-developer-portal/Guia_03_Developer_Portal/">
+      
+      
+        
+          <link rel="alternate" href="../../../../dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins/" hreflang="es">
+        
+          <link rel="alternate" href="./" hreflang="pt">
+        
+          <link rel="alternate" href="../../../../en/dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>DEV (120 min) Kong Plugins - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#modulo-02-plugins-kong-edicao-avancada" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DEV (120 min) Kong Plugins
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../../dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins/" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../../en/dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 1 - Teórico (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 1 - Teórico (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#flowchart-td-classdef-scope-fillf8fafcstroke64748bstroke-width2pxcolor0f172arx5ry5-classdef-highlight-fillccfbf1stroke0d9488stroke-width2pxcolor115e59rx5ry5-gglobal-scopebraplica-a-todo-el-traficoscope-sservice-scopebraplica-a-un-backend-especificoscope-rroute-scopebraplica-a-un-endpoint-especificoscope-cconsumer-scopebraplica-a-un-usuario-especificohighlight-g-s-s-r-r-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        flowchart TD classDef scope fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:5,ry:5; classDef highlight fill:#ccfbf1,stroke:#0d9488,stroke-width:2px,color:#115e59,rx:5,ry:5; G["Global Scope&lt;br/&gt;(Aplica a todo el tráfico)"]:::scope S["Service Scope&lt;br/&gt;(Aplica a un Backend específico)"]:::scope R["Route Scope&lt;br/&gt;(Aplica a un Endpoint específico)"]:::scope C["Consumer Scope&lt;br/&gt;(Aplica a un Usuario específico)"]:::highlight G --&gt; S S --&gt; R R --&gt; C
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introducao-teorica-plugins-e-capacidades-avancadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introdução Teórica: Plugins e Capacidades Avançadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequencia-de-demonstracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequência de Demonstração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-1-preparacao-estado-base-do-modulo-002-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 1 Preparação: estado base do Módulo 002 (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interoperabilidade-da-demonstracao-2-cors-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interoperabilidade da demonstração 2: CORS (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-3-seguranca-autenticacao-com-jwt-15-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 3 Segurança: Autenticação com JWT (15 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-4-protection-limite-de-tamanho-da-solicitacao-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 4 Protection: Limite de tamanho da solicitação (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desempenho-da-demonstracao-5-cache-no-gateway-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desempenho da Demonstração 5: Cache no Gateway (10 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-6-governanca-validacao-do-esquema-json-15-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 6 Governança: validação do esquema JSON (15 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-7-operacoes-modo-de-manutencao-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 7 Operações: modo de manutenção (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstracao-8-seguranca-deteccao-de-bot-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 8 Segurança: Detecção de Bot (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-9-roteamento-inteligente-por-valores-de-cabecalhos-15-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 9 Roteamento inteligente: por valores de cabeçalhos (15 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-10-roteamento-inteligente-por-conteudo-do-corpo-20-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 10 Roteamento inteligente: por conteúdo do corpo (20 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-11-personalizacao-erros-corporativos-padronizados-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 11 Personalização: Erros Corporativos Padronizados (10 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstracao-12-observabilidade-e-revisao-consolidadas-no-konnect-analytics-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 12: Observabilidade e revisão consolidadas no Konnect Analytics (10 min)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Demonstração 12: Observabilidade e revisão consolidadas no Konnect Analytics (10 min)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passo-a-passo-no-konnect-analytics-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo a passo no Konnect Analytics Explorer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-dos-plug-ins-do-modulo-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo dos plug-ins do módulo 002
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Observabilidade Avançada (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Integração ITSM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Gerenciamento de Segredos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Segurança OWASP WAF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 2 - Prático (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 2 - Prático (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Inicial
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup Inicial
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 3 - AI Gateway (Teoria e Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 3 - AI Gateway (Teoria e Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 00 Arquitetura AI Gateway 2.x e kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 01 Um endpoint, muitos LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 02 Governança, cotas e orçamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 03 Guardrails e PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) IA 04 Roteamento semântico, cache e compressão
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 05 RAG gerenciado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) IA 06 MCP (APIs como tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 07 Agentes e A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) IA 08 Observabilidade e FinOps de IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) IA 09 Novidades AI Summit 2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA Setup do AI Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Multi-LLM e Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) Lab IA Governança e Cotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) Lab IA Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Semântica e Cache
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab IA RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) Lab IA A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Lab IA Observabilidade (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Desafio IA Assistente de Crédito
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avaliação do Curso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#flowchart-td-classdef-scope-fillf8fafcstroke64748bstroke-width2pxcolor0f172arx5ry5-classdef-highlight-fillccfbf1stroke0d9488stroke-width2pxcolor115e59rx5ry5-gglobal-scopebraplica-a-todo-el-traficoscope-sservice-scopebraplica-a-un-backend-especificoscope-rroute-scopebraplica-a-un-endpoint-especificoscope-cconsumer-scopebraplica-a-un-usuario-especificohighlight-g-s-s-r-r-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        flowchart TD classDef scope fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:5,ry:5; classDef highlight fill:#ccfbf1,stroke:#0d9488,stroke-width:2px,color:#115e59,rx:5,ry:5; G["Global Scope&lt;br/&gt;(Aplica a todo el tráfico)"]:::scope S["Service Scope&lt;br/&gt;(Aplica a un Backend específico)"]:::scope R["Route Scope&lt;br/&gt;(Aplica a un Endpoint específico)"]:::scope C["Consumer Scope&lt;br/&gt;(Aplica a un Usuario específico)"]:::highlight G --&gt; S S --&gt; R R --&gt; C
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introducao-teorica-plugins-e-capacidades-avancadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introdução Teórica: Plugins e Capacidades Avançadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequencia-de-demonstracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequência de Demonstração
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-1-preparacao-estado-base-do-modulo-002-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 1 Preparação: estado base do Módulo 002 (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interoperabilidade-da-demonstracao-2-cors-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interoperabilidade da demonstração 2: CORS (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-3-seguranca-autenticacao-com-jwt-15-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 3 Segurança: Autenticação com JWT (15 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-4-protection-limite-de-tamanho-da-solicitacao-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 4 Protection: Limite de tamanho da solicitação (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desempenho-da-demonstracao-5-cache-no-gateway-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desempenho da Demonstração 5: Cache no Gateway (10 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-6-governanca-validacao-do-esquema-json-15-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 6 Governança: validação do esquema JSON (15 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-7-operacoes-modo-de-manutencao-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 7 Operações: modo de manutenção (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstracao-8-seguranca-deteccao-de-bot-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 8 Segurança: Detecção de Bot (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-9-roteamento-inteligente-por-valores-de-cabecalhos-15-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 9 Roteamento inteligente: por valores de cabeçalhos (15 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-10-roteamento-inteligente-por-conteudo-do-corpo-20-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 10 Roteamento inteligente: por conteúdo do corpo (20 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demo-11-personalizacao-erros-corporativos-padronizados-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 11 Personalização: Erros Corporativos Padronizados (10 min)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstracao-12-observabilidade-e-revisao-consolidadas-no-konnect-analytics-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 12: Observabilidade e revisão consolidadas no Konnect Analytics (10 min)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Demonstração 12: Observabilidade e revisão consolidadas no Konnect Analytics (10 min)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passo-a-passo-no-konnect-analytics-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo a passo no Konnect Analytics Explorer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-dos-plug-ins-do-modulo-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo dos plug-ins do módulo 002
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="modulo-02-plugins-kong-edicao-avancada">Módulo 02: Plugins Kong (Edição Avançada)<a class="headerlink" href="#modulo-02-plugins-kong-edicao-avancada" title="Permanent link">&para;</a></h1>
+<h2 id="flowchart-td-classdef-scope-fillf8fafcstroke64748bstroke-width2pxcolor0f172arx5ry5-classdef-highlight-fillccfbf1stroke0d9488stroke-width2pxcolor115e59rx5ry5-gglobal-scopebraplica-a-todo-el-traficoscope-sservice-scopebraplica-a-un-backend-especificoscope-rroute-scopebraplica-a-un-endpoint-especificoscope-cconsumer-scopebraplica-a-un-usuario-especificohighlight-g-s-s-r-r-c"><pre class="mermaid"><code>flowchart TD
+    classDef scope fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:5,ry:5;
+    classDef highlight fill:#ccfbf1,stroke:#0d9488,stroke-width:2px,color:#115e59,rx:5,ry:5;
+
+    G["Global Scope&lt;br/&gt;(Aplica a todo el tráfico)"]:::scope
+    S["Service Scope&lt;br/&gt;(Aplica a un Backend específico)"]:::scope
+    R["Route Scope&lt;br/&gt;(Aplica a un Endpoint específico)"]:::scope
+    C["Consumer Scope&lt;br/&gt;(Aplica a un Usuario específico)"]:::highlight
+
+    G --&gt; S
+    S --&gt; R
+    R --&gt; C</code></pre><a class="headerlink" href="#flowchart-td-classdef-scope-fillf8fafcstroke64748bstroke-width2pxcolor0f172arx5ry5-classdef-highlight-fillccfbf1stroke0d9488stroke-width2pxcolor115e59rx5ry5-gglobal-scopebraplica-a-todo-el-traficoscope-sservice-scopebraplica-a-un-backend-especificoscope-rroute-scopebraplica-a-un-endpoint-especificoscope-cconsumer-scopebraplica-a-un-usuario-especificohighlight-g-s-s-r-r-c" title="Permanent link">&para;</a></h2>
+<h2 id="introducao-teorica-plugins-e-capacidades-avancadas">Introdução Teórica: Plugins e Capacidades Avançadas<a class="headerlink" href="#introducao-teorica-plugins-e-capacidades-avancadas" title="Permanent link">&para;</a></h2>
+<p>O Kong API Gateway baseia sua extrema flexibilidade no uso de <strong>Plugins</strong>, que interceptam solicitações no ciclo de vida de solicitação/resposta para aplicar lógica de negócios, segurança, observabilidade e transformação. Ao usar Kong em modo declarativo (com <code>deck</code>), os plugins são anexados a diferentes entidades (Serviços, Rotas, Consumidores) ou Globalmente.</p>
+<p>Abaixo está uma lista dos principais plugins oficiais disponíveis no ecossistema Kong, classificados por categoria (excluindo os do AI Gateway):</p>
+<table>
+<thead>
+<tr>
+<th>Plug-ins</th>
+<th>Categoria</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Autenticação Básica</strong></td>
+<td>Autenticação</td>
+<td>Adiciona autenticação básica HTTP (nome de usuário e senha) a uma API ou serviço.</td>
+</tr>
+<tr>
+<td><strong>Autenticação HMAC</strong></td>
+<td>Autenticação</td>
+<td>Autenticação utilizando assinatura HMAC para maior segurança na transmissão.</td>
+</tr>
+<tr>
+<td><strong>JWT</strong></td>
+<td>Autenticação</td>
+<td>Valida JSON Web Tokens (JWT) usando assinaturas simétricas ou assimétricas.</td>
+</tr>
+<tr>
+<td><strong>Autenticação de chave</strong></td>
+<td>Autenticação</td>
+<td>Proteja rotas ou serviços exigindo uma chave estática nos cabeçalhos ou na cadeia de consulta.</td>
+</tr>
+<tr>
+<td><strong>Autenticação LDAP</strong></td>
+<td>Autenticação</td>
+<td>Integre o Kong a um servidor LDAP/Active Directory para validar credenciais.</td>
+</tr>
+<tr>
+<td><strong>Autenticação OAuth 2.0</strong></td>
+<td>Autenticação</td>
+<td>Implementa fluxos de autorização OAuth 2.0 (Código de Autorização, Credenciais do Cliente).</td>
+</tr>
+<tr>
+<td><strong>OpenID Connect (OIDC)</strong> (Empresa)</td>
+<td>Autenticação</td>
+<td>Delega autenticação a provedores de identidade externos (Okta, Auth0, Keycloak).</td>
+</tr>
+<tr>
+<td><strong>SAML</strong> (Empresa)</td>
+<td>Autenticação</td>
+<td>Integração nativa com provedores de identidade baseados em SAML v2.0.</td>
+</tr>
+<tr>
+<td><strong>ACME</strong></td>
+<td>Segurança</td>
+<td>Automatize a geração e renovação de certificados TLS usando Let's Encrypt.</td>
+</tr>
+<tr>
+<td><strong>Detecção de bots</strong></td>
+<td>Segurança</td>
+<td>Bloqueie ou restrinja o acesso a bots e rastreadores analisando o User-Agent.</td>
+</tr>
+<tr>
+<td><strong>CORS</strong></td>
+<td>Segurança</td>
+<td>Permite o compartilhamento de recursos de origem cruzada para aplicativos/SPAs de front-end.</td>
+</tr>
+<tr>
+<td><strong>Restrição de IP</strong></td>
+<td>Segurança</td>
+<td>Define listas brancas ou negras (lista de permissões/lista de bloqueios) de endereços IP ou blocos CIDR.</td>
+</tr>
+<tr>
+<td><strong>TLS a montante</strong></td>
+<td>Segurança</td>
+<td>Força o TLS ao se comunicar do Kong com microsserviços de back-end.</td>
+</tr>
+<tr>
+<td><strong>Cache de proxy</strong></td>
+<td>Controle de Tráfego</td>
+<td>Armazena respostas HTTP bem-sucedidas na memória para acelerar solicitações repetitivas.</td>
+</tr>
+<tr>
+<td><strong>Cache de proxy avançado</strong> (empresarial)</td>
+<td>Controle de Tráfego</td>
+<td>Suporte ao cache Redis e esquemas avançados de invalidação.</td>
+</tr>
+<tr>
+<td><strong>Limitação de taxa</strong></td>
+<td>Controle de Tráfego</td>
+<td>Limita o número de solicitações permitidas por IP ou Consumidor em um período de tempo.</td>
+</tr>
+<tr>
+<td><strong>Limitação de Taxa Avançada</strong> (Empresarial)</td>
+<td>Controle de Tráfego</td>
+<td>Limite o tráfego distribuído e sincronizado em clusters usando Redis.</td>
+</tr>
+<tr>
+<td><strong>Limite de tamanho da solicitação</strong></td>
+<td>Controle de Tráfego</td>
+<td>Bloqueia solicitações cuja carga excede um tamanho de byte configurado.</td>
+</tr>
+<tr>
+<td><strong>Limitação de taxa GraphQL avançada</strong> (Empresa)</td>
+<td>Controle de Tráfego</td>
+<td>Aplica limites de taxa analisando a complexidade das consultas GraphQL.</td>
+</tr>
+<tr>
+<td><strong>AWS Lambda</strong></td>
+<td>Sem servidor</td>
+<td>Invoca funções do AWS Lambda diretamente e faz proxy de suas respostas.</td>
+</tr>
+<tr>
+<td><strong>Funções do Azure</strong></td>
+<td>Sem servidor</td>
+<td>Invoca funções sem servidor do Microsoft Azure.</td>
+</tr>
+<tr>
+<td><strong>Pré-função / Pós-função</strong></td>
+<td>Sem servidor</td>
+<td>Executa a lógica Lua personalizada no início ou no final do ciclo de vida da solicitação.</td>
+</tr>
+<tr>
+<td><strong>Datadog</strong></td>
+<td>Análise e monitoramento</td>
+<td>Envie métricas detalhadas para o Datadog.</td>
+</tr>
+<tr>
+<td><strong>Prometeu</strong></td>
+<td>Análise e monitoramento</td>
+<td>Expõe as métricas operacionais do Kong a serem eliminadas pelo Prometheus.</td>
+</tr>
+<tr>
+<td><strong>Zipkin/OpenTelemetria</strong></td>
+<td>Análise e monitoramento</td>
+<td>Integra rastreamento distribuído (rastreamento) para representar graficamente os tempos de latência.</td>
+</tr>
+<tr>
+<td><strong>ID de correlação</strong></td>
+<td>Transformações</td>
+<td>Injete ou encaminhe um UUID exclusivo por solicitação para correlacionar logs entre microsserviços.</td>
+</tr>
+<tr>
+<td><strong>Sair do Transformador</strong> (Empresarial)</td>
+<td>Transformações</td>
+<td>Modifica e padroniza as mensagens de erro geradas pelo Kong.</td>
+</tr>
+<tr>
+<td><strong>Solicitar transformador</strong></td>
+<td>Transformações</td>
+<td>Adicione, substitua ou remova cabeçalhos, parâmetros de consulta ou campos de corpo na solicitação.</td>
+</tr>
+<tr>
+<td><strong>Transformador de resposta</strong></td>
+<td>Transformações</td>
+<td>Adicione, substitua ou remova cabeçalhos ou campos de corpo na resposta.</td>
+</tr>
+<tr>
+<td><strong>Route Transformer Adv.</strong> (Empresa)</td>
+<td>Transformações</td>
+<td>Permite modificar a rota de destino do voo avaliando variáveis.</td>
+</tr>
+<tr>
+<td><strong>Log HTTP/Log TCP/Log UDP</strong></td>
+<td>Registro</td>
+<td>Envie logs de acesso para servidores remotos via HTTP, TCP ou UDP.</td>
+</tr>
+<tr>
+<td><strong>Registro Kafka</strong></td>
+<td>Registro</td>
+<td>Envie logs transacionais diretamente para um tópico do Apache Kafka.</td>
+</tr>
+<tr>
+<td><strong>Registro de arquivo</strong></td>
+<td>Registro</td>
+<td>Grava logs de transações em um arquivo físico no disco do servidor.</td>
+</tr>
+<tr>
+<td><strong>Syslog/EstatísticasD</strong></td>
+<td>Registro</td>
+<td>Integração com daemons Syslog locais e coleta de métricas StatsD.</td>
+</tr>
+</tbody>
+</table>
+<p><strong><a href="https://docs.konghq.com/hub/">Navegue por todos os plug-ins no Kong Plugin Hub</a></strong></p>
+<hr />
+<h2 id="sequencia-de-demonstracao">Sequência de Demonstração<a class="headerlink" href="#sequencia-de-demonstracao" title="Permanent link">&para;</a></h2>
+<p>Este módulo é a <strong>continuação direta dos Módulos 000 e 001</strong>. Reutiliza toda a infraestrutura já implantada para aplicar as políticas teóricas descritas.</p>
+<pre class="mermaid"><code>mindmap
+  root((Kong Plugins))
+    Seguridad
+      (Demostración 2 CORS)
+      (Demostración 3 JWT Auth)
+      (Demostración 8 Bot Detection)
+      (Demostración 6 Request Validator)
+    Control de Tráfico
+      (Demostración 4 Size Limiting)
+    Rendimiento y Operaciones
+      (Demostración 5 Proxy Cache)
+      (Demostración 7 Mantenimiento)
+    Ruteo Avanzado y Transformación
+      (Demostración 9 Ruteo por Headers)
+      (Demostración 10 Ruteo por Body)
+      (Demostración 11 Exit Transformer)
+    Observabilidad
+      (Demostración 12 Analytics)</code></pre>
+<blockquote>
+<p><strong>Importante:</strong> Todos os plugins usados ​​neste módulo estão incluídos no Kong Gateway Enterprise (disponível através do Konnect). Nenhum componente externo adicional é necessário para instalação ou configuração.</p>
+</blockquote>
+<hr />
+<h2 id="pre-requisitos">Pré-requisitos<a class="headerlink" href="#pre-requisitos" title="Permanent link">&para;</a></h2>
+<p>Este módulo requer a conclusão bem-sucedida dos <strong>Módulos 000</strong> (Preparação Ambiental) e <strong>001</strong> (Segurança e Controle de Tráfego). Verifique se você tem:</p>
+<ol>
+<li><strong>Plano de Controle</strong> criado no Konnect — Módulo 000.</li>
+<li><strong>Plano de Dados</strong> conectado e no estado "In Sync" — Módulo 000.</li>
+<li><strong>Simulação de back-end</strong> (MockAPI) em execução em <code>http://localhost:9081</code> — Módulo 000.</li>
+<li><strong>Variáveis de ambiente</strong> configuradas (<code>KONNECT_TOKEN</code>, <code>KONNECT_CONTROL_PLANE_NAME</code>, etc.).</li>
+</ol>
+<hr />
+<h2 id="demo-1-preparacao-estado-base-do-modulo-002-5-min">Demo 1 Preparação: estado base do Módulo 002 (5 min)<a class="headerlink" href="#demo-1-preparacao-estado-base-do-modulo-002-5-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> Limpar a configuração externa do plano de controle e sincronizar um estado base limpo com as políticas do Módulo 001 como um ponto de partida unificado.</p>
+<ol>
+<li>Abra seu terminal e navegue até o diretório <code>module-002</code>:    </li>
+</ol>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>    cd workshop-assets/dia-1/02-kong-plugins
+</span></code></pre></div>
+2. <strong>Limpando o Plano de Controle:</strong> Antes de começar, excluímos toda a configuração existente do Plano de Controle Externo para iniciar a partir de um estado limpo. Isso é especialmente importante se você experimentou plug-ins ou configurações adicionais durante o Módulo 001.    </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>    deck gateway reset --konnect-token "$KONNECT_TOKEN" --konnect-control-plane-name "$KONNECT_CONTROL_PLANE_NAME" --force
+</span></code></pre></div>
+<blockquote>
+<p><strong>O que <code>deck gateway reset</code> faz?</strong> Ele remove <strong>todos</strong> serviços, rotas, plugins e consumidores do Control Plane, deixando-o completamente vazio. O sinalizador <code>--force</code> impede a confirmação interativa.</p>
+</blockquote>
+<ol>
+<li>Usaremos o arquivo <code>archivos-deck/00-demo1-estado-base-002.yaml</code>. Este arquivo contém o estado final do Módulo 001 (serviços, consumidores, plugins de segurança e transformação) como ponto de partida:    </li>
+</ol>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="w">    </span><span class="c1"># Extracto conceptual (configuración omitida por brevedad):</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">       </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://httpbin-backend:9081/anything/mock</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">       </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">key-auth</span><span class="w">    </span><span class="c1"># Autenticación</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">acl</span><span class="w">          </span><span class="c1"># Autorización</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">       </span><span class="nt">routes</span><span class="p">:</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock-route</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">           </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">             </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">response-transformer</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="nt">consumers</span><span class="p">:</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">App-External</span><span class="w">   </span><span class="c1"># rate-limiting: 20/min</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">App-Internal</span><span class="w">   </span><span class="c1"># rate-limiting: 3/min</span>
+</span></code></pre></div>
+4. Sincronize o estado base com o Plano de Controle Externo:    </p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>    deck gateway sync archivos-deck/00-demo1-estado-base-002.yaml \
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>        --konnect-token \
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+6. <strong>Validação:</strong> Execute uma solicitação para confirmar se tudo funciona. Observe que o arquivo criou o consumidor <code>App-External</code> com a chave <code>external-secret-123</code>:    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>200 OK</code> com cabeçalho <code>x-kong: true</code>.</p>
+<hr />
+<h2 id="interoperabilidade-da-demonstracao-2-cors-5-min">Interoperabilidade da demonstração 2: CORS (5 min)<a class="headerlink" href="#interoperabilidade-da-demonstracao-2-cors-5-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> permitir o acesso entre origens para que os aplicativos de front-end (SPAs) possam consumir a API de voos.</p>
+<p><pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant Browser as Browser (SPA)
+    participant K as Kong (CORS Plugin)
+    participant B as Backend
+    Browser-&gt;&gt;K: OPTIONS /mock (Preflight)
+    K-&gt;&gt;K: Verifica origen permitido
+    K--&gt;&gt;Browser: 200 OK + Access-Control-Allow-Origin
+    Browser-&gt;&gt;K: GET /mock
+    K-&gt;&gt;B: Reenvía GET
+    B--&gt;&gt;K: 200 OK
+    K--&gt;&gt;Browser: 200 OK + CORS Headers</code></pre>
+1. Usaremos o arquivo <code>archivos-deck/01-demo2-cors.yaml</code>. Você pode inspecionar como o plugin <code>cors</code> foi adicionado ao serviço <code>mock</code>:    </p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">    </span><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">       </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cors</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">           </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">             </span><span class="nt">origins</span><span class="p">:</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"https://mock.example.com"</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"http://localhost:3000"</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">             </span><span class="nt">methods</span><span class="p">:</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GET</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POST</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OPTIONS</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">             </span><span class="nt">headers</span><span class="p">:</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Authorization</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Content-Type</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apikey</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">             </span><span class="nt">max_age</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">             </span><span class="nt">credentials</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div>
+2. Sincronize as alterações:    </p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>    deck gateway sync archivos-deck/01-demo2-cors.yaml \
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>        --konnect-token \
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. Teste a solicitação de simulação do CORS:    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/mock<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">     </span>Origin:<span class="s2">"http://localhost:3000"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">     </span>Access-Control-Request-Method:<span class="s2">"GET"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">     </span>Access-Control-Request-Headers:<span class="s2">"apikey"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>OPTIONS<span class="w"> </span>https://localhost:8443/mock<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">"Origin: http://localhost:3000"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">"Access-Control-Request-Method: GET"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">"Access-Control-Request-Headers: apikey"</span>
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>200 OK</code> com cabeçalhos:</p>
+<div class="language-text highlight"><pre><span></span><code>- `Access-Control-Allow-Origin: http://localhost:3000`
+- `Métodos de controle de acesso-permissão: GET, POST, OPTIONS`
+- `Access-Control-Allow-Credenciais: verdadeiro`
+</code></pre></div>
+<ol>
+<li>Tente com uma origem NÃO permitida:    </li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/mock<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">     </span>Origin:<span class="s2">"https://malicious-site.com"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">     </span>Access-Control-Request-Method:<span class="s2">"GET"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>OPTIONS<span class="w"> </span>https://localhost:8443/mock<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">"Origin: https://malicious-site.com"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">     </span>-H<span class="w"> </span><span class="s2">"Access-Control-Request-Method: GET"</span>
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> Você receberá um <code>HTTP/1.1 200 OK</code>, mas a resposta <strong>NÃO</strong> incluirá o cabeçalho <code>Access-Control-Allow-Origin</code>. </p>
+<div class="language-text highlight"><pre><span></span><code>&gt; **💡 Por que 200 OK e não um erro?** No padrão CORS, o Gateway responde ao preflight `OPTIONS` informando as regras de acesso (neste caso, omitindo o cabeçalho de origem permitido). É o **navegador** que interpreta essa omissão como uma rejeição e é responsável por lançar o erro de segurança e bloquear a solicitação `GET`/`POST` real.
+</code></pre></div>
+<hr />
+<h2 id="demo-3-seguranca-autenticacao-com-jwt-15-min">Demo 3 Segurança: Autenticação com JWT (15 min)<a class="headerlink" href="#demo-3-seguranca-autenticacao-com-jwt-15-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> implementar a autenticação baseada em JSON Web Tokens (JWT) como uma alternativa moderna às API Keys, demonstrando o contraste entre os dois mecanismos.</p>
+<p><pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant C as Cliente
+    participant K as Kong (JWT Plugin)
+    participant B as Backend
+    C-&gt;&gt;K: GET /echo (sin token)
+    K--&gt;&gt;C: 401 Unauthorized
+    C-&gt;&gt;K: GET /echo + Authorization: Bearer JWT_TOKEN
+    K-&gt;&gt;K: Decodifica JWT
+    K-&gt;&gt;K: Verifica firma HS256
+    K-&gt;&gt;K: Valida expiración (exp)
+    K-&gt;&gt;B: Reenvía petición
+    B--&gt;&gt;C: 200 OK</code></pre>
+1. Usaremos o arquivo <code>archivos-deck/02-demo3-jwt.yaml</code>. Você pode inspecionar as principais mudanças:    </p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="w">    </span><span class="c1"># Nuevo servicio de echo con autenticación JWT</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-external</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">       </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://httpbin-backend:9081/anything/echo</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">       </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jwt</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">           </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">             </span><span class="nt">claims_to_verify</span><span class="p">:</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">exp</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">       </span><span class="nt">routes</span><span class="p">:</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-get-route</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">           </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/echo</span><span class="p p-Indicator">]</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">           </span><span class="nt">methods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">GET</span><span class="p p-Indicator">]</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-post-route</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">           </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/echo</span><span class="p p-Indicator">]</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="w">           </span><span class="nt">methods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">POST</span><span class="p p-Indicator">]</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="w">    </span><span class="c1"># Nuevo consumer con credenciales JWT (HS256)</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">    </span><span class="nt">consumers</span><span class="p">:</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">App-JWT</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">       </span><span class="nt">jwt_secrets</span><span class="p">:</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">algorithm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HS256</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="w">           </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">"mock-jwt-issuer"</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="w">           </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="s">"my-super-secret-key-for-workshop"</span>
+</span></code></pre></div>
+<blockquote>
+<p><strong>Nota:</strong> Usamos HS256 (chave simétrica) para simplificar a geração de tokens no workshop. Na produção, o RS256 (chave assimétrica) é recomendado para maior segurança.</p>
+</blockquote>
+<ol>
+<li>Sincronize as alterações:    </li>
+</ol>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>    deck gateway sync archivos-deck/02-demo3-jwt.yaml \
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>        --konnect-token \
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. <strong>Gere um token JWT</strong> usando o script fornecido:    </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>    export JWT_TOKEN=$(./scripts/generate_jwt.sh | grep -A1 "Token:" | tail -1)
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    echo $JWT_TOKEN
+</span></code></pre></div>
+<blockquote>
+<p><strong>💡 De onde vem esse token?</strong> Neste exercício, <strong>não</strong> solicitamos o token a nenhum provedor de identidade externo (como Okta ou Keycloak). O script <code>generate_jwt.sh</code> cria o token localmente (offline) usando ferramentas básicas como <code>openssl</code>. 
+    &gt; Basta construir um Payload e assiná-lo usando o segredo <code>my-super-secret-key-for-workshop</code> com o algoritmo simétrico HS256. Como o Kong possui exatamente a mesma chave configurada no arquivo do deck, ele é capaz de verificar a assinatura e autorizar a solicitação. Veremos uma integração “real” com um Identity Server no Módulo 07 (mTLS + OIDC).
+    &gt; <em>(Opcional)</em> Se você estiver usando o console clássico do Windows (CMD) onde <code>export</code> não funciona, você precisará copiar o token gerado e configurá-lo manualmente com <code>set JWT_TOKEN=&lt;paste_token_here&gt;</code>. Para Mac, Linux ou GitBash, o comando acima já fez isso por você.</p>
+</blockquote>
+<ol>
+<li>
+<p>Teste sem token e com token:</p>
+<p>Sem token:    </p>
+</li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/echo
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/echo
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>HTTP/1.1 401 Não autorizado</code></p>
+<div class="language-text highlight"><pre><span></span><code>Com token válido:
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer"</span><span class="w"> </span>https://localhost:8443/echo<span class="w"> </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span>https://localhost:8443/echo
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>HTTP/1.1 200 OK</code></p>
+<ol>
+<li>
+<p><strong>Contraste pedagógico:</strong> Observe que agora temos dois mecanismos de autenticação coexistindo no mesmo gateway:</p>
+<ul>
+<li><code>mock</code> → protegido com <strong>Key Auth</strong> (chave de API estática no cabeçalho <code>apikey</code>)</li>
+<li><code>echo</code> → protegido com <strong>JWT</strong> (token assinado com expiração no cabeçalho <code>Authorization</code>)</li>
+</ul>
+<blockquote>
+<p><strong>💡 Dica de observabilidade:</strong> Se você entrar no <strong>console web Konnect &gt; Analytics &gt; Solicitações de API</strong>, você poderá ver como o Kong registra esses acessos. Usando autenticação (JWT ou Key Auth), Kong identifica o "Consumidor". Nos gráficos você pode agrupar e filtrar o tráfego para ver exatamente quantas solicitações <code>App-JWT</code> foram feitas versus <code>App-External</code>.</p>
+</blockquote>
+</li>
+</ol>
+<hr />
+<h2 id="demo-4-protection-limite-de-tamanho-da-solicitacao-5-min">Demo 4 Protection: Limite de tamanho da solicitação (5 min)<a class="headerlink" href="#demo-4-protection-limite-de-tamanho-da-solicitacao-5-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> proteger o back-end contra solicitações com cargas excessivamente grandes (prevenção DoS de carga útil).</p>
+<p><pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant C as Cliente
+    participant K as Kong (Size Limiting)
+    participant B as Backend
+    C-&gt;&gt;K: POST /echo (body: 500 bytes)
+    K-&gt;&gt;K: Tamano OK, menor a 1MB
+    K-&gt;&gt;B: Reenvía
+    B--&gt;&gt;C: 200 OK
+    C-&gt;&gt;K: POST /echo (body: 2MB)
+    K-&gt;&gt;K: Tamaño excede límite
+    K--&gt;&gt;C: 413 Request Entity Too Large</code></pre>
+1. Usaremos o arquivo <code>files-deck/03-demo4-request-size-limiting.yaml</code>. Você pode inspecionar como o plugin foi adicionado:    </p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="w">    </span><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-external</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">       </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">request-size-limiting</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">           </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">             </span><span class="nt">allowed_payload_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">             </span><span class="nt">size_unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">megabytes</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">             </span><span class="nt">require_content_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span></code></pre></div>
+2. Sincronize as alterações:    </p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>    deck gateway sync archivos-deck/03-demo4-request-size-limiting.yaml \
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>        --konnect-token \
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. Teste com um payload dentro do limite e outro excessivo:</p>
+<div class="language-text highlight"><pre><span></span><code>Carga útil pequena → 200 OK:
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://localhost:8443/echo<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">'{"test": "pequeno"}'</span>
+</span></code></pre></div>
+Carga útil excessiva (2 MB) → 413:</p>
+<div class="language-text highlight"><pre><span></span><code>1. Gere arquivo temporário com a carga útil:
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="w">    </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">"print('{\"data\":\"' + 'X'*2000000 + '\"}')"</span><span class="w"> </span>&gt;<span class="w"> </span>payload.json
+</span></code></pre></div>
+2. Execute a solicitação de leitura do arquivo (observe o @):    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/echo<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">        </span>Authorization:<span class="s2">"Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">        </span>@payload.json
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">        </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">        </span>-d<span class="w"> </span><span class="s2">"@payload.json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">        </span>https://localhost:8443/echo
+</span></code></pre></div>
+<em>(Para gerar a grande carga no Windows, use o PowerShell para criar o arquivo e depois curl):</em>    </p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>    powershell -Command "$body = '{\"data\":\"' + ('X' * 2000000) + '\"}'; Set-Content -Path payload.json -Value $body; curl.exe -i -X POST http://localhost:8000/echo -H 'Authorization: Bearer %JWT_TOKEN%' -H 'Content-Type: application/json' -d '@payload.json'"
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>200 OK</code> para o payload pequeno e <code>413 Request Entity Too Large</code> para o excessivo.</p>
+<hr />
+<h2 id="desempenho-da-demonstracao-5-cache-no-gateway-10-min">Desempenho da Demonstração 5: Cache no Gateway (10 min)<a class="headerlink" href="#desempenho-da-demonstracao-5-cache-no-gateway-10-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> reduzir a latência e a carga no back-end implementando o armazenamento em cache no nível do API Gateway, sem modificar o back-end.</p>
+<p><pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant C as Cliente
+    participant K as Kong (Proxy Cache)
+    participant B as Backend
+    C-&gt;&gt;K: GET /mock (1ra vez)
+    K-&gt;&gt;K: Cache MISS
+    K-&gt;&gt;B: Reenvía al backend
+    B--&gt;&gt;K: 200 OK + datos
+    K-&gt;&gt;K: Almacena en memoria (TTL: 30s)
+    K--&gt;&gt;C: 200 OK + X-Cache-Status: Miss
+    C-&gt;&gt;K: GET /mock, 2da vez, dentro de 30s
+    K-&gt;&gt;K: Cache HIT
+    K--&gt;&gt;C: 200 OK + X-Cache-Status: Hit</code></pre>
+1. Usaremos o arquivo <code>files-deck/04-demo5-proxy-cache.yaml</code>. Você pode inspecionar como o plugin <code>proxy-cache</code> foi adicionado ao caminho simulado:    </p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="w">    </span><span class="nt">routes</span><span class="p">:</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock-route</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">       </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proxy-cache</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">           </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">             </span><span class="nt">strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">memory</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">             </span><span class="nt">content_type</span><span class="p">:</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"application/json"</span>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"text/plain;</span><span class="nv"> </span><span class="s">charset=utf-8"</span>
+</span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="w">             </span><span class="nt">cache_ttl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+</span><span id="__span-26-11"><a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="w">             </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-26-12"><a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a><span class="w">             </span><span class="nt">response_code</span><span class="p">:</span>
+</span><span id="__span-26-13"><a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
+</span><span id="__span-26-14"><a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a><span class="w">             </span><span class="nt">request_method</span><span class="p">:</span>
+</span><span id="__span-26-15"><a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GET</span>
+</span></code></pre></div>
+2. Sincronize as alterações:    </p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>    deck gateway sync archivos-deck/04-demo5-proxy-cache.yaml \
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>        --konnect-token \
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. Faça duas solicitações consecutivas e observe os cabeçalhos do cache:</p>
+<div class="language-text highlight"><pre><span></span><code>Primeiro pedido → SENHORITA:
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>HTTP/1.1 200 OK</code> com o cabeçalho <code>X-Cache-Status: Miss</code> (o gateway foi para o backend).</p>
+<div class="language-text highlight"><pre><span></span><code>Segunda solicitação (dentro de 30s) → HIT:
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>HTTP/1.1 200 OK</code> com o cabeçalho <code>X-Cache-Status: Hit</code> (o gateway atendeu a resposta do cache, ignorando o backend).</p>
+<ol>
+<li>
+<p><strong>Observação:</strong> Verifique o arquivo de log para comparar a latência de uma solicitação <code>Miss</code> versus uma solicitação <code>Hit</code>. Observando os tempos relatados, você verá que em um <code>Hit</code> o valor diminui drasticamente porque a solicitação é armazenada em cache no gateway sem chegar ao backend.</p>
+</li>
+<li>
+<p>Aguarde 30 segundos e repita a solicitação. Você verá que ele retorna para <code>Miss</code> porque o TTL expirou.</p>
+</li>
+</ol>
+<hr />
+<h2 id="demo-6-governanca-validacao-do-esquema-json-15-min">Demo 6 Governança: validação do esquema JSON (15 min)<a class="headerlink" href="#demo-6-governanca-validacao-do-esquema-json-15-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> garantir que as solicitações POST para o serviço de eco estejam em conformidade com um contrato de dados (esquema JSON) antes de chegar ao back-end.</p>
+<p><pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant C as Cliente
+    participant K as Kong (Request Validator)
+    participant B as Backend
+    C-&gt;&gt;K: POST /echo (JSON válido)
+    K-&gt;&gt;K: Valida contra JSON Schema
+    K-&gt;&gt;K: OK - user_name, transaction_id, tier
+    K-&gt;&gt;B: Reenvía
+    B--&gt;&gt;C: 200 OK
+    C-&gt;&gt;K: POST /echo (JSON inválido)
+    K-&gt;&gt;K: Valida contra JSON Schema
+    K-&gt;&gt;K: ERROR - Falta campo requerido
+    K--&gt;&gt;C: 400 Bad Request + detalle</code></pre>
+1. Usaremos o arquivo <code>files-deck/05-demo6-request-validator.yaml</code>. Você pode inspecionar o esquema de validação configurado na rota POST do echo:    </p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="w">    </span><span class="nt">routes</span><span class="p">:</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-post-route</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">       </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/echo</span><span class="p p-Indicator">]</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">       </span><span class="nt">methods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">POST</span><span class="p p-Indicator">]</span>
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="w">       </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">request-validator</span>
+</span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="w">           </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-32-8"><a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="w">             </span><span class="nt">body_schema</span><span class="p">:</span><span class="w"> </span><span class="s">'[{</span>
+</span><span id="__span-32-9"><a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="w">               </span><span class="s">"user_name":</span><span class="nv"> </span><span class="s">{"type":"string","required":true},</span>
+</span><span id="__span-32-10"><a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="w">               </span><span class="s">"transaction_id":</span><span class="nv">      </span><span class="s">{"type":"string","required":true},</span>
+</span><span id="__span-32-11"><a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="w">               </span><span class="s">"tier":</span><span class="nv">   </span><span class="s">{"type":"string","required":true,</span>
+</span><span id="__span-32-12"><a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="w">                                  </span><span class="s">"one_of":["standard","premium","vip"]},</span>
+</span><span id="__span-32-13"><a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a><span class="w">               </span><span class="s">"preference":{"type":"string",</span>
+</span><span id="__span-32-14"><a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="w">                                  </span><span class="s">"one_of":["window","aisle","middle"]}</span>
+</span><span id="__span-32-15"><a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a><span class="w">             </span><span class="s">}]'</span>
+</span><span id="__span-32-16"><a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="w">             </span><span class="nt">verbose_response</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-32-17"><a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a><span class="w">             </span><span class="nt">allowed_content_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"application/json"</span><span class="p p-Indicator">]</span>
+</span></code></pre></div>
+2. Sincronize as alterações:    </p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>    deck gateway sync archivos-deck/05-demo6-request-validator.yaml \
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>        --konnect-token \
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. Teste com um JSON válido:    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/echo<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">        </span>Authorization:<span class="s2">"Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">        </span><span class="nv">user_name</span><span class="o">=</span><span class="s2">"Juan Pérez"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">        </span><span class="nv">transaction_id</span><span class="o">=</span><span class="s2">"TX-101"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">        </span><span class="nv">tier</span><span class="o">=</span><span class="s2">"premium"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="w">        </span><span class="nv">preference</span><span class="o">=</span><span class="s2">"window"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">        </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="w">        </span>-d<span class="w"> </span><span class="s1">'{"user_name":"Juan Pérez","transaction_id":"TX-101","tier":"premium","preference":"window"}'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="w">        </span>https://localhost:8443/echo
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>200 OK</code>.</p>
+<ol>
+<li>Teste com um JSON que possui um campo obrigatório ausente:    </li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/echo<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">        </span>Authorization:<span class="s2">"Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">        </span><span class="nv">user_name</span><span class="o">=</span><span class="s2">"Juan Pérez"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">        </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">        </span>-d<span class="w"> </span><span class="s1">'{"user_name":"Juan Pérez"}'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">        </span>https://localhost:8443/echo
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>400 Bad Request</code> com detalhes indicando quais campos estão faltando.</p>
+<ol>
+<li>Experimente com um valor que não é permitido no enum:    </li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/echo<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">        </span>Authorization:<span class="s2">"Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">        </span><span class="nv">user_name</span><span class="o">=</span><span class="s2">"Ana López"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">        </span><span class="nv">transaction_id</span><span class="o">=</span><span class="s2">"KA-202"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">        </span><span class="nv">tier</span><span class="o">=</span><span class="s2">"ultra-mega"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">        </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="w">        </span>-d<span class="w"> </span><span class="s1">'{"user_name":"Ana López","transaction_id":"KA-202","tier":"ultra-mega"}'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="w">        </span>https://localhost:8443/echo
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>400 Bad Request</code> indicando que <code>ultra-mega</code> não é um valor válido para <code>tier</code>.</p>
+<hr />
+<h2 id="demo-7-operacoes-modo-de-manutencao-5-min">Demo 7 Operações: modo de manutenção (5 min)<a class="headerlink" href="#demo-7-operacoes-modo-de-manutencao-5-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> colocar uma API em modo de manutenção a partir do gateway sem tocar ou reiniciar o back-end, demonstrando o poder da configuração declarativa.</p>
+<p><pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant C as Cliente
+    participant K as Kong (Request Termination)
+    participant B as Backend
+    C-&gt;&gt;K: GET /routes
+    K-&gt;&gt;K: Plugin request-termination activo
+    K--&gt;&gt;C: 503 Service Unavailable
+    Note over B: El backend sigue corriendo
+    Note over K: Se remueve el plugin vía decK
+    C-&gt;&gt;K: GET /routes
+    K-&gt;&gt;B: Reenvía
+    B--&gt;&gt;C: 200 OK</code></pre>
+1. Usaremos o arquivo <code>files-deck/06-demo7-request-termination.yaml</code>. Você pode inspecionar como o plugin foi adicionado à rota <code>/routes</code>:    </p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">routes</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">    </span><span class="w w-Error"> </span><span class="nt">routes</span><span class="p">:</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">       </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">routes-route</span>
+</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">         </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/routes</span><span class="p p-Indicator">]</span>
+</span><span id="__span-40-5"><a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="w">         </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-40-6"><a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a><span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">request-termination</span>
+</span><span id="__span-40-7"><a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a><span class="w">             </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-40-8"><a id="__codelineno-40-8" name="__codelineno-40-8" href="#__codelineno-40-8"></a><span class="w">               </span><span class="nt">status_code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">503</span>
+</span><span id="__span-40-9"><a id="__codelineno-40-9" name="__codelineno-40-9" href="#__codelineno-40-9"></a><span class="w">               </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="s">"El</span><span class="nv"> </span><span class="s">servicio</span><span class="nv"> </span><span class="s">de</span><span class="nv"> </span><span class="s">rutas</span><span class="nv"> </span><span class="s">esta</span><span class="nv"> </span><span class="s">en</span><span class="nv"> </span><span class="s">mantenimiento</span>
+</span><span id="__span-40-10"><a id="__codelineno-40-10" name="__codelineno-40-10" href="#__codelineno-40-10"></a><span class="w">                         </span><span class="s">programado.</span><span class="nv"> </span><span class="s">Vuelva</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">intentar</span><span class="nv"> </span><span class="s">en</span><span class="nv"> </span><span class="s">30</span><span class="nv"> </span><span class="s">minutos."</span>
+</span></code></pre></div>
+2. Sincronize as alterações:    </p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>    deck gateway sync archivos-deck/06-demo7-request-termination.yaml \
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>        --konnect-token \
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. Teste a API em manutenção:    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/routes
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/routes
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>503 Serviço Indisponível</code> com a mensagem de manutenção.</p>
+<ol>
+<li>Enquanto isso, as demais APIs continuam funcionando normalmente:    </li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>200 OK</code>. O serviço simulado não é afetado.</p>
+<blockquote>
+<p><strong>Nota:</strong> No próximo passo (Demo 8), ao sincronizar um arquivo que NÃO inclui o plugin <code>request-termination</code>, ele será removido automaticamente e o serviço de rotas funcionará novamente. Este é o poder do gerenciamento declarativo: o estado desejado é sempre aquele que define o arquivo.</p>
+</blockquote>
+<hr />
+<h2 id="demonstracao-8-seguranca-deteccao-de-bot-5-min">Demonstração 8 Segurança: Detecção de Bot (5 min)<a class="headerlink" href="#demonstracao-8-seguranca-deteccao-de-bot-5-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> bloquear automaticamente o tráfego de bots (rastreadores) conhecidos no nível global do gateway.</p>
+<p><pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant Bot as Bot (Googlebot)
+    participant User as Usuario Legítimo
+    participant K as Kong (Bot Detection)
+    participant B as Backend
+    Bot-&gt;&gt;K: GET /mock (User-Agent: Googlebot/2.1)
+    K-&gt;&gt;K: User-Agent en lista deny
+    K--&gt;&gt;Bot: 403 Forbidden
+    User-&gt;&gt;K: GET /mock (User-Agent: curl/8.x)
+    K-&gt;&gt;K: User-Agent en lista allow
+    K-&gt;&gt;B: Reenvía
+    B--&gt;&gt;User: 200 OK</code></pre>
+1. Usaremos o arquivo <code>files-deck/07-demo8-bot-detection.yaml</code>. Este arquivo:</p>
+<div class="language-text highlight"><pre><span></span><code>- **Adiciona** o plugin `bot-detection` globalmente
+- **Remova** o `request-termination` do passo anterior (o serviço `/routes` funciona novamente)
+</code></pre></div>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="w">    </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bot-detection</span>
+</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">       </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">         </span><span class="nt">deny</span><span class="p">:</span>
+</span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"Googlebot"</span>
+</span><span id="__span-46-6"><a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"Bingbot"</span>
+</span><span id="__span-46-7"><a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"Baiduspider"</span>
+</span><span id="__span-46-8"><a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="w">         </span><span class="nt">allow</span><span class="p">:</span>
+</span><span id="__span-46-9"><a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a><span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"curl"</span>
+</span><span id="__span-46-10"><a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a><span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"insomnia"</span>
+</span><span id="__span-46-11"><a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a><span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"postman"</span>
+</span></code></pre></div>
+2. Sincronize as alterações:    </p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>    deck gateway sync archivos-deck/07-demo8-bot-detection.yaml \
+</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>        --konnect-token \
+</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-47-4"><a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-47-5"><a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. Experimente um User-Agent bot versus um legítimo:</p>
+<div class="language-text highlight"><pre><span></span><code>Simule o Googlebot:
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"User-Agent: Googlebot/2.1"</span><span class="w"> </span>https://localhost:8443/routes
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"User-Agent: Googlebot/2.1"</span><span class="w"> </span>https://localhost:8443/routes
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>HTTP/1.1 403 Proibido</code></p>
+<div class="language-text highlight"><pre><span></span><code>Solicitação normal (sem user-agent malicioso):
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/routes
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/routes
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>HTTP/1.1 200 OK</code></p>
+<ol>
+<li>Verifique se <code>/routes</code> foi restaurado (o <code>request-termination</code> foi removido):    </li>
+</ol>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>    curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/routes
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>200</code> (não mais <code>503</code>).</p>
+<hr />
+<h2 id="demo-9-roteamento-inteligente-por-valores-de-cabecalhos-15-min">Demo 9 Roteamento inteligente: por valores de cabeçalhos (15 min)<a class="headerlink" href="#demo-9-roteamento-inteligente-por-valores-de-cabecalhos-15-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> demonstrar como o Kong pode direcionar o tráfego para diferentes back-ends com base no valor de um cabeçalho HTTP, implementando uma estratégia de <strong>roteamento regional</strong>.</p>
+<pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant C as Cliente
+    participant K as Kong (Router)
+    participant B1 as Backend (Default)
+    participant B2 as Backend (LATAM)
+    participant B3 as Backend (Europe)
+    C-&gt;&gt;K: GET /mock
+    K-&gt;&gt;K: Sin header X-Client-Region
+    K-&gt;&gt;B1: Redirige a mock (default)
+    B1--&gt;&gt;C: 200 OK (vuelos globales)
+    C-&gt;&gt;K: GET /mock + X-Client-Region: latam
+    K-&gt;&gt;K: Header match, ruta mock-latam
+    K-&gt;&gt;B2: Redirige a mock-latam
+    B2--&gt;&gt;C: 200 OK (vuelos LATAM)
+    C-&gt;&gt;K: GET /mock + X-Client-Region: europe
+    K-&gt;&gt;K: Header match, ruta mock-europe
+    K-&gt;&gt;B3: Redirige a mock-europe
+    B3--&gt;&gt;C: 200 OK (vuelos Europa)</code></pre>
+<blockquote>
+<p><strong>Caso de negócios:</strong> MockAPI opera em diversas regiões. Os clientes enviam o cabeçalho <code>X-Client-Region</code> para obter voos de sua região específica. Kong direciona cada solicitação para o back-end regional correspondente sem exigir lógica adicional no código.</p>
+</blockquote>
+<ol>
+<li>Usaremos o arquivo <code>deck-files/08-demo9-routing-by-header.yaml</code>. Você pode inspecionar como dois novos serviços foram adicionados com rotas que filtram por cabeçalho:    </li>
+</ol>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="w">    </span><span class="c1"># Servicio para LATAM (solo se activa con X-Client-Region: latam)</span>
+</span><span id="__span-53-2"><a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock-latam</span>
+</span><span id="__span-53-3"><a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://httpbin-backend:9081/anything/mock-latam</span>
+</span><span id="__span-53-4"><a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a><span class="w">      </span><span class="nt">routes</span><span class="p">:</span>
+</span><span id="__span-53-5"><a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock-latam-route</span>
+</span><span id="__span-53-6"><a id="__codelineno-53-6" name="__codelineno-53-6" href="#__codelineno-53-6"></a><span class="w">          </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/mock</span><span class="p p-Indicator">]</span>
+</span><span id="__span-53-7"><a id="__codelineno-53-7" name="__codelineno-53-7" href="#__codelineno-53-7"></a><span class="w">          </span><span class="nt">methods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">GET</span><span class="p p-Indicator">]</span>
+</span><span id="__span-53-8"><a id="__codelineno-53-8" name="__codelineno-53-8" href="#__codelineno-53-8"></a><span class="w">          </span><span class="nt">headers</span><span class="p">:</span>
+</span><span id="__span-53-9"><a id="__codelineno-53-9" name="__codelineno-53-9" href="#__codelineno-53-9"></a><span class="w">            </span><span class="nt">x-client-region</span><span class="p">:</span>
+</span><span id="__span-53-10"><a id="__codelineno-53-10" name="__codelineno-53-10" href="#__codelineno-53-10"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latam</span>
+</span><span id="__span-53-11"><a id="__codelineno-53-11" name="__codelineno-53-11" href="#__codelineno-53-11"></a>
+</span><span id="__span-53-12"><a id="__codelineno-53-12" name="__codelineno-53-12" href="#__codelineno-53-12"></a><span class="w">    </span><span class="c1"># Servicio para EUROPE (solo se activa con X-Client-Region: europe)</span>
+</span><span id="__span-53-13"><a id="__codelineno-53-13" name="__codelineno-53-13" href="#__codelineno-53-13"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock-europe</span>
+</span><span id="__span-53-14"><a id="__codelineno-53-14" name="__codelineno-53-14" href="#__codelineno-53-14"></a><span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://httpbin-backend:9081/anything/mock-europe</span>
+</span><span id="__span-53-15"><a id="__codelineno-53-15" name="__codelineno-53-15" href="#__codelineno-53-15"></a><span class="w">      </span><span class="nt">routes</span><span class="p">:</span>
+</span><span id="__span-53-16"><a id="__codelineno-53-16" name="__codelineno-53-16" href="#__codelineno-53-16"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock-europe-route</span>
+</span><span id="__span-53-17"><a id="__codelineno-53-17" name="__codelineno-53-17" href="#__codelineno-53-17"></a><span class="w">          </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/mock</span><span class="p p-Indicator">]</span>
+</span><span id="__span-53-18"><a id="__codelineno-53-18" name="__codelineno-53-18" href="#__codelineno-53-18"></a><span class="w">          </span><span class="nt">methods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">GET</span><span class="p p-Indicator">]</span>
+</span><span id="__span-53-19"><a id="__codelineno-53-19" name="__codelineno-53-19" href="#__codelineno-53-19"></a><span class="w">          </span><span class="nt">headers</span><span class="p">:</span>
+</span><span id="__span-53-20"><a id="__codelineno-53-20" name="__codelineno-53-20" href="#__codelineno-53-20"></a><span class="w">            </span><span class="nt">x-client-region</span><span class="p">:</span>
+</span><span id="__span-53-21"><a id="__codelineno-53-21" name="__codelineno-53-21" href="#__codelineno-53-21"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">europe</span>
+</span><span id="__span-53-22"><a id="__codelineno-53-22" name="__codelineno-53-22" href="#__codelineno-53-22"></a>
+</span><span id="__span-53-23"><a id="__codelineno-53-23" name="__codelineno-53-23" href="#__codelineno-53-23"></a><span class="w">    </span><span class="c1"># Servicio DEFAULT (sin restricción de header = catch-all)</span>
+</span><span id="__span-53-24"><a id="__codelineno-53-24" name="__codelineno-53-24" href="#__codelineno-53-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock</span>
+</span><span id="__span-53-25"><a id="__codelineno-53-25" name="__codelineno-53-25" href="#__codelineno-53-25"></a><span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://httpbin-backend:9081/anything/mock</span>
+</span><span id="__span-53-26"><a id="__codelineno-53-26" name="__codelineno-53-26" href="#__codelineno-53-26"></a><span class="w">      </span><span class="nt">routes</span><span class="p">:</span>
+</span><span id="__span-53-27"><a id="__codelineno-53-27" name="__codelineno-53-27" href="#__codelineno-53-27"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mock-route</span>
+</span><span id="__span-53-28"><a id="__codelineno-53-28" name="__codelineno-53-28" href="#__codelineno-53-28"></a><span class="w">          </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/mock</span><span class="p p-Indicator">]</span>
+</span><span id="__span-53-29"><a id="__codelineno-53-29" name="__codelineno-53-29" href="#__codelineno-53-29"></a><span class="w">          </span><span class="nt">methods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">GET</span><span class="p p-Indicator">]</span>
+</span><span id="__span-53-30"><a id="__codelineno-53-30" name="__codelineno-53-30" href="#__codelineno-53-30"></a><span class="w">    </span><span class="c1"># Sin campo 'headers' → captura todo lo demás</span>
+</span></code></pre></div>
+<blockquote>
+<p><strong>Como funciona?</strong> Kong avalia rotas da mais específica para a menos específica. Rotas com restrições de cabeçalho são mais específicas do que aquelas sem restrições. Portanto, se a solicitação incluir <code>X-Client-Region: latam</code>, ela corresponderá primeiro a <code>mock-latam-route</code>. Se não incluir esse cabeçalho, ele cairá para o padrão <code>mock-route</code>.</p>
+</blockquote>
+<ol>
+<li>Sincronize as alterações:    </li>
+</ol>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>    deck gateway sync archivos-deck/08-demo9-ruteo-por-header.yaml \
+</span><span id="__span-54-2"><a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>        --konnect-token \
+</span><span id="__span-54-3"><a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-54-4"><a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-54-5"><a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. Teste o roteamento regional:</p>
+<div class="language-text highlight"><pre><span></span><code>Roteamento para LATAM:
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/mock<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-55-2"><a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="w">        </span>X-Client-Region:<span class="s2">"latam"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-55-3"><a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a><span class="w">        </span>apikey:<span class="s2">"external-secret-123"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-56-2"><a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"X-Client-Region: latam"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-56-3"><a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-56-4"><a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a><span class="w">        </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>HTTP/1.1 200 OK</code> e no JSON de resposta, o campo <code>url</code> mostrará <code>"http://httpbin-backend:9081/anything/mock-latam"</code>.</p>
+<div class="language-text highlight"><pre><span></span><code>Roteamento para a EUROPA:
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/mock<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-57-2"><a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a><span class="w">        </span>X-Client-Region:<span class="s2">"europe"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-57-3"><a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a><span class="w">        </span>apikey:<span class="s2">"external-secret-123"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-58-2"><a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"X-Client-Region: europe"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-58-3"><a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-58-4"><a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="w">        </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>HTTP/1.1 200 OK</code> e na resposta JSON, o campo <code>url</code> mostrará <code>"http://httpbin-backend:9081/anything/mock-europe"</code>.</p>
+<div class="language-text highlight"><pre><span></span><code>Roteamento PADRÃO (sem cabeçalho regional):
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>HTTP/1.1 200 OK</code> e no JSON de resposta, o campo <code>url</code> mostrará <code>"http://httpbin-backend:9081/anything/mock"</code> (caiu no padrão por não ter cabeçalho).</p>
+<ol>
+<li><strong>Observação:</strong> Revendo <strong>Konnect Analytics &gt; Solicitações de API</strong>, agrupando a visualização por <strong>Serviço</strong>, você pode ver que o tráfego é distribuído em barras diferentes para <code>mock</code>, <code>mock-latam</code> e <code>mock-europe</code>, confirmando que o Kong foi roteado dinamicamente para o backend correto.</li>
+</ol>
+<hr />
+<h2 id="demo-10-roteamento-inteligente-por-conteudo-do-corpo-20-min">Demo 10 Roteamento inteligente: por conteúdo do corpo (20 min)<a class="headerlink" href="#demo-10-roteamento-inteligente-por-conteudo-do-corpo-20-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> demonstrar como Kong pode inspecionar o conteúdo do corpo JSON de uma solicitação e redirecionar dinamicamente para diferentes back-ends com base nos valores encontrados, usando o plugin <code>pre-function</code>.</p>
+<pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant C as Cliente
+    participant PF as Kong (pre-function)
+    participant V as Kong (Request Validator)
+    participant B1 as Backend (Standard)
+    participant B2 as Backend (Premium)
+    C-&gt;&gt;PF: POST /echo {tier: "premium"}
+    PF-&gt;&gt;PF: Lee body JSON
+    PF-&gt;&gt;PF: tier = "premium"
+    PF-&gt;&gt;PF: Cambia upstream path a /echo-premium
+    PF-&gt;&gt;V: Continúa pipeline
+    V-&gt;&gt;V: Valida schema OK
+    V-&gt;&gt;B2: Reenvía a /echo-premium
+    B2--&gt;&gt;C: 200 OK
+    C-&gt;&gt;PF: POST /echo {tier: "standard"}
+    PF-&gt;&gt;PF: Lee body JSON
+    PF-&gt;&gt;PF: tier = "standard"
+    PF-&gt;&gt;PF: Mantiene upstream path en /echo
+    PF-&gt;&gt;V: Continúa pipeline
+    V-&gt;&gt;B1: Reenvía a /echo
+    B1--&gt;&gt;C: 200 OK</code></pre>
+<blockquote>
+<p><strong>Caso de negócio:</strong> Quando um passageiro cria uma reserva, o campo <code>tier</code> do JSON determina se ela será processada pelo fluxo padrão ou pelo fluxo premium (que pode ter backend próprio com lógica diferenciada para faturamento, assentos, etc.).</p>
+</blockquote>
+<ol>
+<li>Usaremos o arquivo <code>deck-files/09-demo10-routing-by-body.yaml</code>. Você pode inspecionar o plugin <code>pre-function</code> adicionado ao caminho POST do echo:    </li>
+</ol>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="w">    </span><span class="nt">routes</span><span class="p">:</span>
+</span><span id="__span-61-2"><a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-post-route</span>
+</span><span id="__span-61-3"><a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="w">       </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/echo</span><span class="p p-Indicator">]</span>
+</span><span id="__span-61-4"><a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="w">       </span><span class="nt">methods</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">POST</span><span class="p p-Indicator">]</span>
+</span><span id="__span-61-5"><a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a><span class="w">       </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-61-6"><a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pre-function</span>
+</span><span id="__span-61-7"><a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a><span class="w">           </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-61-8"><a id="__codelineno-61-8" name="__codelineno-61-8" href="#__codelineno-61-8"></a><span class="w">             </span><span class="nt">access</span><span class="p">:</span>
+</span><span id="__span-61-9"><a id="__codelineno-61-9" name="__codelineno-61-9" href="#__codelineno-61-9"></a><span class="w">               </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-61-10"><a id="__codelineno-61-10" name="__codelineno-61-10" href="#__codelineno-61-10"></a><span class="w">                 </span><span class="no">-- Ruteo dinámico por contenido del body</span>
+</span><span id="__span-61-11"><a id="__codelineno-61-11" name="__codelineno-61-11" href="#__codelineno-61-11"></a><span class="w">                 </span><span class="no">local cjson = require("cjson.safe")</span>
+</span><span id="__span-61-12"><a id="__codelineno-61-12" name="__codelineno-61-12" href="#__codelineno-61-12"></a><span class="w">                 </span><span class="no">local body = kong.request.get_raw_body()</span>
+</span><span id="__span-61-13"><a id="__codelineno-61-13" name="__codelineno-61-13" href="#__codelineno-61-13"></a><span class="w">                 </span><span class="no">if not body then return end</span>
+</span><span id="__span-61-14"><a id="__codelineno-61-14" name="__codelineno-61-14" href="#__codelineno-61-14"></a>
+</span><span id="__span-61-15"><a id="__codelineno-61-15" name="__codelineno-61-15" href="#__codelineno-61-15"></a><span class="w">                 </span><span class="no">local json = cjson.decode(body)</span>
+</span><span id="__span-61-16"><a id="__codelineno-61-16" name="__codelineno-61-16" href="#__codelineno-61-16"></a><span class="w">                 </span><span class="no">if not json or not json.tier then return end</span>
+</span><span id="__span-61-17"><a id="__codelineno-61-17" name="__codelineno-61-17" href="#__codelineno-61-17"></a>
+</span><span id="__span-61-18"><a id="__codelineno-61-18" name="__codelineno-61-18" href="#__codelineno-61-18"></a><span class="w">                 </span><span class="no">if json.tier == "premium"</span>
+</span><span id="__span-61-19"><a id="__codelineno-61-19" name="__codelineno-61-19" href="#__codelineno-61-19"></a><span class="w">                    </span><span class="no">or json.tier == "vip" then</span>
+</span><span id="__span-61-20"><a id="__codelineno-61-20" name="__codelineno-61-20" href="#__codelineno-61-20"></a><span class="w">                   </span><span class="no">-- Redirige al backend premium</span>
+</span><span id="__span-61-21"><a id="__codelineno-61-21" name="__codelineno-61-21" href="#__codelineno-61-21"></a><span class="w">                   </span><span class="no">kong.service.request.set_path(</span>
+</span><span id="__span-61-22"><a id="__codelineno-61-22" name="__codelineno-61-22" href="#__codelineno-61-22"></a><span class="w">                     </span><span class="no">"/anything/echo-premium")</span>
+</span><span id="__span-61-23"><a id="__codelineno-61-23" name="__codelineno-61-23" href="#__codelineno-61-23"></a><span class="w">                   </span><span class="no">kong.service.request.set_header(</span>
+</span><span id="__span-61-24"><a id="__codelineno-61-24" name="__codelineno-61-24" href="#__codelineno-61-24"></a><span class="w">                     </span><span class="no">"X-Routed-By", "body-content")</span>
+</span><span id="__span-61-25"><a id="__codelineno-61-25" name="__codelineno-61-25" href="#__codelineno-61-25"></a><span class="w">                   </span><span class="no">kong.service.request.set_header(</span>
+</span><span id="__span-61-26"><a id="__codelineno-61-26" name="__codelineno-61-26" href="#__codelineno-61-26"></a><span class="w">                     </span><span class="no">"X-Tier", "premium")</span>
+</span><span id="__span-61-27"><a id="__codelineno-61-27" name="__codelineno-61-27" href="#__codelineno-61-27"></a><span class="w">                 </span><span class="no">else</span>
+</span><span id="__span-61-28"><a id="__codelineno-61-28" name="__codelineno-61-28" href="#__codelineno-61-28"></a><span class="w">                   </span><span class="no">kong.service.request.set_header(</span>
+</span><span id="__span-61-29"><a id="__codelineno-61-29" name="__codelineno-61-29" href="#__codelineno-61-29"></a><span class="w">                     </span><span class="no">"X-Routed-By", "body-content")</span>
+</span><span id="__span-61-30"><a id="__codelineno-61-30" name="__codelineno-61-30" href="#__codelineno-61-30"></a><span class="w">                   </span><span class="no">kong.service.request.set_header(</span>
+</span><span id="__span-61-31"><a id="__codelineno-61-31" name="__codelineno-61-31" href="#__codelineno-61-31"></a><span class="w">                     </span><span class="no">"X-Tier", "standard")</span>
+</span><span id="__span-61-32"><a id="__codelineno-61-32" name="__codelineno-61-32" href="#__codelineno-61-32"></a><span class="w">                 </span><span class="no">end</span>
+</span></code></pre></div>
+<blockquote>
+<p><strong>Como funciona?</strong> O plugin <code>pré-função</code> executa o código Lua na fase de <code>acesso</code> (antes da solicitação chegar ao upstream). Leia o corpo JSON, extraia o campo <code>tier</code> e, se for <code>premium</code> ou <code>vip</code>, altere dinamicamente o caminho upstream usando <code>kong.service.request.set_path()</code>. Isso redireciona a solicitação para <code>/anything/echo-premium</code> sem que o cliente saiba. Além disso, ele injeta cabeçalhos de diagnóstico (<code>X-Routed-By</code>, <code>X-Tier</code>) que o backend recebe.</p>
+</blockquote>
+<ol>
+<li>Sincronize as alterações:    </li>
+</ol>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>    deck gateway sync archivos-deck/09-demo10-ruteo-por-body.yaml \
+</span><span id="__span-62-2"><a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>        --konnect-token \
+</span><span id="__span-62-3"><a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-62-4"><a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-62-5"><a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. Reserva de teste <strong>PREMIUM</strong> → back-end premium:    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/echo<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-63-2"><a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a><span class="w">        </span>Authorization:<span class="s2">"Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-63-3"><a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a><span class="w">        </span><span class="nv">user_name</span><span class="o">=</span><span class="s2">"Juan Pérez"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-63-4"><a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="w">        </span><span class="nv">transaction_id</span><span class="o">=</span><span class="s2">"TX-101"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-63-5"><a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a><span class="w">        </span><span class="nv">tier</span><span class="o">=</span><span class="s2">"premium"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-63-6"><a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a><span class="w">        </span><span class="nv">preference</span><span class="o">=</span><span class="s2">"window"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-64-1"><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-64-2"><a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a><span class="w">        </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-64-3"><a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-64-4"><a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-64-5"><a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a><span class="w">        </span>-d<span class="w"> </span><span class="s1">'{"user_name":"Juan Pérez","transaction_id":"TX-101","tier":"premium","preference":"window"}'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-64-6"><a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a><span class="w">        </span>https://localhost:8443/echo
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> No JSON de resposta de backend de eco:</p>
+<div class="language-text highlight"><pre><span></span><code>- `"url": "http://httpbin-backend:9081/anything/echo-premium"` ← Fui para o backend premium!
+- O cabeçalho `X-Tier: premium` aparecerá nos cabeçalhos recebidos pelo backend.
+</code></pre></div>
+<ol>
+<li>Reserva de teste <strong>PADRÃO</strong> → back-end padrão:    </li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-65-1"><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/echo<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-65-2"><a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a><span class="w">        </span>Authorization:<span class="s2">"Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-65-3"><a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a><span class="w">        </span><span class="nv">user_name</span><span class="o">=</span><span class="s2">"María López"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-65-4"><a id="__codelineno-65-4" name="__codelineno-65-4" href="#__codelineno-65-4"></a><span class="w">        </span><span class="nv">transaction_id</span><span class="o">=</span><span class="s2">"KA-202"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-65-5"><a id="__codelineno-65-5" name="__codelineno-65-5" href="#__codelineno-65-5"></a><span class="w">        </span><span class="nv">tier</span><span class="o">=</span><span class="s2">"standard"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-66-1"><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-66-2"><a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a><span class="w">        </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-66-3"><a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-66-4"><a id="__codelineno-66-4" name="__codelineno-66-4" href="#__codelineno-66-4"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-66-5"><a id="__codelineno-66-5" name="__codelineno-66-5" href="#__codelineno-66-5"></a><span class="w">        </span>-d<span class="w"> </span><span class="s1">'{"user_name":"María López","transaction_id":"KA-202","tier":"standard"}'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-66-6"><a id="__codelineno-66-6" name="__codelineno-66-6" href="#__codelineno-66-6"></a><span class="w">        </span>https://localhost:8443/echo
+</span></code></pre></div>
+<strong>Resultado esperado:</strong></p>
+<div class="language-text highlight"><pre><span></span><code>- `"url": "http://httpbin-backend:9081/anything/echo"` ← Mantido no backend padrão.
+- O cabeçalho `X-Tier: standard` aparecerá nos cabeçalhos recebidos.
+</code></pre></div>
+<ol>
+<li>Experimente a reserva <strong>VIP</strong> → também vai para o backend premium:    </li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-67-1"><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/echo<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-67-2"><a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a><span class="w">        </span>Authorization:<span class="s2">"Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-67-3"><a id="__codelineno-67-3" name="__codelineno-67-3" href="#__codelineno-67-3"></a><span class="w">        </span><span class="nv">user_name</span><span class="o">=</span><span class="s2">"Carlos Ruiz"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-67-4"><a id="__codelineno-67-4" name="__codelineno-67-4" href="#__codelineno-67-4"></a><span class="w">        </span><span class="nv">transaction_id</span><span class="o">=</span><span class="s2">"KA-303"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-67-5"><a id="__codelineno-67-5" name="__codelineno-67-5" href="#__codelineno-67-5"></a><span class="w">        </span><span class="nv">tier</span><span class="o">=</span><span class="s2">"vip"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-67-6"><a id="__codelineno-67-6" name="__codelineno-67-6" href="#__codelineno-67-6"></a><span class="w">        </span><span class="nv">preference</span><span class="o">=</span><span class="s2">"aisle"</span>
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-68-1"><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-68-2"><a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a><span class="w">        </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-68-3"><a id="__codelineno-68-3" name="__codelineno-68-3" href="#__codelineno-68-3"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$JWT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-68-4"><a id="__codelineno-68-4" name="__codelineno-68-4" href="#__codelineno-68-4"></a><span class="w">        </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-68-5"><a id="__codelineno-68-5" name="__codelineno-68-5" href="#__codelineno-68-5"></a><span class="w">        </span>-d<span class="w"> </span><span class="s1">'{"user_name":"Carlos Ruiz","transaction_id":"KA-303","tier":"vip","preference":"aisle"}'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-68-6"><a id="__codelineno-68-6" name="__codelineno-68-6" href="#__codelineno-68-6"></a><span class="w">        </span>https://localhost:8443/echo
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>"url": "http://httpbin-backend:9081/anything/echo-premium"</code> ← VIP também é roteado para o backend premium.</p>
+<ol>
+<li>
+<p><strong>Resumo dos dois tipos de roteamento:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Método</th>
+<th>Critérios de roteamento</th>
+<th>Mecanismo Kong</th>
+<th>Vantagem</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cabeçalho</strong> (Demonstração 9)</td>
+<td>Valor do cabeçalho <code>X-Client-Region</code></td>
+<td>Nativo: campo <code>headers</code> na rota</td>
+<td>Declarativo, sem código</td>
+</tr>
+<tr>
+<td><strong>Corpo</strong> (Demonstração 10)</td>
+<td>Valor do campo <code>tier</code> no JSON</td>
+<td>Plugin <code>pré-função</code> (Lua)</td>
+<td>Lógica flexível e personalizável</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<hr />
+<h2 id="demo-11-personalizacao-erros-corporativos-padronizados-10-min">Demo 11 Personalização: Erros Corporativos Padronizados (10 min)<a class="headerlink" href="#demo-11-personalizacao-erros-corporativos-padronizados-10-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> Padronizar todas as respostas de erro geradas pelo Kong em um formato JSON corporativo consistente.</p>
+<p><pre class="mermaid"><code>%%{init: {"theme": "neutral"}}%%
+sequenceDiagram
+    participant C as Cliente
+    participant K as Kong (Exit Transformer)
+    C-&gt;&gt;K: GET /mock (sin apikey)
+    K-&gt;&gt;K: key-auth rechaza, 401 Unauthorized
+    K-&gt;&gt;K: Exit Transformer reformatea
+    K--&gt;&gt;C: 401 + JSON corporativo
+    Note over C: JSON estandarizado con error, status_code, message, timestamp y support</code></pre>
+1. Usaremos o arquivo <code>files-deck/10-demo11-exit-transformer.yaml</code>. Você pode inspecionar o plugin <code>exit-transformer</code> adicionado em nível global:    </p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-69-1"><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a><span class="w">    </span><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-69-2"><a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">exit-transformer</span>
+</span><span id="__span-69-3"><a id="__codelineno-69-3" name="__codelineno-69-3" href="#__codelineno-69-3"></a><span class="w">       </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-69-4"><a id="__codelineno-69-4" name="__codelineno-69-4" href="#__codelineno-69-4"></a><span class="w">         </span><span class="nt">functions</span><span class="p">:</span>
+</span><span id="__span-69-5"><a id="__codelineno-69-5" name="__codelineno-69-5" href="#__codelineno-69-5"></a><span class="w">           </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-69-6"><a id="__codelineno-69-6" name="__codelineno-69-6" href="#__codelineno-69-6"></a><span class="w">             </span><span class="no">return function(status, body, headers)</span>
+</span><span id="__span-69-7"><a id="__codelineno-69-7" name="__codelineno-69-7" href="#__codelineno-69-7"></a><span class="w">               </span><span class="no">if status &gt;= 400 then</span>
+</span><span id="__span-69-8"><a id="__codelineno-69-8" name="__codelineno-69-8" href="#__codelineno-69-8"></a><span class="w">                 </span><span class="no">local new_body = {</span>
+</span><span id="__span-69-9"><a id="__codelineno-69-9" name="__codelineno-69-9" href="#__codelineno-69-9"></a><span class="w">                   </span><span class="no">error = true,</span>
+</span><span id="__span-69-10"><a id="__codelineno-69-10" name="__codelineno-69-10" href="#__codelineno-69-10"></a><span class="w">                   </span><span class="no">status_code = status,</span>
+</span><span id="__span-69-11"><a id="__codelineno-69-11" name="__codelineno-69-11" href="#__codelineno-69-11"></a><span class="w">                   </span><span class="no">message = body.message or body.msg</span>
+</span><span id="__span-69-12"><a id="__codelineno-69-12" name="__codelineno-69-12" href="#__codelineno-69-12"></a><span class="w">                             </span><span class="no">or "Error desconocido",</span>
+</span><span id="__span-69-13"><a id="__codelineno-69-13" name="__codelineno-69-13" href="#__codelineno-69-13"></a><span class="w">                   </span><span class="no">service = "MockAPI API Gateway",</span>
+</span><span id="__span-69-14"><a id="__codelineno-69-14" name="__codelineno-69-14" href="#__codelineno-69-14"></a><span class="w">                   </span><span class="no">timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ"),</span>
+</span><span id="__span-69-15"><a id="__codelineno-69-15" name="__codelineno-69-15" href="#__codelineno-69-15"></a><span class="w">                   </span><span class="no">support = "soporte@mock.com"</span>
+</span><span id="__span-69-16"><a id="__codelineno-69-16" name="__codelineno-69-16" href="#__codelineno-69-16"></a><span class="w">                 </span><span class="no">}</span>
+</span><span id="__span-69-17"><a id="__codelineno-69-17" name="__codelineno-69-17" href="#__codelineno-69-17"></a><span class="w">                 </span><span class="no">return status, new_body, headers</span>
+</span><span id="__span-69-18"><a id="__codelineno-69-18" name="__codelineno-69-18" href="#__codelineno-69-18"></a><span class="w">               </span><span class="no">end</span>
+</span><span id="__span-69-19"><a id="__codelineno-69-19" name="__codelineno-69-19" href="#__codelineno-69-19"></a><span class="w">               </span><span class="no">return status, body, headers</span>
+</span><span id="__span-69-20"><a id="__codelineno-69-20" name="__codelineno-69-20" href="#__codelineno-69-20"></a><span class="w">             </span><span class="no">end</span>
+</span></code></pre></div>
+2. Sincronize as alterações:    </p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-70-1"><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a>    deck gateway sync archivos-deck/10-demo11-exit-transformer.yaml \
+</span><span id="__span-70-2"><a id="__codelineno-70-2" name="__codelineno-70-2" href="#__codelineno-70-2"></a>        --konnect-token \
+</span><span id="__span-70-3"><a id="__codelineno-70-3" name="__codelineno-70-3" href="#__codelineno-70-3"></a>        "$KONNECT_TOKEN" \
+</span><span id="__span-70-4"><a id="__codelineno-70-4" name="__codelineno-70-4" href="#__codelineno-70-4"></a>        --konnect-control-plane-name \
+</span><span id="__span-70-5"><a id="__codelineno-70-5" name="__codelineno-70-5" href="#__codelineno-70-5"></a>        "$KONNECT_CONTROL_PLANE_NAME"
+</span></code></pre></div>
+3. Teste diferentes erros e verifique o formato padronizado:</p>
+<div class="language-text highlight"><pre><span></span><code>**Erro 401 (sem autenticação):**
+</code></pre></div>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-71-1"><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/mock
+</span></code></pre></div>
+Usando curl (alternativa):    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Erro 403 (consumidor sem permissões ACL):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-73-1"><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: internal-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+Usando curl (alternativa):    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-74-1"><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: internal-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Erro 403 (bot detectado):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-75-1"><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"User-Agent: Googlebot/2.1"</span><span class="w"> </span>https://localhost:8443/routes
+</span></code></pre></div>
+Usando curl (alternativa):    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-76-1"><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"User-Agent: Googlebot/2.1"</span><span class="w"> </span>https://localhost:8443/routes
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> Todos os erros executados anteriormente (401, 403, 403) agora retornarão um JSON corporativo padronizado com esta estrutura, em vez da mensagem simples do Kong:    </p>
+<p><div class="language-json highlight"><pre><span></span><code><span id="__span-77-1"><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-77-2"><a id="__codelineno-77-2" name="__codelineno-77-2" href="#__codelineno-77-2"></a><span class="w">     </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+</span><span id="__span-77-3"><a id="__codelineno-77-3" name="__codelineno-77-3" href="#__codelineno-77-3"></a><span class="w">     </span><span class="nt">"status_code"</span><span class="p">:</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span>
+</span><span id="__span-77-4"><a id="__codelineno-77-4" name="__codelineno-77-4" href="#__codelineno-77-4"></a><span class="w">     </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"No credentials found for given 'iss'"</span><span class="p">,</span>
+</span><span id="__span-77-5"><a id="__codelineno-77-5" name="__codelineno-77-5" href="#__codelineno-77-5"></a><span class="w">     </span><span class="nt">"service"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MockAPI API Gateway"</span><span class="p">,</span>
+</span><span id="__span-77-6"><a id="__codelineno-77-6" name="__codelineno-77-6" href="#__codelineno-77-6"></a><span class="w">     </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-05-29T05:30:00Z"</span><span class="p">,</span>
+</span><span id="__span-77-7"><a id="__codelineno-77-7" name="__codelineno-77-7" href="#__codelineno-77-7"></a><span class="w">     </span><span class="nt">"support"</span><span class="p">:</span><span class="w"> </span><span class="s2">"soporte@mock.com"</span>
+</span><span id="__span-77-8"><a id="__codelineno-77-8" name="__codelineno-77-8" href="#__codelineno-77-8"></a><span class="w">    </span><span class="p">}</span>
+</span></code></pre></div>
+<em>(O <code>status_code</code> e <code>message</code> variam dependendo do erro, mas os campos são idênticos.)</em></p>
+<ol>
+<li>Respostas bem-sucedidas (<code>200 OK</code>) NÃO são afetadas pelo transformador de saída:    </li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-78-1"><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Usando curl (alternativa):</strong>    </p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-79-1"><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a><span class="w">    </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> O JSON da resposta de back-end é retornado inalterado.</p>
+<hr />
+<h2 id="demonstracao-12-observabilidade-e-revisao-consolidadas-no-konnect-analytics-10-min">Demonstração 12: Observabilidade e revisão consolidadas no Konnect Analytics (10 min)<a class="headerlink" href="#demonstracao-12-observabilidade-e-revisao-consolidadas-no-konnect-analytics-10-min" title="Permanent link">&para;</a></h2>
+<p><strong>Objetivo:</strong> Visualizar e analisar centralmente todo o tráfego gerado e bloqueado durante as demonstrações deste módulo, utilizando as ferramentas de observabilidade integradas ao Kong Konnect.</p>
+<p>Ao longo deste laboratório, injetamos solicitações válidas e inválidas, ativamos bloqueios de segurança e forçamos o roteamento dinâmico. Kong captura a telemetria de todos esses eventos e a envia para o plano de controle na nuvem.</p>
+<h3 id="passo-a-passo-no-konnect-analytics-explorer">Passo a passo no Konnect Analytics Explorer<a class="headerlink" href="#passo-a-passo-no-konnect-analytics-explorer" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Acesse o Painel de Análise:</strong></p>
+<ul>
+<li>Abra seu navegador e verifique se você está conectado ao console do <strong>Kong Konnect</strong>.</li>
+<li>No menu lateral esquerdo, vá até a seção <strong>Analytics</strong> e clique em <strong>Explorador</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Configure intervalo de tempo e filtros:</strong></p>
+<ul>
+<li>No canto superior direito, defina o seletor de tempo para <strong>Últimos 60 minutos</strong> ou o intervalo em que você executou o laboratório.</li>
+<li>Na barra de filtros principal (botão <code>+ Adicionar Filtro</code>), selecione <code>Control Plane</code> e escolha o nome do seu ambiente (aquele que você atribuiu à variável <code>$KONNECT_CONTROL_PLANE_NAME</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Analise a distribuição dos códigos de status:</strong></p>
+<ul>
+<li>Na seção do gráfico, procure o seletor de agrupamento (“Agrupar por” ou “Dimensão”) e altere para <strong>Código de Status</strong>.</li>
+<li>Você poderá observar visualmente todos os cenários que provocamos. Clique nas diferentes cores das barras para isolar o tráfego. Você deve identificar claramente:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Código de status</th>
+<th>Originado por (Contexto do Módulo)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>200</code></td>
+<td><strong>Tráfego bem-sucedido</strong>: solicitações válidas para simulação, eco e roteamento regional.</td>
+</tr>
+<tr>
+<td><code>400</code></td>
+<td><strong>Validador de solicitação</strong>: Falha nas tentativas do POST de <code>/echo</code> devido à falta de campos obrigatórios no JSON (Demonstração 6).</td>
+</tr>
+<tr>
+<td><code>401</code></td>
+<td><strong>Key Auth / JWT</strong>: Solicitações rejeitadas por falta de chave de API ou envio de token JWT ausente/expirado (Demos 1 e 3).</td>
+</tr>
+<tr>
+<td><code>403</code></td>
+<td><strong>ACL / Detecção de Bot</strong>: Consumidores tentando acessar rotas não autorizadas (Demonstração 1) ou User-Agents bloqueados como <code>Googlebot</code> (Demonstração 8).</td>
+</tr>
+<tr>
+<td><code>413</code></td>
+<td><strong>Limite de tamanho de solicitação</strong>: tentativas de enviar cargas maiores que 1 MB (Demonstração 4).</td>
+</tr>
+<tr>
+<td><code>503</code></td>
+<td><strong>Rescisão de Solicitação</strong>: Solicitações para <code>/rotas</code> durante simulação de manutenção programada (Demo 7).</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><strong>Agrupar por Serviço (Serviço) e Rota (Rota):</strong></p>
+<ul>
+<li>Altere a dimensão principal ("Agrupar por") de <code>Código de Status</code> para <strong>Serviço</strong>.</li>
+<li>Observe como foi distribuído o volume de solicitações. Você deve notar a presença dos serviços regulares (<code>mock</code>, <code>echo-external</code>) junto com os serviços regionais invocados dinamicamente (<code>mock-latam</code> e <code>mock-europe</code>) configurados na Demo 9.</li>
+<li>Altere a dimensão para <strong>Route</strong> para observar a carga granular que cada rota específica recebeu.</li>
+</ul>
+</li>
+<li>
+<p><strong>Analisar a atividade dos Consumidores:</strong></p>
+<ul>
+<li>Altere a dimensão para <strong>Consumidor</strong>.</li>
+<li>Identifica quanto tráfego foi originado por <code>App-External</code> (autenticado via API Keys) vs <code>App-JWT</code> (autenticado via Tokens).</li>
+<li>Esta visão é vital para auditorias: permite isolar um consumidor específico e ver exatamente quais endpoints ele está consumindo ou se está gerando altas taxas de erro (por exemplo, múltiplas respostas <code>401</code> ou <code>429</code>).</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>💡 Práticas recomendadas:</strong> Em um ambiente de produção, o Analytics Explorer é sua primeira linha de defesa para <em>solução de problemas</em>. Se você notar repentinamente um aumento nos erros na plataforma, poderá agrupar o tráfego por "Rota" ou "Consumidor" em segundos para identificar qual cliente ou endpoint exato está enfrentando o incidente, sem a necessidade de SSH nos servidores ou analisar manualmente os logs de acesso.</p>
+</blockquote>
+<hr />
+<h2 id="resumo-dos-plug-ins-do-modulo-002">Resumo dos plug-ins do módulo 002<a class="headerlink" href="#resumo-dos-plug-ins-do-modulo-002" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Etapa</th>
+<th>Plug-ins</th>
+<th>Nível</th>
+<th>Função principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Demonstração 2</td>
+<td><code>cors</code></td>
+<td>Serviço</td>
+<td>Habilitar acesso de origem cruzada para SPAs</td>
+</tr>
+<tr>
+<td>Demonstração 3</td>
+<td><code>jwt</code></td>
+<td>Serviço</td>
+<td>Autenticação com tokens assinados (HS256)</td>
+</tr>
+<tr>
+<td>Demonstração 4</td>
+<td><code>limitação do tamanho da solicitação</code></td>
+<td>Serviço</td>
+<td>Proteção contra cargas excessivas</td>
+</tr>
+<tr>
+<td>Demonstração 5</td>
+<td><code>proxy-cache</code></td>
+<td>Rota</td>
+<td>Cache na memória com TTL configurável</td>
+</tr>
+<tr>
+<td>Demonstração 6</td>
+<td><code>request-validador</code></td>
+<td>Rota</td>
+<td>Validação do esquema JSON do corpo</td>
+</tr>
+<tr>
+<td>Demonstração 7</td>
+<td><code>rescisão de solicitação</code></td>
+<td>Rota</td>
+<td>Modo de manutenção sem tocar no backend</td>
+</tr>
+<tr>
+<td>Demonstração 8</td>
+<td><code>detecção de bot</code></td>
+<td>Globais</td>
+<td>Bloqueio de bots por User-Agent</td>
+</tr>
+<tr>
+<td>Demonstração 9</td>
+<td><em>(nativo)</em></td>
+<td>Rota</td>
+<td>Roteamento por cabeçalho <code>X-Client-Region</code></td>
+</tr>
+<tr>
+<td>Demonstração 10</td>
+<td><code>pré-função</code></td>
+<td>Rota</td>
+<td>Roteamento por corpo do campo <code>tier</code></td>
+</tr>
+<tr>
+<td>Demonstração 11</td>
+<td><code>transformador de saída</code></td>
+<td>Globais</td>
+<td>Padronização de erros JSON</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>Parabéns! Você concluiu o Módulo 002, implementando recursos avançados de segurança, roteamento inteligente e governança na plataforma integrada no Módulo 001.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

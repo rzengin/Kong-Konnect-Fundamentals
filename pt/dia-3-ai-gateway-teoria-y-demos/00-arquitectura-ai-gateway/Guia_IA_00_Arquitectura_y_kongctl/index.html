@@ -1,0 +1,2739 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/pt/dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/">
+      
+      
+        <link rel="prev" href="../../../dia-2-labs/Lab_12_Event_Gateway_Kafka/">
+      
+      
+        <link rel="next" href="../../01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/">
+      
+      
+        
+          <link rel="alternate" href="../../../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" hreflang="es">
+        
+          <link rel="alternate" href="./" hreflang="pt">
+        
+          <link rel="alternate" href="../../../../en/dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>DEV (45 min) IA 00 Arquitetura AI Gateway 2.x e kongctl - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#modulo-ia-00-arquitetura-do-ai-gateway-2x-no-konnect-e-kongctl" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DEV (45 min) IA 00 Arquitetura AI Gateway 2.x e kongctl
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../../en/dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 1 - Teórico (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 1 - Teórico (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Observabilidade Avançada (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Integração ITSM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Gerenciamento de Segredos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-1-teoria-y-demos/10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Segurança OWASP WAF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 2 - Prático (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 2 - Prático (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Inicial
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup Inicial
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 3 - AI Gateway (Teoria e Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 3 - AI Gateway (Teoria e Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 00 Arquitetura AI Gateway 2.x e kongctl
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 00 Arquitetura AI Gateway 2.x e kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-por-que-um-ai-gateway-a-historia-de-um-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Por que um AI Gateway? (a história de um banco)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-de-plugins-a-entidades-o-que-muda-na-2x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. De plugins a entidades: o que muda na 2.x
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-arquitetura-de-referencia-a-que-usaremos-no-dia-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Arquitetura de referência (a que usaremos no Dia 4)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Arquitetura de referência (a que usaremos no Dia 4)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fluxo-de-uma-requisicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo de uma requisição
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kongctl-apiops-para-o-ai-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. kongctl: APIOps para o AI Gateway
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. kongctl: APIOps para o AI Gateway">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-estrutura-dos-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Estrutura dos arquivos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-conceitos-que-e-preciso-entender" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Conceitos que é preciso entender
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-apply-sync-e-diff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 apply, sync e diff
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-roteiro-de-demonstracao-passo-a-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Roteiro de Demonstração (Passo a Passo)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Roteiro de Demonstração (Passo a Passo)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-1-o-ai-gateway-no-konnect-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 1: O AI Gateway no Konnect (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-2-subir-o-data-plane-22-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 2: Subir o Data Plane 2.2 (10 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-3-kongctl-diff-apply-sync-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 3: kongctl diff → apply → sync (10 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-4-primeira-chamada-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 4: Primeira chamada (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-o-que-destacar-bancos-e-servicos-financeiros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. O que destacar (bancos e serviços financeiros)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-resumo-e-proximo-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Resumo e próximo passo
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 01 Um endpoint, muitos LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 02 Governança, cotas e orçamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 03 Guardrails e PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) IA 04 Roteamento semântico, cache e compressão
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 05 RAG gerenciado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) IA 06 MCP (APIs como tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 07 Agentes e A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) IA 08 Observabilidade e FinOps de IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) IA 09 Novidades AI Summit 2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA Setup do AI Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Multi-LLM e Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) Lab IA Governança e Cotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) Lab IA Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Semântica e Cache
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab IA RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) Lab IA A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Lab IA Observabilidade (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Desafio IA Assistente de Crédito
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avaliação do Curso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-por-que-um-ai-gateway-a-historia-de-um-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Por que um AI Gateway? (a história de um banco)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-de-plugins-a-entidades-o-que-muda-na-2x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. De plugins a entidades: o que muda na 2.x
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-arquitetura-de-referencia-a-que-usaremos-no-dia-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Arquitetura de referência (a que usaremos no Dia 4)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Arquitetura de referência (a que usaremos no Dia 4)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fluxo-de-uma-requisicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fluxo de uma requisição
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kongctl-apiops-para-o-ai-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. kongctl: APIOps para o AI Gateway
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. kongctl: APIOps para o AI Gateway">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-estrutura-dos-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Estrutura dos arquivos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-conceitos-que-e-preciso-entender" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Conceitos que é preciso entender
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-apply-sync-e-diff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 apply, sync e diff
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-roteiro-de-demonstracao-passo-a-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Roteiro de Demonstração (Passo a Passo)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Roteiro de Demonstração (Passo a Passo)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-1-o-ai-gateway-no-konnect-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 1: O AI Gateway no Konnect (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-2-subir-o-data-plane-22-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 2: Subir o Data Plane 2.2 (10 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-3-kongctl-diff-apply-sync-10-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 3: kongctl diff → apply → sync (10 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-4-primeira-chamada-5-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 4: Primeira chamada (5 min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-o-que-destacar-bancos-e-servicos-financeiros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. O que destacar (bancos e serviços financeiros)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-resumo-e-proximo-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Resumo e próximo passo
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="modulo-ia-00-arquitetura-do-ai-gateway-2x-no-konnect-e-kongctl">Módulo IA 00: Arquitetura do AI Gateway 2.x no Konnect e kongctl<a class="headerlink" href="#modulo-ia-00-arquitetura-do-ai-gateway-2x-no-konnect-e-kongctl" title="Permanent link">&para;</a></h1>
+<p>Nos Dias 1 e 2 trabalhamos com o Kong Gateway "clássico": Gateway Services, Routes e Plugins sobre um Control Plane do Konnect. O Dia 3 muda de plano: o <strong>Kong AI Gateway 2.x</strong> é um produto com seu <strong>próprio Control Plane</strong> e um modelo de entidades pensado para tráfego de IA (modelos, provedores, tools MCP e agentes). Este módulo explica essa arquitetura e a ferramenta com a qual vamos governá-la durante todo o dia: <strong>kongctl</strong>.</p>
+<div class="admonition info">
+<p class="admonition-title">Versões de referência do Dia 3 e do Dia 4</p>
+<ul>
+<li><strong>Kong AI Gateway 2.2.0</strong> (lançado em 30/09/2026) — imagem do Data Plane <code>kong/kong-ai-gateway:2.2.0</code>.</li>
+<li><strong>kongctl ≥ 1.20.1</strong> — a 1.16 não conhece as entidades da 2.1 e da 2.2.</li>
+<li>O Control Plane (AI Gateway no Konnect) e o Data Plane devem ter <strong>exatamente</strong> a mesma versão; se não coincidirem, o DP não recebe a configuração.</li>
+</ul>
+</div>
+<hr />
+<h2 id="1-por-que-um-ai-gateway-a-historia-de-um-banco">1. Por que um AI Gateway? (a história de um banco)<a class="headerlink" href="#1-por-que-um-ai-gateway-a-historia-de-um-banco" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>"Cada equipe começou a usar IA por conta própria: chaves da OpenAI no código, agentes que chamam APIs internas sem controle e faturas que ninguém consegue explicar."</p>
+</blockquote>
+<p>Este é o ponto de partida de quase todas as instituições financeiras com as quais trabalhamos. Os problemas são sempre os mesmos:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Problema</th>
+<th style="text-align: left;">Risco para o banco</th>
+<th style="text-align: left;">Resposta do AI Gateway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Chaves de provedores de LLM espalhadas pelas aplicações</td>
+<td style="text-align: left;">Vazamento de credenciais, gasto sem controle</td>
+<td style="text-align: left;">As chaves ficam no <strong>vault do Konnect</strong>; as apps só têm uma API key corporativa</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cada app escolhe provedor e modelo</td>
+<td style="text-align: left;">Dependência de um único provedor, sem plano de continuidade</td>
+<td style="text-align: left;"><strong>Modelos virtuais</strong> com balanceamento e failover entre provedores (Módulo IA 01)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Prompts com dados de clientes saem para a internet</td>
+<td style="text-align: left;">Descumprimento do sigilo bancário / proteção de dados</td>
+<td style="text-align: left;"><strong>Guardrails</strong> e anonimização de PII antes da saída (Módulo IA 03)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ninguém sabe quanto cada área gasta</td>
+<td style="text-align: left;">FinOps impossível, surpresas na fatura</td>
+<td style="text-align: left;"><strong>Cotas em tokens e orçamento em USD</strong> por consumidor (Módulo IA 02) e observabilidade de custos (Módulo IA 08)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Agentes que invocam APIs do core sem controle</td>
+<td style="text-align: left;">Ações destrutivas não autorizadas</td>
+<td style="text-align: left;"><strong>MCP governado</strong>: cada agente vê apenas suas tools (Módulo IA 06) e <strong>A2A</strong> com ACL (Módulo IA 07)</td>
+</tr>
+</tbody>
+</table>
+<p>O AI Gateway oferece <strong>um único ponto de controle</strong> para modelos, tools (MCP) e agentes (A2A), com identidade, segurança, custos e observabilidade, <strong>sem alterar as aplicações</strong>: elas continuam usando o SDK da OpenAI apontando para outra <code>base_url</code>.</p>
+<hr />
+<h2 id="2-de-plugins-a-entidades-o-que-muda-na-2x">2. De plugins a entidades: o que muda na 2.x<a class="headerlink" href="#2-de-plugins-a-entidades-o-que-muda-na-2x" title="Permanent link">&para;</a></h2>
+<p>No AI Gateway 1.x (e no Dia 1 com o Kong Gateway) a IA era configurada com plugins (<code>ai-proxy-advanced</code>, <code>ai-prompt-guard</code>, <code>ai-mcp-proxy</code>...) sobre Services e Routes. Na <strong>2.x</strong> esses plugins são abstraídos em um <strong>modelo de entidades próprio</strong>, sobre um Control Plane dedicado. Não se criam mais Services, Routes nem plugins manualmente.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Conceito 1.x / Kong Gateway</th>
+<th style="text-align: left;">Entidade no AI Gateway 2.x</th>
+<th style="text-align: left;">Para que serve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Configuração do <code>ai-proxy-advanced</code></td>
+<td style="text-align: left;"><strong>AI Model</strong> (<code>ai_gateway_models</code>)</td>
+<td style="text-align: left;">Modelo <strong>virtual</strong> com um ou mais <em>targets</em>, balanceamento, rota e policies</td>
+</tr>
+<tr>
+<td style="text-align: left;">Credenciais repetidas em cada plugin</td>
+<td style="text-align: left;"><strong>AI Model Provider</strong> (<code>ai_gateway_model_providers</code>)</td>
+<td style="text-align: left;">Credencial de um provedor declarada <strong>uma vez</strong> e reutilizada por todos os modelos</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ai-mcp-proxy</code></td>
+<td style="text-align: left;"><strong>AI MCP Server</strong> (<code>ai_gateway_mcp_servers</code>)</td>
+<td style="text-align: left;">APIs REST como tools MCP, <em>bundling</em>, proxy de MCP externos</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ai-a2a-proxy</code></td>
+<td style="text-align: left;"><strong>AI Agent</strong> (<code>ai_gateway_agents</code>)</td>
+<td style="text-align: left;">Tráfego agente-a-agente (A2A) com analytics próprios</td>
+</tr>
+<tr>
+<td style="text-align: left;">Consumers / Consumer Groups</td>
+<td style="text-align: left;"><strong>AI Consumer / AI Consumer Group</strong></td>
+<td style="text-align: left;">Identidade e ACL de modelos, tools e agentes</td>
+</tr>
+<tr>
+<td style="text-align: left;">Plugins (<code>ai-sanitizer</code>, <code>ai-rate-limiting-advanced</code>...)</td>
+<td style="text-align: left;"><strong>AI Policy</strong> (<code>ai_gateway_policies</code>)</td>
+<td style="text-align: left;">Mesmo <code>type</code> e mesmo <code>config</code> do plugin equivalente</td>
+</tr>
+<tr>
+<td style="text-align: left;">Vaults / certificados</td>
+<td style="text-align: left;"><strong>AI Vault</strong>, <strong>Config Store</strong>, <strong>Data Plane Certificates</strong></td>
+<td style="text-align: left;">Segredos referenciáveis (<code>{vault://...}</code>) e mTLS do DP</td>
+</tr>
+<tr>
+<td style="text-align: left;">Plugins custom (exigiam reconstruir imagens)</td>
+<td style="text-align: left;"><strong>Custom Policy</strong> (<code>ai_gateway_custom_policies</code>, 2.2)</td>
+<td style="text-align: left;">Lua publicado a partir do Konnect para os DP sem rebuild</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-arquitetura-de-referencia-a-que-usaremos-no-dia-4">3. Arquitetura de referência (a que usaremos no Dia 4)<a class="headerlink" href="#3-arquitetura-de-referencia-a-que-usaremos-no-dia-4" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+  classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+  classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+  classDef inner_cp fill:#bae6fd,stroke:#0284c7,stroke-width:1px,color:#0c4a6e;
+  classDef inner_dp fill:#fed7aa,stroke:#ea580c,stroke-width:1px,color:#7c2d12;
+  classDef client_style fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:20,ry:20;
+  classDef ext_style fill:#f1f5f9,stroke:#475569,stroke-width:2px,color:#0f172a,rx:5,ry:5;
+  classDef obs_style fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b,rx:10,ry:10;
+
+  subgraph Konnect ["KONG KONNECT (SaaS)"]
+    direction TB
+    AIGW["AI Gateway 2.2: TUPREFIJO-ai-gw&lt;br/&gt;Modelos · Provedores · Policies&lt;br/&gt;MCP Servers · Agentes · Consumers · Vault"]:::inner_cp
+    KA["Analytics de IA&lt;br/&gt;tokens · custo · latência"]:::inner_cp
+  end
+  Konnect:::cp_style
+
+  Dev(["Instrutor / CI&lt;br/&gt;kongctl apply · sync"]):::client_style
+  Apps(["Apps e agentes&lt;br/&gt;SDK OpenAI · MCP · A2A"]):::client_style
+
+  subgraph Local ["DOCKER LOCAL (rede aigw-lab)"]
+    direction TB
+    DP["Data Plane&lt;br/&gt;kong/kong-ai-gateway:2.2.0&lt;br/&gt;:8010"]:::inner_dp
+    R[("Redis Stack&lt;br/&gt;vetores · cache · cotas")]:::inner_dp
+    O["Ollama&lt;br/&gt;llama3.2:1b · qwen3:0.6b&lt;br/&gt;nomic-embed-text"]:::inner_dp
+    W["WireMock&lt;br/&gt;core bancário REST · agentes A2A"]:::inner_dp
+  end
+  Local:::dp_style
+
+  Cloud["OpenAI · Anthropic · Gemini&lt;br/&gt;(opcional, demo do instrutor)"]:::ext_style
+  OBS["OTel Collector&lt;br/&gt;OpenObserve · Phoenix"]:::obs_style
+
+  Dev --&gt;|"YAML declarativo"| AIGW
+  AIGW &lt;==&gt;|"config + telemetria (mTLS)"| DP
+  Apps --&gt;|"apikey"| DP
+  DP --&gt; O
+  DP --&gt; W
+  DP &lt;--&gt; R
+  DP -.-&gt;|"opcional"| Cloud
+  DP -.-&gt;|"OTLP"| OBS
+  DP -.-&gt; KA</code></pre>
+<p><strong>Pontos-chave da arquitetura:</strong></p>
+<ul>
+<li><strong>Control Plane (Konnect):</strong> o AI Gateway é uma entidade do Konnect com seus próprios endpoints de configuração e telemetria. Ali ficam modelos, provedores, policies, servidores MCP, agentes, consumers e o vault.</li>
+<li><strong>Data Plane:</strong> um contêiner <code>kong/kong-ai-gateway:2.2.0</code> que se conecta via mTLS (certificado registrado no AI Gateway) e processa o tráfego. <strong>Não guarda estado</strong>: cotas, cache e vetores ficam no <strong>Redis</strong>, por isso escala para N réplicas.</li>
+<li><strong>Um único endpoint compatível com OpenAI:</strong> <code>POST /v1/chat/completions</code>. O cliente escolhe um <strong>alias</strong> no campo <code>model</code> do body (<code>chat</code>, <code>codigo</code>, <code>auto</code>...) e o gateway decide provedor, target, failover, policies e custo.</li>
+<li><strong>Identidade:</strong> o key-auth do AI Gateway usa o header <code>apikey</code>. Atenção: ele <strong>não</strong> remove o prefixo <code>Bearer</code>, por isso, com os SDKs da OpenAI, <code>apikey</code> é enviado como header extra (<code>default_headers</code>).</li>
+</ul>
+<h3 id="fluxo-de-uma-requisicao">Fluxo de uma requisição<a class="headerlink" href="#fluxo-de-uma-requisicao" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App as App / Agente
+    participant DP as AI Gateway (DP 2.2)
+    participant Redis as Redis
+    participant LLM as Provedor (Ollama / cloud)
+    participant KA as Konnect Analytics + OTel
+
+    App-&gt;&gt;DP: POST /v1/chat/completions {model: "chat"} + apikey
+    DP-&gt;&gt;DP: Autenticação (key-auth) e ACL do modelo
+    DP-&gt;&gt;Redis: Cota de tokens / orçamento disponível?
+    DP-&gt;&gt;DP: Policies de request (guardrails, decorator, RAG, cache)
+    DP-&gt;&gt;LLM: Balancer escolhe o target (pesos, semântica, failover)
+    LLM--&gt;&gt;DP: Resposta + usage (tokens)
+    DP-&gt;&gt;Redis: Desconta tokens / USD consumidos
+    DP--&gt;&gt;App: 200 + X-Kong-LLM-Model
+    DP-)KA: Tokens, custo, latência, consumer (assíncrono)</code></pre>
+<hr />
+<h2 id="4-kongctl-apiops-para-o-ai-gateway">4. kongctl: APIOps para o AI Gateway<a class="headerlink" href="#4-kongctl-apiops-para-o-ai-gateway" title="Permanent link">&para;</a></h2>
+<p>Para o Kong Gateway usamos o <strong>decK</strong>. Para o AI Gateway 2.x a ferramenta declarativa é o <strong>kongctl</strong> (CLI oficial do Konnect). Todo o Dia 3 e o Dia 4 são configurados com YAML versionável; não há passos manuais na UI, exceto a criação do AI Gateway.</p>
+<h3 id="41-estrutura-dos-arquivos">4.1 Estrutura dos arquivos<a class="headerlink" href="#41-estrutura-dos-arquivos" title="Permanent link">&para;</a></h3>
+<p>O curso separa a configuração por tema, assim como o Demo Track de AI Gateway 2.2 do qual ela provém:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>workshop-assets/dia-4/config/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── base/
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── 00-gateway.yaml        ← o AI Gateway (externo: o kongctl não o cria nem o apaga)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   ├── 10-proveedores.yaml    ← provedor Ollama (local, sem chaves pagas)
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   └── 15-identidad.yaml      ← key-auth, consumers e consumer groups
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├── lab_01_multi_llm.yaml      ← modelos chat, chat-resiliente, local-passthrough
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── lab_02_gobierno_cuotas.yaml
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>├── ...                        ← um arquivo por lab (cumulativos)
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>└── lab_09_desafio_credito.yaml
+</span></code></pre></div>
+<h3 id="42-conceitos-que-e-preciso-entender">4.2 Conceitos que é preciso entender<a class="headerlink" href="#42-conceitos-que-e-preciso-entender" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">ai_gateways</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lab-ai-gw</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">_external</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">__AI_GATEWAY_ID__</span><span class="w">          </span><span class="c1"># o gateway já existe; o kongctl só gerencia seus filhos</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nt">ai_gateway_model_providers</span><span class="p">:</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ref</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">ai_gateway</span><span class="p">:</span><span class="w"> </span><span class="kt">!ref</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lab-ai-gw#id</span><span class="w">   </span><span class="c1"># referência a outra entidade declarada (mesmo que esteja em outro arquivo)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ollama (local, open-weight)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="nt">auth</span><span class="p">:</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basic</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ref</code></td>
+<td style="text-align: left;">Identificador <strong>local</strong> da entidade dentro dos arquivos (não é o ID do Konnect)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>!ref &lt;ref&gt;#id</code> / <code>#name</code></td>
+<td style="text-align: left;">Referência a outra entidade: o kongctl resolve seu ID ou nome real</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>_external</code></td>
+<td style="text-align: left;">A entidade já existe e <strong>não</strong> é gerenciada pelo kongctl (ele não a cria, não a modifica, não a apaga)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>!env VAR</code></td>
+<td style="text-align: left;">Obtém o valor de uma variável de ambiente (URLs, nomes de modelos)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>!secret {source: !env VAR}</code></td>
+<td style="text-align: left;">Igual a <code>!env</code>, mas o valor é tratado como segredo (API keys, tokens)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>{vault://llm-keys/clave}</code></td>
+<td style="text-align: left;">Referência que <strong>o Data Plane resolve</strong> em tempo de execução contra o vault do Konnect</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-apply-sync-e-diff">4.3 apply, sync e diff<a class="headerlink" href="#43-apply-sync-e-diff" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Comando</th>
+<th style="text-align: left;">O que faz</th>
+<th style="text-align: left;">Quando usar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>kongctl diff -f ...</code></td>
+<td style="text-align: left;">Mostra o que mudaria (criar / atualizar / <strong>apagar</strong>)</td>
+<td style="text-align: left;">Sempre antes de aplicar, e no <em>pull request</em></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>kongctl apply -f ... --auto-approve</code></td>
+<td style="text-align: left;">Cria e atualiza; <strong>nunca apaga</strong></td>
+<td style="text-align: left;">Primeiro passo de um deploy</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>kongctl sync -f ... --auto-approve</code></td>
+<td style="text-align: left;">Reconcilia: cria, atualiza e <strong>apaga</strong> o que não estiver declarado</td>
+<td style="text-align: left;">Segundo passo: deixa o Konnect igual ao repositório</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">O sync reconcilia por completo as coleções do AI Gateway</p>
+<p>Com o gateway declarado como <code>_external</code>, o kongctl não mexe no gateway em si, mas <strong>apaga sim</strong> qualquer modelo, policy, servidor MCP, agente ou consumer desse gateway que não esteja nos arquivos. Por isso a ordem segura (herdada do Demo Track) é: <strong>(1)</strong> vault e segredos primeiro, <strong>(2)</strong> <code>apply</code> para criar/atualizar, <strong>(3)</strong> <code>sync</code> para apagar o que sobrar. O script <code>workshop-assets/dia-4/scripts/aplicar.sh</code> faz isso por você.</p>
+</div>
+<hr />
+<h2 id="5-roteiro-de-demonstracao-passo-a-passo">5. Roteiro de Demonstração (Passo a Passo)<a class="headerlink" href="#5-roteiro-de-demonstracao-passo-a-passo" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>O instrutor usa seu próprio AI Gateway (<code>instructor-ai-gw</code>) e seu perfil <strong>kong-env</strong> (que exporta <code>KONNECT_TOKEN</code>, <code>DEMO_PREFIX</code> e, opcionalmente, as chaves dos provedores comerciais). Os participantes <strong>não</strong> precisam executar nada hoje: farão isso no <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/">Lab IA 00</a>.</p>
+</blockquote>
+<h3 id="demonstracao-1-o-ai-gateway-no-konnect-5-min">Demonstração 1: O AI Gateway no Konnect (5 min)<a class="headerlink" href="#demonstracao-1-o-ai-gateway-no-konnect-5-min" title="Permanent link">&para;</a></h3>
+<ol>
+<li>No Konnect, abrir <strong>AI Gateway</strong> → <code>instructor-ai-gw</code>. Mostrar que a <strong>versão 2.2</strong> está selecionada.</li>
+<li>Percorrer as seções: <strong>Models</strong>, <strong>Model Providers</strong>, <strong>Policies</strong>, <strong>MCP Servers</strong>, <strong>Agents</strong>, <strong>Consumers</strong>, <strong>Vaults</strong>, <strong>Data Plane Nodes</strong>, <strong>Analytics</strong>.</li>
+<li>Apontar em <strong>Data Plane Nodes</strong> que ainda não há nós conectados.</li>
+</ol>
+<h3 id="demonstracao-2-subir-o-data-plane-22-10-min">Demonstração 2: Subir o Data Plane 2.2 (10 min)<a class="headerlink" href="#demonstracao-2-subir-o-data-plane-22-10-min" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kong-env<span class="w"> </span>aigw-curso<span class="w">                 </span><span class="c1"># perfil do instrutor: KONNECT_TOKEN, DEMO_PREFIX=instructor, chaves opcionais</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>kongctl<span class="w"> </span>version<span class="w">                     </span><span class="c1"># &gt;= 1.20.1</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>./workshop-assets/dia-4/scripts/setup_lab.sh
+</span></code></pre></div>
+<p>Enquanto ele roda, explicar cada passo que o script imprime:</p>
+<ul>
+<li>Descobre o AI Gateway <code>instructor-ai-gw</code> pela API <code>GET /v1/ai-gateways</code> e guarda seu ID.</li>
+<li>Gera as API keys dos consumers <strong>fora do repositório</strong> (<code>~/.kong-workshop/aigw-lab/.env.generated</code>).</li>
+<li>Gera o certificado do DP e o registra com <code>POST /v1/ai-gateways/{id}/data-plane-certificates</code>.</li>
+<li>Lê os endpoints <code>configuration</code> e <code>telemetry</code> do gateway e sobe o DP 2.2 + Redis + WireMock + Ollama.</li>
+<li>Baixa os modelos open-weight e aplica a configuração base com o kongctl.</li>
+</ul>
+<p>Ao terminar, voltar a <strong>Data Plane Nodes</strong>: o nó <code>aigw-lab-dp-instructor</code> aparece conectado com a versão 2.2.0.</p>
+<h3 id="demonstracao-3-kongctl-diff-apply-sync-10-min">Demonstração 3: kongctl diff → apply → sync (10 min)<a class="headerlink" href="#demonstracao-3-kongctl-diff-apply-sync-10-min" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># O que mudaria se eu aplicar o lab 01?</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>./workshop-assets/dia-4/scripts/aplicar.sh<span class="w"> </span><span class="m">01</span><span class="w"> </span>--diff
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Aplicar (apply + sync)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>./workshop-assets/dia-4/scripts/aplicar.sh<span class="w"> </span><span class="m">01</span>
+</span></code></pre></div>
+<ul>
+<li>Mostrar no diff as operações <code>CREATE</code> dos modelos <code>chat</code>, <code>chat-resiliente</code> e <code>local-passthrough</code>.</li>
+<li>No Konnect → <strong>Models</strong>, mostrar os modelos recém-criados, seus <em>targets</em> e pesos.</li>
+<li>Executar novamente <code>aplicar.sh 00 --diff</code>: aparecem os <code>DELETE</code> desses três modelos. É a prova de que o <code>sync</code> reconcilia por completo (não aplicar; apenas mostrar).</li>
+</ul>
+<h3 id="demonstracao-4-primeira-chamada-5-min">Demonstração 4: Primeira chamada (5 min)<a class="headerlink" href="#demonstracao-4-primeira-chamada-5-min" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">source</span><span class="w"> </span>~/.kong-workshop/aigw-lab/.env.generated
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8010/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"apikey: </span><span class="nv">$AIGW_KEY_EQUIPO_DATOS</span><span class="s2">"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"model":"chat","messages":[{"role":"user","content":"En una frase: ¿qué es una API?"}]}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+</span></code></pre></div>
+<ul>
+<li>Sem <code>apikey</code> → <code>401</code>. Com <code>apikey</code> → <code>200</code> e o header <code>X-Kong-LLM-Model</code> indica qual modelo real respondeu.</li>
+</ul>
+<hr />
+<h2 id="6-o-que-destacar-bancos-e-servicos-financeiros">6. O que destacar (bancos e serviços financeiros)<a class="headerlink" href="#6-o-que-destacar-bancos-e-servicos-financeiros" title="Permanent link">&para;</a></h2>
+<div class="admonition success">
+<p class="admonition-title">Mensagens para o comitê de arquitetura e risco</p>
+<ul>
+<li><strong>Segregação de funções:</strong> a configuração fica no Git e é aplicada via pipeline (kongctl); a equipe de segurança aprova o <em>diff</em>, não um clique em um console. É evidência auditável para os reguladores.</li>
+<li><strong>Residência de dados:</strong> o Data Plane roda <strong>na rede do banco</strong> (on-premise ou nuvem privada). Pelo túnel com o Konnect trafegam configuração e telemetria, <strong>nunca</strong> o conteúdo dos prompts e respostas enviados ao provedor.</li>
+<li><strong>Segredos fora das aplicações:</strong> as chaves dos provedores ficam no vault e são resolvidas pelo DP; nenhuma app, desenvolvedor ou contêiner as vê.</li>
+<li><strong>Escalabilidade sem estado:</strong> cotas, cache e vetores no Redis; réplicas do DP são adicionadas sem perder contadores (crítico para limites de gasto).</li>
+<li><strong>Mesma disciplina das APIs:</strong> o banco já governa suas APIs com o Kong; a IA entra pelo mesmo modelo operacional (GitOps, observabilidade, RBAC do Konnect).</li>
+</ul>
+</div>
+<hr />
+<h2 id="7-resumo-e-proximo-passo">7. Resumo e próximo passo<a class="headerlink" href="#7-resumo-e-proximo-passo" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Pergunta</th>
+<th style="text-align: left;">Resposta curta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Onde se configura?</td>
+<td style="text-align: left;">No AI Gateway do Konnect, com o kongctl (YAML no Git)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Onde o tráfego roda?</td>
+<td style="text-align: left;">No Data Plane <code>kong/kong-ai-gateway:2.2.0</code>, na rede do banco</td>
+</tr>
+<tr>
+<td style="text-align: left;">O que muda para as apps?</td>
+<td style="text-align: left;">Só a <code>base_url</code> e o header <code>apikey</code>; o <code>model</code> é um alias</td>
+</tr>
+<tr>
+<td style="text-align: left;">Com o que é preciso ter cuidado?</td>
+<td style="text-align: left;">Mesma versão CP/DP, kongctl ≥ 1.20.1, e o fato de que o <code>sync</code> apaga o que não estiver declarado</td>
+</tr>
+</tbody>
+</table>
+<p>➡️ Prática: <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/">Lab IA 00 — Setup do AI Gateway</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

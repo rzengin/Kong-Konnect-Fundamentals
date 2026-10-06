@@ -1,0 +1,2395 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/en/dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/">
+      
+      
+        <link rel="prev" href="../Lab_IA_07_A2A/">
+      
+      
+        <link rel="next" href="../Lab_IA_09_Desafio_Credito/">
+      
+      
+        
+          <link rel="alternate" href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" hreflang="es">
+        
+          <link rel="alternate" href="../../../pt/dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" hreflang="pt">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>OPS (45 min) AI Lab Observability (OpenObserve & Phoenix) - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ai-lab-08-ai-observability-opentelemetry-openobserve-and-arize-phoenix" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../" title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OPS (45 min) AI Lab Observability (OpenObserve & Phoenix)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt/dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 1 - Theory (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 1 - Theory (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Advanced Observability (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) ITSM Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Secrets Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) OWASP WAF Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 2 - Practical (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 2 - Practical (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initial Setup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Initial Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 3 - AI Gateway (Theory & Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 3 - AI Gateway (Theory & Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI 00 AI Gateway 2.x Architecture and kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI 01 One endpoint, many LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) AI 02 Governance, quotas and budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) AI 03 Guardrails and PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) AI 04 Semantic routing, caching and compression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI 05 Managed RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) AI 06 MCP (APIs as tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI 07 Agents and A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) AI 08 AI Observability and FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) AI 09 AI Summit 2026 Announcements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Lab AI Gateway Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) AI Lab Multi-LLM and Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) AI Lab Governance and Quotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) AI Lab Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) AI Lab Semantics and Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) AI Lab RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Lab MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI Lab A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) AI Lab Observability (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) AI Lab Observability (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-bring-up-the-observability-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Bring up the observability stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-review-the-policy-and-apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Review the policy and apply
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-generate-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Generate traffic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-openobserve-ai-traces-metrics-and-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: OpenObserve — AI traces, metrics and logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-arize-phoenix-the-llm-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Arize Phoenix — the LLM view
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-finops-with-konnect-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: FinOps with Konnect Analytics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Exercise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Challenge Governed Credit Assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-bring-up-the-observability-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Bring up the observability stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-review-the-policy-and-apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Review the policy and apply
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-generate-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Generate traffic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-openobserve-ai-traces-metrics-and-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: OpenObserve — AI traces, metrics and logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-arize-phoenix-the-llm-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Arize Phoenix — the LLM view
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-finops-with-konnect-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: FinOps with Konnect Analytics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Exercise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ai-lab-08-ai-observability-opentelemetry-openobserve-and-arize-phoenix">AI Lab 08: AI Observability — OpenTelemetry, OpenObserve and Arize Phoenix<a class="headerlink" href="#ai-lab-08-ai-observability-opentelemetry-openobserve-and-arize-phoenix" title="Permanent link">&para;</a></h1>
+<p>In this lab you will connect your AI Gateway to the <strong>course observability stack</strong> (OTel Collector + OpenObserve + Arize Phoenix, the same one used in <a href="../../dia-2-labs/Lab_07_Observabilidad_Avanzada/">Day 2 Lab 07</a>) and analyze <strong>real LLM traffic</strong>: tokens, cost, latency per model and consumer, and the OpenInference spans with prompt and response in Phoenix. You will also review Konnect AI Analytics.</p>
+<pre class="mermaid"><code>flowchart LR
+  classDef dp fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+  classDef obs fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b,rx:10,ry:10;
+  classDef cp fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+  classDef client fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:5,ry:5;
+
+  T(["trafico.sh&lt;br/&gt;models · consumers"]):::client
+  DP["aigw-lab-dp&lt;br/&gt;global policy trazas-otel"]:::dp
+  OT["otel-collector:4318&lt;br/&gt;kong-workshop network"]:::obs
+  OO[("OpenObserve :5080&lt;br/&gt;traces · metrics · logs")]:::obs
+  PX[("Phoenix :6006&lt;br/&gt;project aigw-TUPREFIJO")]:::obs
+  KA["Konnect AI Analytics"]:::cp
+
+  T --&gt; DP
+  DP --&gt;|"OTLP/HTTP"| OT
+  OT --&gt; OO
+  OT --&gt; PX
+  DP -.-&gt;|"automatic"| KA</code></pre>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Bring up the observability stack and connect the AI Gateway through the <code>kong-workshop</code> network.</li>
+<li>Apply the global <code>opentelemetry</code> policy with traces, AI metrics and logs.</li>
+<li>Analyze AI traces, metrics and logs in <strong>OpenObserve</strong>.</li>
+<li>See LLM spans (OpenInference) in <strong>Arize Phoenix</strong>.</li>
+<li>Answer <strong>FinOps</strong> questions with Konnect Analytics.</li>
+<li>Exercise: enrich the resource attributes and tune metric export.</li>
+</ul>
+<hr />
+<h2 id="step-1-bring-up-the-observability-stack">Step 1: Bring up the observability stack<a class="headerlink" href="#step-1-bring-up-the-observability-stack" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>./workshop-assets/dia-1/06-observability/scripts/setup-observability.sh
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./workshop-assets/dia-1/06-observability/scripts/setup-observability.sh<span class="w"> </span>status
+</span></code></pre></div>
+<p><strong>Expected result:</strong> <code>otel-collector</code>, <code>openobserve</code> and <code>phoenix</code> running; OpenObserve at <code>http://localhost:5080</code> and Phoenix at <code>http://localhost:6006</code>.</p>
+<p>Check that your AI Data Plane can reach the Collector (both are on the <code>kong-workshop</code> network):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>network<span class="w"> </span>inspect<span class="w"> </span>kong-workshop<span class="w"> </span>--format<span class="w"> </span><span class="s1">'{{range .Containers}}{{.Name}} {{end}}'</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># ... aigw-lab-dp ... otel-collector ...</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Memory</p>
+<p>The stack adds ~1.2 GB. If your machine is tight on memory, stop the Day 2 Data Plane (<code>docker stop kong-dp</code>) while you do this lab.</p>
+</div>
+<h2 id="step-2-review-the-policy-and-apply">Step 2: Review the policy and apply<a class="headerlink" href="#step-2-review-the-policy-and-apply" title="Permanent link">&para;</a></h2>
+<p><code>workshop-assets/dia-4/config/lab_08_observabilidad.yaml</code> declares the global policy <code>trazas-otel</code> (<code>type: opentelemetry</code>, <code>global: true</code>):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>traces_endpoint</code> / <code>logs_endpoint</code></td>
+<td style="text-align: left;"><code>http://otel-collector:4318/v1/traces</code> / <code>/v1/logs</code></td>
+<td style="text-align: left;">Traces and logs to the Collector</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>metrics.endpoint</code></td>
+<td style="text-align: left;"><code>http://otel-collector:4318/v1/metrics</code></td>
+<td style="text-align: left;">OTLP metrics</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>metrics.enable_ai_metrics</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">AI metrics: tokens, cost, LLM latency</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>metrics.enable_consumer_attribute</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Per-consumer attribution</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>resource_attributes.service.name</code></td>
+<td style="text-align: left;"><code>aigw-TUPREFIJO</code> (<code>AIGW_OTEL_SERVICE_NAME</code>)</td>
+<td style="text-align: left;">Filter in OpenObserve and project in Phoenix</td>
+</tr>
+</tbody>
+</table>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./workshop-assets/dia-4/scripts/aplicar.sh<span class="w"> </span><span class="m">08</span>
+</span></code></pre></div>
+<h2 id="step-3-generate-traffic">Step 3: Generate traffic<a class="headerlink" href="#step-3-generate-traffic" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>./workshop-assets/dia-4/scripts/trafico.sh<span class="w"> </span><span class="m">120</span>
+</span></code></pre></div>
+<p>For 2 minutes, the script sends a variety of prompts to <code>chat</code>, <code>chat-cuotas</code>, <code>auto</code>, <code>asistente</code>, <code>chat-cache</code>, <code>codigo</code> and <code>chat-seguro</code> with different consumers. You will see <code>200</code>, and also <code>403</code> (ACL), <code>429</code> (quotas) and <code>400</code> (guardrails): all of it is useful information.</p>
+<h2 id="step-4-openobserve-ai-traces-metrics-and-logs">Step 4: OpenObserve — AI traces, metrics and logs<a class="headerlink" href="#step-4-openobserve-ai-traces-metrics-and-logs" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Open <code>http://localhost:5080</code> (stack credentials: <code>admin@kong.com</code> / <code>Kong12345678!</code> by default, or those in <code>otel-stack/.env</code>).</li>
+<li>
+<p><strong>Traces</strong> → stream <code>default</code> → <em>Past 15 minutes</em> → filter:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">service_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'aigw-TUPREFIJO'</span>
+</span></code></pre></div>
+<p>Open a <code>POST /v1/chat/completions</code> trace: you will see the gateway spans (authentication, policies, balancer) and the span for the model call. In the AI span's attributes, look for the <strong>model</strong>, the <strong>provider</strong> and the input/output <strong>tokens</strong>.</p>
+</li>
+<li>
+<p><strong>Logs</strong> → same filter. SQL mode:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">"default"</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">service_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'aigw-TUPREFIJO'</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">_timestamp</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span>
+</span></code></pre></div>
+</li>
+<li>
+<p><strong>Metrics</strong> → expand the list and look for the AI metrics emitted by the gateway (tokens, cost, LLM latency) in addition to the request and latency metrics. Chart the tokens metric grouped by <strong>model</strong> and then by <strong>consumer</strong>.</p>
+</li>
+<li>
+<p><strong>Dashboard (optional):</strong> <em>Dashboards → New Dashboard</em> <code>TUPREFIJO IA</code> with two panels: "Tokens by consumer" and "LLM latency by model".</p>
+</li>
+</ol>
+<h2 id="step-5-arize-phoenix-the-llm-view">Step 5: Arize Phoenix — the LLM view<a class="headerlink" href="#step-5-arize-phoenix-the-llm-view" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Open <code>http://localhost:6006</code> → project <strong><code>aigw-TUPREFIJO</code></strong> (the Collector copies <code>service.name</code> as the project).</li>
+<li>Open a <code>chat</code> trace: the LLM span shows the <strong>model</strong>, <strong>input messages</strong> (prompt), <strong>response</strong>, <strong>tokens</strong> and latency (OpenInference attributes from AI Gateway 2.2).</li>
+<li>Open an <strong><code>asistente</code></strong> trace: the input messages include the <code>system</code> message with the <strong>RAG context</strong> injected by the gateway.</li>
+<li>Open a <strong><code>chat-seguro</code></strong> trace: you can see the corporate policy <code>system</code> message added by the decorator.</li>
+<li>Copy the <code>trace_id</code> and search for it in OpenObserve: it is <strong>the same trace</strong> (Collector <em>fan-out</em>).</li>
+</ol>
+<h2 id="step-6-finops-with-konnect-analytics">Step 6: FinOps with Konnect Analytics<a class="headerlink" href="#step-6-finops-with-konnect-analytics" title="Permanent link">&para;</a></h2>
+<p>In Konnect → <strong>AI Gateway</strong> → <code>TUPREFIJO-ai-gw</code> → <strong>Analytics</strong>, answer:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Question</th>
+<th style="text-align: left;">Hint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Which consumer used the most tokens in the last hour?</td>
+<td style="text-align: left;">Group by consumer</td>
+</tr>
+<tr>
+<td style="text-align: left;">What is the accumulated cost per model?</td>
+<td style="text-align: left;">Cost calculated with the declared <code>input_cost</code> / <code>output_cost</code> (illustrative internal cost)</td>
+</tr>
+<tr>
+<td style="text-align: left;">How many requests were blocked by guardrails or quotas?</td>
+<td style="text-align: left;">Filter by status code <code>400</code> / <code>429</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Were there <em>cache hits</em> on <code>chat-cache</code>?</td>
+<td style="text-align: left;">Cache metrics</td>
+</tr>
+<tr>
+<td style="text-align: left;">How many MCP <em>tool calls</em> and A2A calls were there?</td>
+<td style="text-align: left;">MCP / A2A traffic</td>
+</tr>
+</tbody>
+</table>
+<h2 id="step-7-exercise">Step 7: Exercise<a class="headerlink" href="#step-7-exercise" title="Permanent link">&para;</a></h2>
+<p>Edit <code>lab_08_observabilidad.yaml</code>:</p>
+<ol>
+<li>Add the resource attribute <strong><code>deployment.environment: workshop-ia</code></strong>.</li>
+<li>Reduce the metrics export interval (<code>metrics.push_interval</code>) to <strong>15 seconds</strong>.</li>
+</ol>
+<p>Apply, generate traffic (<code>trafico.sh 30</code>) and verify in OpenObserve that the new spans have <code>deployment_environment = 'workshop-ia'</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">service_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'aigw-TUPREFIJO'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">deployment_environment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'workshop-ia'</span>
+</span></code></pre></div>
+<details class="tip">
+<summary>Solution</summary>
+<p><code>workshop-assets/dia-4/soluciones/lab_08_observabilidad.yaml</code>:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">metrics</span><span class="p">:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">push_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nn">...</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nt">resource_attributes</span><span class="p">:</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">service.name</span><span class="p">:</span><span class="w"> </span><span class="kt">!env</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AIGW_OTEL_SERVICE_NAME</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="nt">deployment.environment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">workshop-ia</span>
+</span></code></pre></div>
+<code>./workshop-assets/dia-4/scripts/aplicar.sh 08 --solucion</code></p>
+</details>
+<div class="admonition info">
+<p class="admonition-title">Beyond the lab (instructor demo)</p>
+<ul>
+<li><strong>Custom policy (2.2):</strong> Lua published from Konnect without a rebuild (<code>X-Gobierno-IA</code>).</li>
+<li><strong>Metering &amp; Billing:</strong> tokens per consumer → meter → plan → invoice (Konnect add-on).
+See <a href="../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/">AI Module 08</a>.</li>
+</ul>
+</div>
+<hr />
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>With a single global policy, all AI traffic becomes observable using open standards (OTLP + OpenInference): OpenObserve for operations (traces, metrics, logs, alerts) and Phoenix for understanding model behavior. Konnect Analytics completes the FinOps view per consumer and model. Next: <a href="../Lab_IA_09_Desafio_Credito/">AI Lab 09 — Challenge: governed credit assistant</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

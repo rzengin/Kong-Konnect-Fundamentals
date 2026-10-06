@@ -1,0 +1,536 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-08-29T15:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.2.0",
+  "resources": [
+    {
+      "_id": "wrk_mock",
+      "parentId": null,
+      "modified": 1693324800000,
+      "created": 1693324800000,
+      "name": "Kong Workshop",
+      "description": "API collection for Kong Workshop demonstrations",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_mock",
+      "parentId": "wrk_mock",
+      "modified": 1693324800000,
+      "created": 1693324800000,
+      "name": "Base Environment",
+      "data": {
+        "kong_url": "https://localhost:8443",
+        "backend_url": "http://localhost:9081",
+        "api_key": "kong-secret-key-123"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "kong_url",
+          "backend_url",
+          "api_key"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1693324800000,
+      "_type": "environment"
+    },
+    {
+      "_id": "req_1",
+      "parentId": "wrk_mock",
+      "modified": 1693324800000,
+      "created": 1693324800000,
+      "url": "{{ _.backend_url }}/flights",
+      "name": "00 - Test Backend Directo",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 1,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_2",
+      "parentId": "wrk_mock",
+      "modified": 1693324800000,
+      "created": 1693324800000,
+      "url": "{{ _.kong_url }}/healthcheck",
+      "name": "00 - Test Kong Local (Healthcheck)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 2,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_3",
+      "parentId": "wrk_mock",
+      "modified": 1693324800000,
+      "created": 1693324800000,
+      "url": "{{ _.kong_url }}/api/v1/flights/get",
+      "name": "01 - Test Route (Sin Auth)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 3,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_4",
+      "parentId": "wrk_mock",
+      "modified": 1693324800000,
+      "created": 1693324800000,
+      "url": "{{ _.kong_url }}/api/v1/flights/get",
+      "name": "01 - Test Route (Con Auth)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_1",
+          "name": "apikey",
+          "value": "{{ _.api_key }}",
+          "description": ""
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 4,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_5",
+      "parentId": "wrk_mock",
+      "modified": 1693324800001,
+      "created": 1693324800001,
+      "url": "{{ _.kong_url }}/flights",
+      "name": "Demostraci\u00f3n - M\u00f3dulo 07: GET /flights (Sin Auth)",
+      "description": "Prueba de Key Auth (debe retornar 401)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_6",
+      "parentId": "wrk_mock",
+      "modified": 1693324800002,
+      "created": 1693324800002,
+      "url": "{{ _.kong_url }}/flights",
+      "name": "Demostraci\u00f3n - M\u00f3dulo 07: GET /flights (Auth Internal)",
+      "description": "Prueba de ACL con rol interno (debe retornar 403)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_2",
+          "name": "apikey",
+          "value": "internal-secret-123",
+          "description": ""
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 6,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_7",
+      "parentId": "wrk_mock",
+      "modified": 1693324800003,
+      "created": 1693324800003,
+      "url": "{{ _.kong_url }}/flights",
+      "name": "Demostraci\u00f3n - M\u00f3dulo 07: GET /flights (Auth External)",
+      "description": "Prueba exitosa de Auth + ACL externo (debe retornar 200)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_3",
+          "name": "apikey",
+          "value": "external-secret-123",
+          "description": ""
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 7,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_03_1",
+      "parentId": "wrk_mock",
+      "modified": 1693324800010,
+      "created": 1693324800010,
+      "url": "{{ _.kong_url }}/api/v1/flights",
+      "name": "Lab 04 - Transformaciones (GET /api/v1/flights)",
+      "description": "Verificar x-empresa en la respuesta y x-inter-env en el payload",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 10,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_04_1",
+      "parentId": "wrk_mock",
+      "modified": 1693324800011,
+      "created": 1693324800011,
+      "url": "{{ _.kong_url }}/api/v1/flights",
+      "name": "Lab 05 - Ruteo Inteligente (Con X-Region: latam)",
+      "description": "Ruteo a backend latam",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Region",
+          "value": "latam"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 11,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_05_1",
+      "parentId": "wrk_mock",
+      "modified": 1693324800012,
+      "created": 1693324800012,
+      "url": "{{ _.kong_url }}/api/v1/bookings",
+      "name": "Lab 06 - Validaci\u00f3n JSON (V\u00e1lido)",
+      "description": "Payload v\u00e1lido",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"passenger_name\":\"Juan Perez\",\"flight_id\":\"KA-101\",\"booking_type\":\"premium\"}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 12,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_05_2",
+      "parentId": "wrk_mock",
+      "modified": 1693324800013,
+      "created": 1693324800013,
+      "url": "{{ _.kong_url }}/api/v1/bookings",
+      "name": "Lab 06 - Validaci\u00f3n JSON (Inv\u00e1lido) (Falta campo)",
+      "description": "Falta passenger_name",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\"flight_id\":\"KA-101\",\"booking_type\":\"premium\"}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 13,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_02_1_1788056417639",
+      "parentId": "wrk_mock",
+      "modified": 1788056417639,
+      "created": 1788056417639,
+      "url": "http://localhost:8081/default/token",
+      "name": "Lab 10 - Obtener Token OIDC (Mock)",
+      "description": "Obtener token usando client credentials",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/x-www-form-urlencoded",
+        "params": [
+          {
+            "name": "client_id",
+            "value": "mock-client-id"
+          },
+          {
+            "name": "client_secret",
+            "value": "mock-client-secret"
+          },
+          {
+            "name": "grant_type",
+            "value": "client_credentials"
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/x-www-form-urlencoded"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 14,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_02_2_1788056417639",
+      "parentId": "wrk_mock",
+      "modified": 1788056417639,
+      "created": 1788056417639,
+      "url": "{{ _.kong_url }}/api/v1/echo",
+      "name": "Lab 10 - Acceso Seguro (OIDC + ACL)",
+      "description": "Acceso protegido (Requiere Bearer token en Auth)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "PON_TU_TOKEN_AQUI"
+      },
+      "metaSortKey": 15,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_05_1_1788056417639",
+      "parentId": "wrk_mock",
+      "modified": 1788056417639,
+      "created": 1788056417639,
+      "url": "{{ _.kong_url }}/api/v1/mock",
+      "name": "Lab 11 - OPA Gobernanza (Sin Admin)",
+      "description": "Acceso bloqueado por OPA (403)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 16,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_05_2_1788056417639",
+      "parentId": "wrk_mock",
+      "modified": 1788056417639,
+      "created": 1788056417639,
+      "url": "{{ _.kong_url }}/api/v1/mock",
+      "name": "Lab 11 - OPA Gobernanza (Con Admin)",
+      "description": "Acceso permitido por OPA (200)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "x-role",
+          "value": "admin"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 17,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_01_1_1788108770824",
+      "parentId": "wrk_mock",
+      "modified": 1788108770824,
+      "created": 1788108770824,
+      "url": "{{ _.kong_url }}/api/v1/mock",
+      "name": "Lab 08 - Zero Trust (Sin API Key)",
+      "description": "Acceso denegado (401)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": 14,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_01_2_1788108770824",
+      "parentId": "wrk_mock",
+      "modified": 1788108770824,
+      "created": 1788108770824,
+      "url": "{{ _.kong_url }}/api/v1/mock",
+      "name": "Lab 08 - Zero Trust (Con API Key)",
+      "description": "Acceso permitido (200)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "apikey",
+          "value": "secreto-123"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 14,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_lab_03_1_1788108770824",
+      "parentId": "wrk_mock",
+      "modified": 1788108770824,
+      "created": 1788108770824,
+      "url": "{{ _.kong_url }}/api/internal/reports",
+      "name": "Lab 09 - IP Restriction (IP Denegada)",
+      "description": "Acceso denegado simulando IP atacante (403)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Real-Ip",
+          "value": "200.150.10.20"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": 15,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    }
+  ]
+}

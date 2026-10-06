@@ -1,0 +1,2718 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico/">
+      
+      
+        <link rel="prev" href="../../00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/">
+      
+      
+        <link rel="next" href="../../02-kong-plugins/Guia_02_Kong_Plugins/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="es">
+        
+          <link rel="alternate" href="../../../pt/dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico/" hreflang="pt">
+        
+          <link rel="alternate" href="../../../en/dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>DEV (45 min) Kong Konnect Gateway - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#modulo-01-kong-konnect-gateway-basico" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../../.." title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DEV (45 min) Kong Konnect Gateway
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Seleccionar idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt/dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico/" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 1 - Teórico (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 1 - Teórico (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivos-del-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivos del Módulo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conceptos-fundamentales-de-kong-konnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conceptos Fundamentales de Kong Konnect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conceptos Fundamentales de Kong Konnect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-gateway-services-servicios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Gateway Services (Servicios)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-routes-rutas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Routes (Rutas)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Plugins
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-consumers-consumidores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Consumers (Consumidores)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-upstreams-y-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Upstreams y Targets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-certificates-y-snis-certificados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Certificates y SNIs (Certificados)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secuencia-de-demostraciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secuencia de Demostraciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Secuencia de Demostraciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerrequisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerrequisitos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-1-gateway-services-y-routes-el-flujo-basico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 1: Gateway Services y Routes (El Flujo Básico)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-2-plugins-gobernanza" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 2: Plugins (Gobernanza)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-3-consumers-y-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 3: Consumers y Seguridad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-4-upstreams-y-targets-load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 4: Upstreams y Targets (Load Balancing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-5-prueba-integradora-end-to-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 5: Prueba Integradora End-to-End
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Observabilidad Avanzada (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Integración ITSM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Gestión de Secretos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Seguridad OWASP WAF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 2 - Práctico (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 2 - Práctico (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Inicial
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup Inicial
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 3 - AI Gateway (Teoría y Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 3 - AI Gateway (Teoría y Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 00 Arquitectura AI Gateway 2.x y kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 01 Un endpoint, muchos LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 02 Gobierno, cuotas y presupuesto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 03 Guardrails y PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) IA 04 Ruteo semántico, caché y compresión
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 05 RAG gestionado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) IA 06 MCP (APIs como tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 07 Agentes y A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) IA 08 Observabilidad y FinOps de IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) IA 09 Novedades AI Summit 2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA Setup AI Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Multi-LLM y Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) Lab IA Gobierno y Cuotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) Lab IA Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Semántica y Caché
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab IA RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) Lab IA A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Lab IA Observabilidad (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Desafío IA Asistente de Crédito
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluación del Curso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivos-del-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivos del Módulo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conceptos-fundamentales-de-kong-konnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conceptos Fundamentales de Kong Konnect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conceptos Fundamentales de Kong Konnect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-gateway-services-servicios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Gateway Services (Servicios)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-routes-rutas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Routes (Rutas)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Plugins
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-consumers-consumidores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Consumers (Consumidores)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-upstreams-y-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Upstreams y Targets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-certificates-y-snis-certificados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Certificates y SNIs (Certificados)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secuencia-de-demostraciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secuencia de Demostraciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Secuencia de Demostraciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerrequisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerrequisitos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-1-gateway-services-y-routes-el-flujo-basico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 1: Gateway Services y Routes (El Flujo Básico)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-2-plugins-gobernanza" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 2: Plugins (Gobernanza)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-3-consumers-y-seguridad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 3: Consumers y Seguridad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-4-upstreams-y-targets-load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 4: Upstreams y Targets (Load Balancing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-5-prueba-integradora-end-to-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 5: Prueba Integradora End-to-End
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="modulo-01-kong-konnect-gateway-basico">Módulo 01: Kong Konnect Gateway (Básico)<a class="headerlink" href="#modulo-01-kong-konnect-gateway-basico" title="Permanent link">&para;</a></h1>
+<p>Este módulo introduce a los desarrolladores a Kong Konnect, mostrando cómo navegar por la interfaz y crear servicios básicos de forma manual, utilizando nuestro backend simulado (MockAPI) local.</p>
+<pre class="mermaid"><code>flowchart LR
+    classDef cp fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+    classDef dp fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+    classDef inner fill:#a7f3d0,stroke:#059669,stroke-width:1px,color:#064e3b;
+
+    CP["Kong Konnect&lt;br/&gt;(Control Plane)"]:::cp
+
+    subgraph DataPlane ["Kong Gateway DP"]
+        R1["Route: /api/v1"]:::inner
+        S1["Service: API v1"]:::inner
+        R1 --&gt; S1
+    end
+    DataPlane:::dp
+
+    CP -.-&gt;|"Push Config"| DataPlane</code></pre>
+<h2 id="objetivos-del-modulo">Objetivos del Módulo<a class="headerlink" href="#objetivos-del-modulo" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Explorar la interfaz de Konnect</strong>: Entender los conceptos de Gateway Services y Routes.</li>
+<li><strong>Crear un Servicio</strong>: Configurar un servicio (upstream) apuntando al backend mock <code>httpbin-backend:9081</code>.</li>
+<li><strong>Crear una Ruta</strong>: Exponer el servicio mediante el path <code>/mock</code>.</li>
+<li><strong>Probar el flujo</strong>: Consumir la API a través del Data Plane utilizando <code>curl</code>.</li>
+</ol>
+<hr />
+<h2 id="conceptos-fundamentales-de-kong-konnect">Conceptos Fundamentales de Kong Konnect<a class="headerlink" href="#conceptos-fundamentales-de-kong-konnect" title="Permanent link">&para;</a></h2>
+<p>Antes de ir a la práctica, es vital entender los bloques de construcción básicos que utiliza Kong para gobernar el tráfico. El Control Plane gestiona diversas <strong>Entidades Lógicas</strong>; estas son las principales:</p>
+<h3 id="1-gateway-services-servicios">1. Gateway Services (Servicios)<a class="headerlink" href="#1-gateway-services-servicios" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/gateway/latest/admin-api/#service-object">Doc Oficial: Services</a>*</li>
+</ul>
+<p>Un <strong>Service</strong> (Servicio) en Kong es la representación lógica de tu API o microservicio de backend. </p>
+<ul>
+<li>Funciona como el "destino" al que Kong debe enrutar el tráfico después de procesarlo.</li>
+<li>Contiene información crucial como el protocolo (<code>http</code> o <code>https</code>), el host (IP o nombre de dominio), el puerto y el path base de tu backend real.</li>
+<li><strong>Analogía</strong>: Si Kong fuera un aeropuerto, el Gateway Service sería el "Avión" o destino final al que los pasajeros (peticiones) deben llegar.</li>
+</ul>
+<h3 id="2-routes-rutas">2. Routes (Rutas)<a class="headerlink" href="#2-routes-rutas" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/gateway/latest/admin-api/#route-object">Doc Oficial: Routes</a>*</li>
+</ul>
+<p>Una <strong>Route</strong> (Ruta) define las reglas sobre <em>cómo</em> las peticiones externas pueden acceder a un Gateway Service.</p>
+<ul>
+<li>Funciona como el punto de entrada ("entrypoint") para los clientes externos.</li>
+<li>Una ruta se evalúa basándose en atributos de la petición HTTP, principalmente: <code>paths</code> (ej. <code>/mock</code>), <code>hosts</code>, <code>methods</code> o <code>headers</code>.</li>
+<li>Cada Ruta debe estar obligatoriamente asociada a un Gateway Service.</li>
+<li><strong>Analogía</strong>: Siguiendo el ejemplo del aeropuerto, la Ruta sería la "Puerta de Embarque".</li>
+</ul>
+<h3 id="3-plugins">3. Plugins<a class="headerlink" href="#3-plugins" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/hub/">Doc Oficial: Plugins</a>*</li>
+</ul>
+<p>Los <strong>Plugins</strong> son piezas de lógica interceptora que añaden funcionalidades (seguridad, transformaciones, observabilidad, <em>rate limiting</em>, etc.) en tiempo real, sin modificar el código de tus microservicios.</p>
+<ul>
+<li>Pueden aplicarse de manera Global, o específicamente a un Service, una Route o un Consumer.</li>
+</ul>
+<h3 id="4-consumers-consumidores">4. Consumers (Consumidores)<a class="headerlink" href="#4-consumers-consumidores" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/gateway/latest/admin-api/#consumer-object">Doc Oficial: Consumers</a>*</li>
+</ul>
+<p>Un <strong>Consumer</strong> representa a un usuario, aplicación cliente o dispositivo externo que consume tus APIs.</p>
+<ul>
+<li>Identificar a los Consumers permite aplicar políticas a medida (ej. distintos límites de cuota según el plan de suscripción) y es la base de la autenticación (API Keys, JWT, OIDC).</li>
+</ul>
+<h3 id="5-upstreams-y-targets">5. Upstreams y Targets<a class="headerlink" href="#5-upstreams-y-targets" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/gateway/latest/admin-api/#upstream-object">Doc Oficial: Upstreams</a> |  <a href="https://docs.konghq.com/gateway/latest/admin-api/#target-object">Targets</a>*</li>
+</ul>
+<p>Mientras un Service apunta a una dirección, un <strong>Upstream</strong> representa un balanceador de carga virtual (Load Balancer) dentro del propio Kong.</p>
+<ul>
+<li><strong>Targets</strong>: Son las IPs/puertos físicos reales de cada instancia de tu backend.</li>
+<li>Kong distribuirá el tráfico entre los Targets de un Upstream de forma inteligente, monitoreando su estado de salud (Active/Passive Health Checks).</li>
+</ul>
+<h3 id="6-certificates-y-snis-certificados">6. Certificates y SNIs (Certificados)<a class="headerlink" href="#6-certificates-y-snis-certificados" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/gateway/latest/admin-api/#certificate-object">Doc Oficial: Certificates</a> |  <a href="https://docs.konghq.com/gateway/latest/admin-api/#sni-object">SNIs</a>*</li>
+</ul>
+<p>Kong gestiona de manera centralizada los certificados TLS/SSL para habilitar HTTPS hacia los clientes finales (terminación TLS), determinando qué certificado presentar en función del dominio (Server Name Indication - SNI).</p>
+<hr />
+<h2 id="secuencia-de-demostraciones">Secuencia de Demostraciones<a class="headerlink" href="#secuencia-de-demostraciones" title="Permanent link">&para;</a></h2>
+<p>En esta sección, el instructor demostrará en vivo cómo Kong gestiona el tráfico ensamblando cada una de las entidades lógicas explicadas anteriormente.</p>
+<blockquote>
+<p><strong>Nota para el instructor</strong>: Utiliza tu Control Plane asignado y realiza las pruebas a través de la terminal conectada a tu Data Plane local (<code>localhost:8443</code> con HTTPS). Alternativamente, recuerda que puedes usar la colección gráfica de pruebas importando el archivo <code>docs/insomnia_collection.json</code>.</p>
+</blockquote>
+<hr />
+<h3 id="prerrequisitos">Prerrequisitos<a class="headerlink" href="#prerrequisitos" title="Permanent link">&para;</a></h3>
+<p>Abre tu terminal en la raíz del repositorio y navega al directorio de este módulo:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>workshop-assets/dia-1/01-kong-konnect-gateway
+</span></code></pre></div>
+<hr />
+<h3 id="demostracion-1-gateway-services-y-routes-el-flujo-basico">Demostración 1: Gateway Services y Routes (El Flujo Básico)<a class="headerlink" href="#demostracion-1-gateway-services-y-routes-el-flujo-basico" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C as Cliente (curl)
+    participant K as Kong Gateway
+    participant B as Backend (MockAPI)
+
+    C-&gt;&gt;K: GET /mock
+    K-&gt;&gt;B: Enruta tráfico
+    B--&gt;&gt;K: HTTP 200 OK
+    K--&gt;&gt;C: HTTP 200 OK</code></pre>
+<p>Primero, conectaremos Kong con nuestro backend simulado que ya está corriendo en Docker y lo expondremos públicamente.</p>
+<ol>
+<li>
+<p><strong>Crear el Gateway Service (El Backend)</strong></p>
+<ul>
+<li>En Konnect, ve a <strong>Gateway Services</strong> y haz clic en <strong>New Gateway Service</strong>.</li>
+<li><strong>Name</strong>: <code>mock-service</code></li>
+<li><strong>Upstream URL</strong>: <code>http://httpbin-backend:9081/anything</code> <em>(Kong resolverá este nombre gracias a la red de Docker)</em></li>
+<li>Haz clic en <strong>Save</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Crear la Ruta (Route)</strong></p>
+<ul>
+<li>Dentro del servicio <code>mock-service</code>, ve a la sección <strong>Routes</strong> y haz clic en <strong>New Route</strong>.</li>
+<li><strong>Name</strong>: <code>mock-route</code></li>
+<li><strong>Paths</strong>: <code>/mock</code></li>
+<li>Haz clic en <strong>Save</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Validación</strong></p>
+<ul>
+<li>
+<p>Ejecuta el siguiente comando para consultar el backend a través de Kong:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/mock
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Usando curl (alternativa)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+</li>
+<li>
+<p><em>Resultado esperado</em>: HTTP 200 OK. La petición llegó al backend sin problemas.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3 id="demostracion-2-plugins-gobernanza">Demostración 2: Plugins (Gobernanza)<a class="headerlink" href="#demostracion-2-plugins-gobernanza" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C as Cliente (curl)
+    participant K as Kong Gateway
+    participant RL as Plugin: Rate Limiting
+
+    C-&gt;&gt;K: GET /mock
+    K-&gt;&gt;RL: Evalúa contadores
+    RL--&gt;&gt;K: Límite excedido
+    K--&gt;&gt;C: HTTP 429 Too Many Requests</code></pre>
+<p>Añadiremos gobernanza a nuestra ruta aplicando límite de peticiones sin tener que programarlo en el backend.</p>
+<ol>
+<li>
+<p><strong>Habilitar Plugin de Rate Limiting</strong></p>
+<ul>
+<li>Ve a la ruta <code>mock-route</code>.</li>
+<li>En la sección <strong>Plugins</strong>, haz clic en <strong>Add Plugin</strong>.</li>
+<li>Busca <strong>Rate Limiting</strong> y habilítalo.</li>
+<li>Configura: <strong>Config.Minute</strong> = <code>3</code></li>
+<li>Haz clic en <strong>Save</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Validación</strong></p>
+<ul>
+<li>
+<p>Ejecuta el <code>curl</code> de validación repetidas veces (más de 3) de forma rápida:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w">  </span>https://localhost:8443/mock
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Usando curl (alternativa)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+</li>
+<li>
+<p><em>Resultado esperado</em>: A la cuarta petición, Kong responderá con un <code>HTTP 429 Too Many Requests</code>.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3 id="demostracion-3-consumers-y-seguridad">Demostración 3: Consumers y Seguridad<a class="headerlink" href="#demostracion-3-consumers-y-seguridad" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C as Cliente (curl)
+    participant K as Kong Gateway
+    participant KA as Plugin: Key Auth
+    participant B as Backend (MockAPI)
+
+    C-&gt;&gt;K: GET /mock (Header: apikey)
+    K-&gt;&gt;KA: Valida API Key
+    KA--&gt;&gt;K: Credencial válida (Identifica Consumer)
+    K-&gt;&gt;B: Enruta tráfico
+    B--&gt;&gt;K: HTTP 200 OK
+    K--&gt;&gt;C: HTTP 200 OK</code></pre>
+<p>Protegeremos la API obligando a que los usuarios (Consumers) se identifiquen para poder usarla.</p>
+<ol>
+<li>
+<p><strong>Asegurar el Servicio</strong></p>
+<ul>
+<li>Ve a <strong>Gateway Services</strong> -&gt; <code>mock-service</code> -&gt; <strong>Plugins</strong>.</li>
+<li>Habilita el plugin <strong>Key Authentication</strong>.</li>
+<li><em>Si ejecutas el <code>curl</code> ahora, obtendrás un <code>HTTP 401 Unauthorized</code></em>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Crear el Consumer y la Credencial</strong></p>
+<ul>
+<li>En el menú principal, ve a <strong>Consumers</strong> y haz clic en <strong>New Consumer</strong>.</li>
+<li><strong>Username</strong>: <code>app-movil-ios</code></li>
+<li>Haz clic en <strong>Save</strong>.</li>
+<li>Dentro del Consumer, ve a la pestaña <strong>Credentials</strong> y añade una <strong>API Key</strong>.</li>
+<li>En el campo <strong>Key</strong>, ingresa manualmente la clave: <code>kong-secret-key-123</code> y guárdala.</li>
+</ul>
+</li>
+<li>
+<p><strong>Validación</strong></p>
+<ul>
+<li>
+<p>Envía la clave configurada en el header para autenticar la petición:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: kong-secret-key-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Usando curl (alternativa)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: kong-secret-key-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+</li>
+<li>
+<p><em>Resultado esperado</em>: HTTP 200 OK.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3 id="demostracion-4-upstreams-y-targets-load-balancing">Demostración 4: Upstreams y Targets (Load Balancing)<a class="headerlink" href="#demostracion-4-upstreams-y-targets-load-balancing" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant K as Kong Gateway
+    participant U as Upstream (mock-upstream)
+    participant T as Target (httpbin-backend:9081)
+
+    K-&gt;&gt;U: Enruta tráfico
+    U-&gt;&gt;T: Balancea carga a IP/Puerto</code></pre>
+<p>Para prepararnos ante picos de tráfico, abstraeremos el backend detrás de un balanceador de carga virtual (Upstream).</p>
+<ol>
+<li>
+<p><strong>Crear el Upstream</strong></p>
+<ul>
+<li>En el menú principal, ve a <strong>Upstreams</strong> y haz clic en <strong>New Upstream</strong>.</li>
+<li><strong>Name</strong>: <code>mock-upstream</code></li>
+<li>Haz clic en <strong>Save</strong>.</li>
+<li>Dentro del Upstream, ve a <strong>Targets</strong> y añade un nuevo Target apuntando a nuestro contenedor de Docker: <code>httpbin-backend:9081</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Redirigir el Servicio al Upstream</strong></p>
+<ul>
+<li>Ve a <strong>Gateway Services</strong> y edita el <code>mock-service</code>.</li>
+<li>Cambia la <strong>Upstream URL</strong> reemplazando la IP/Host directo por el nombre del Upstream. Debe quedar así: <code>http://mock-upstream/anything</code>.</li>
+<li>Haz clic en <strong>Save</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Validación</strong></p>
+<ul>
+<li>
+<p>Ejecuta la petición nuevamente para verificar que Kong resuelve el Upstream correctamente:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: kong-secret-key-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Usando curl (alternativa)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: kong-secret-key-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+</li>
+<li>
+<p><em>Resultado esperado</em>: <code>HTTP 200 OK</code>. La petición sigue llegando al backend, pero esta vez a través del balanceador lógico (Upstream) en lugar de una conexión directa IP/Puerto. Podrás notarlo en la respuesta JSON, donde el campo <code>"url"</code> mostrará <code>"https://httpbin-backend:9081/anything"</code>.</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>Nota</strong>: Si al hacer la prueba recibes un error <code>HTTP 429 Too Many Requests</code> (como <code>API rate limit exceeded</code>), esto es completamente normal y demuestra que el plugin de <strong>Rate Limiting</strong> que configuramos en la Demostración 2 sigue activo. Solo debes esperar a que se reinicie la ventana de tiempo (1 minuto máximo, revisando el header <code>RateLimit-Reset</code>) y volver a intentar.</p>
+</blockquote>
+</li>
+</ol>
+<hr />
+<h3 id="demostracion-5-prueba-integradora-end-to-end">Demostración 5: Prueba Integradora End-to-End<a class="headerlink" href="#demostracion-5-prueba-integradora-end-to-end" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C as Cliente (curl)
+    participant K as Kong Gateway
+    participant KA as Plugin: Key Auth
+    participant RL as Plugin: Rate Limiting
+    participant U as Upstream
+    participant B as Backend (Target)
+
+    C-&gt;&gt;K: GET /mock
+    K-&gt;&gt;KA: Autentica Consumer
+    K-&gt;&gt;RL: Incrementa contador
+    K-&gt;&gt;U: Resuelve Target saludable
+    U-&gt;&gt;B: Enruta tráfico
+    B--&gt;&gt;K: HTTP 200 OK
+    K--&gt;&gt;C: HTTP 200 OK</code></pre>
+<p>Hemos configurado ruteo (Service/Route), límite de peticiones (Plugin), seguridad (Consumer/Key Auth) y balanceo (Upstream). Todo se ejecuta en milisegundos en el Data Plane.</p>
+<blockquote>
+<p><strong>Nota para el instructor</strong>: En esta demostración no hay que configurar nada nuevo en Konnect. El objetivo es lanzar una petición final para demostrar cómo Kong ensambla y ejecuta todo el flujo (construido de manera incremental en las demostraciones 1 a 4) en una sola llamada.</p>
+</blockquote>
+<ol>
+<li>
+<p><strong>Validación Final</strong></p>
+<ul>
+<li>
+<p>Repite la petición autenticada:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: kong-secret-key-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># Usando curl (alternativa)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: kong-secret-key-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+</li>
+<li>
+<p><em>Resultado esperado e Inspección</em>: La petición devuelve <code>HTTP 200 OK</code>. Para comprobar empíricamente que se cumplió el diagrama de secuencia paso a paso, inspecciona el output del comando (las cabeceras HTTP de respuesta y el payload JSON):</p>
+<ol>
+<li><strong>Seguridad (Key Auth)</strong>: En el JSON devuelto por el backend, comprueba que existe <code>"X-Consumer-Username": ["app-movil-ios"]</code>. Esto demuestra que Kong interceptó la API Key, la validó, e identificó exitosamente al consumidor <em>antes</em> de enviar el tráfico al backend.</li>
+<li><strong>Control de Tráfico (Rate Limiting)</strong>: Observa las cabeceras HTTP de respuesta de Kong, como <code>RateLimit-Limit: 3</code> y <code>RateLimit-Remaining: 2</code>. Esto confirma que el plugin evaluó tu cuota y descontó la petición actual.</li>
+<li><strong>Balanceo (Upstream y Target)</strong>: En el JSON, la propiedad <code>"url"</code> mostrará <code>"https://httpbin-backend:9081/anything"</code>. Esto evidencia que Kong resolvió de forma transparente el Upstream (<code>mock-upstream</code>) hacia el Target real.</li>
+<li><strong>Gateway (Tiempos)</strong>: Las cabeceras <code>X-Kong-Proxy-Latency</code> (tiempo que Kong gastó ejecutando los plugins) y <code>X-Kong-Upstream-Latency</code> (tiempo que tardó el backend) evidencian cómo Kong orquesta todo este flujo en milisegundos.</li>
+</ol>
+<p><em>(Opcional: Para visualizar esto gráficamente en Konnect, puedes ir al menú </em><em>Analytics -&gt; API Requests</em><em> para explorar el detalle de estas transacciones. Ten en cuenta que la telemetría puede tardar un par de minutos en reflejarse en el dashboard).</em></p>
+</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="resumen">Resumen<a class="headerlink" href="#resumen" title="Permanent link">&para;</a></h2>
+<p>Has visto cómo Kong construye una red inteligente para gobernar el tráfico. En el Día 2 de este workshop, en los laboratorios de la carpeta <code>labs/</code>, tú mismo ejecutarás configuraciones similares de forma práctica y escalable (como código utilizando <strong>decK</strong> y <strong>GitOps</strong>).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

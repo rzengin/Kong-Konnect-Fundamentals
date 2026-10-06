@@ -1,0 +1,2572 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/en/dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic/">
+      
+      
+        <link rel="prev" href="../../06-observability/Guia_06_Observability/">
+      
+      
+        <link rel="next" href="../../08-integracion-itsm/Dia1_Demo_Integracion_ITSM/">
+      
+      
+        
+          <link rel="alternate" href="../../../../dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic/" hreflang="es">
+        
+          <link rel="alternate" href="../../../../pt/dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic/" hreflang="pt">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>SEC (30 min) Securing API Traffic - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-07-securing-api-traffic" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SEC (30 min) Securing API Traffic
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../../dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic/" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../../pt/dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic/" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 1 - Theory (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 1 - Theory (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Advanced Observability (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-theoretical-concepts-zero-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Theoretical Concepts (Zero Trust)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Theoretical Concepts (Zero Trust)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-transport-security-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Transport Security (mTLS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-identity-and-authentication-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Identity and Authentication (Authentication)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-authorization-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Authorization (Authorization)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-perimeter-network-security-ip-restriction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Perimeter Network Security (IP Restriction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-demonstration-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Demonstration Sequence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Demonstration Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-1-strong-authentication-and-access-control-key-auth-acl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 1: Strong Authentication and Access Control (Key Auth + ACL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-2-perimeter-defense-ip-restriction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 2: Perimeter Defense (IP Restriction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-3-mutual-tls-and-openid-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 3: Mutual TLS and OpenID Connect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Demonstration 3: Mutual TLS and OpenID Connect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-a-client-authentication-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase A: Client Authentication (mTLS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-b-defense-in-depth-mtls-oidc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase B: Defense in Depth (mTLS + OIDC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) ITSM Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Secrets Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) OWASP WAF Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 2 - Practical (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 2 - Practical (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initial Setup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Initial Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 3 - AI Gateway (Theory & Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 3 - AI Gateway (Theory & Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI 00 AI Gateway 2.x Architecture and kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI 01 One endpoint, many LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) AI 02 Governance, quotas and budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) AI 03 Guardrails and PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) AI 04 Semantic routing, caching and compression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI 05 Managed RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) AI 06 MCP (APIs as tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI 07 Agents and A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) AI 08 AI Observability and FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) AI 09 AI Summit 2026 Announcements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Lab AI Gateway Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) AI Lab Multi-LLM and Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) AI Lab Governance and Quotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) AI Lab Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) AI Lab Semantics and Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) AI Lab RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Lab MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI Lab A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) AI Lab Observability (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Challenge Governed Credit Assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-theoretical-concepts-zero-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Theoretical Concepts (Zero Trust)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Theoretical Concepts (Zero Trust)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-transport-security-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Transport Security (mTLS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-identity-and-authentication-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Identity and Authentication (Authentication)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-authorization-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Authorization (Authorization)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-perimeter-network-security-ip-restriction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Perimeter Network Security (IP Restriction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-demonstration-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Demonstration Sequence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Demonstration Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-1-strong-authentication-and-access-control-key-auth-acl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 1: Strong Authentication and Access Control (Key Auth + ACL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-2-perimeter-defense-ip-restriction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 2: Perimeter Defense (IP Restriction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-3-mutual-tls-and-openid-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 3: Mutual TLS and OpenID Connect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Demonstration 3: Mutual TLS and OpenID Connect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-a-client-authentication-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase A: Client Authentication (mTLS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-b-defense-in-depth-mtls-oidc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase B: Defense in Depth (mTLS + OIDC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="module-07-securing-api-traffic">Module 07: Securing API Traffic<a class="headerlink" href="#module-07-securing-api-traffic" title="Permanent link">&para;</a></h1>
+<p>In this module, we will address the practical application of the <strong>Zero Trust</strong> paradigm in our APIs. Kong Konnect allows orchestrating security across multiple layers (Transport, Identity, and Network), ensuring <strong>Defense in Depth</strong> without coupling security logic to the microservices' code.</p>
+<hr />
+<h2 id="1-theoretical-concepts-zero-trust">1. Theoretical Concepts (Zero Trust)<a class="headerlink" href="#1-theoretical-concepts-zero-trust" title="Permanent link">&para;</a></h2>
+<h3 id="a-transport-security-mtls">A. Transport Security (mTLS)<a class="headerlink" href="#a-transport-security-mtls" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Zero Trust Principle</p>
+</div>
+<p>The Zero Trust paradigm dictates that <strong>the internal network is as hostile as the external one</strong>. It's not enough to secure the external perimeter; every internal network hop must be validated and encrypted.</p>
+<p>Kong Konnect automates certificate rotation and ensures that the Control Plane (cloud) and Data Plane (local nodes) communicate exclusively via encrypted tunnels using mTLS (Mutual TLS). The Data Plane will not trust any configuration instruction that does not originate from a Control Plane cryptographically signed by the same CA.</p>
+<pre class="mermaid"><code>flowchart LR
+  classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+  classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+  classDef inner_cp fill:#bae6fd,stroke:#0284c7,stroke-width:1px,color:#0c4a6e;
+  classDef inner_dp fill:#fed7aa,stroke:#ea580c,stroke-width:1px,color:#7c2d12;
+
+  subgraph Cloud ["Kong Konnect (Cloud)"]
+    CP["Control Plane"]:::inner_cp
+  end
+  Cloud:::cp_style
+
+  subgraph LocalEnv ["Client's Internal Network"]
+    DP["Kong Gateway DP"]:::inner_dp
+  end
+  LocalEnv:::dp_style
+
+  CP -- "1. Valid Client Certificate" --&gt; DP
+  DP -- "2. Valid Server Certificate" --&gt; CP
+
+  CP &lt;==&gt;|"3. Encrypted mTLS Tunnel"| DP</code></pre>
+<hr />
+<h3 id="b-identity-and-authentication-authentication">B. Identity and Authentication (Authentication)<a class="headerlink" href="#b-identity-and-authentication-authentication" title="Permanent link">&para;</a></h3>
+<p>Who is calling the API? Kong acts as a centralized point to validate identity before traffic hits the microservices.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Mechanism</th>
+<th style="text-align: left;">Complexity Level</th>
+<th style="text-align: left;">Ideal Use Cases</th>
+<th style="text-align: left;">Main Feature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Key Auth</strong></td>
+<td style="text-align: left;">Low</td>
+<td style="text-align: left;">Fast Machine-to-Machine (M2M) integrations, legacy systems.</td>
+<td style="text-align: left;">The consumer sends a static secret in an HTTP header.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Basic Auth</strong></td>
+<td style="text-align: left;">Low</td>
+<td style="text-align: left;">Simple internal APIs.</td>
+<td style="text-align: left;">Sends username and password in base64.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>OpenID Connect (OIDC)</strong></td>
+<td style="text-align: left;">High</td>
+<td style="text-align: left;">SPAs, Mobile Apps, Enterprise Integrations (B2B/B2C).</td>
+<td style="text-align: left;">Industry standard. Integrates natively with Identity Providers (Okta, Auth0, EntraID).</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">The Advantage of OIDC in Kong</p>
+</div>
+<p>When using OIDC, the client never sends its passwords to the API. It authenticates against the IdP and sends Kong a short-lived JWT token. Kong cryptographically validates this token without the need to develop OIDC logic in each of your 50 microservices.</p>
+<p>Depending on the client type, OIDC defines different <strong>flows (grants)</strong>.</p>
+<p><strong>1. Web / SPA Flow (Authorization Code Flow):</strong>
+The Gateway intercepts the anonymous request, redirects the user to the IdP's login, and transparently exchanges the code for the token (Kong acts as a Relying Party by issuing a cookie).</p>
+<p><strong>2. Machine-to-Machine Flow (Client Credentials Flow):</strong>
+This is the flow used for system-to-system integration (and the one we will use in our demonstration). The client independently requests a JWT token from the IdP using its service credentials. Then, it injects this token (<code>Authorization: Bearer</code>) when consuming the API. Kong simply intercepts the token and cryptographically validates its signature without having to contact the IdP on every request.</p>
+<pre class="mermaid"><code>sequenceDiagram
+  autonumber
+  actor Cliente as Application / Script
+  participant IdP as Identity Provider
+  participant Kong as Kong Gateway
+  participant Upstream as Microservice
+
+  Cliente-&gt;&gt;IdP: POST /token (Client ID + Secret)
+  IdP-&gt;&gt;Cliente: 200 OK (Returns Access Token JWT)
+  Cliente-&gt;&gt;Kong: Request GET /api (Header: Authorization Bearer)
+  Kong-&gt;&gt;Kong: Validates JWT Signature (JWKS) and Expiration
+  Kong-&gt;&gt;Upstream: Request GET /api (Legitimate Traffic)
+  Upstream-&gt;&gt;Kong: 200 OK (Data)
+  Kong-&gt;&gt;Cliente: 200 OK</code></pre>
+<hr />
+<h3 id="c-authorization-authorization">C. Authorization (Authorization)<a class="headerlink" href="#c-authorization-authorization" title="Permanent link">&para;</a></h3>
+<p>Knowing <em>who</em> the user is isn't enough; we need to know <em>what they can do</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Consumer Groups and ACLs</p>
+</div>
+<p>In Kong, clients are represented as <code>Consumers</code>. Using the <strong>ACL (Access Control Lists)</strong> plugin, we can group these consumers into roles (e.g., <code>external-partners</code>, <code>internal-devs</code>) and grant or deny their access to different routes in a granular way.</p>
+<pre class="mermaid"><code>flowchart TD
+  classDef client_style fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:20,ry:20;
+  classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+  classDef tool_style fill:#064e3b,stroke:#10b981,stroke-width:1px,color:#ecfdf5,rx:5,ry:5;
+  classDef backend fill:#f1f5f9,stroke:#475569,stroke-width:2px,color:#0f172a,rx:5,ry:5;
+
+  C1(["Alice (Consumer)"]):::client_style
+  C2(["Bob (Consumer)"]):::client_style
+
+  subgraph Kong ["Kong Gateway"]
+    G1["Group: 'internal'"]:::tool_style
+    G2["Group: 'external'"]:::tool_style
+
+    ACL{"ACL Plugin on /admin&lt;br/&gt;(allow: 'internal')"}:::dp_style
+  end
+
+  API["Administration API"]:::backend
+
+  C1 -. "belongs to" .-&gt; G1
+  C2 -. "belongs to" .-&gt; G2
+
+  G1 --&gt;|GET /admin| ACL
+  G2 --&gt;|GET /admin| ACL
+
+  ACL -- "200 OK" --&gt; API
+  ACL -. "403 Forbidden" .-&gt; X((Blocked))</code></pre>
+<p>For extremely dynamic or complex business rules (e.g., <em>"Allow POST only from 9 AM to 5 PM if the user is from the finance department and the amount is less than $10,000"</em>), Kong delegates the decision to an external agent using the <strong>OPA (Open Policy Agent)</strong> plugin.</p>
+<hr />
+<h3 id="d-perimeter-network-security-ip-restriction">D. Perimeter Network Security (IP Restriction)<a class="headerlink" href="#d-perimeter-network-security-ip-restriction" title="Permanent link">&para;</a></h3>
+<p><strong>Defense in Depth</strong> requires overlapping controls. Even if an API has strong authentication, implementing network controls adds a critical layer that mitigates credential theft.</p>
+<div class="admonition success">
+<p class="admonition-title">Benefits of IP Restriction</p>
+</div>
+<p>The <code>ip-restriction</code> plugin is a Layer 3/4 control that allows defining allowlists or denylists of IP addresses or entire CIDR blocks (e.g., <code>192.168.0.0/16</code>). It acts as an ultra-fast first line of defense: it rejects known attackers at the socket level <em>before</em> Kong spends CPU validating complex cryptographic signatures.</p>
+<hr />
+<h2 id="2-demonstration-sequence">2. Demonstration Sequence<a class="headerlink" href="#2-demonstration-sequence" title="Permanent link">&para;</a></h2>
+<p>During <strong>Day 2</strong>, the instructor will use the automated demonstration script to illustrate how these plugins operate in a real environment.</p>
+<h3 id="demonstration-1-strong-authentication-and-access-control-key-auth-acl">Demonstration 1: Strong Authentication and Access Control (Key Auth + ACL)<a class="headerlink" href="#demonstration-1-strong-authentication-and-access-control-key-auth-acl" title="Permanent link">&para;</a></h3>
+<p><strong>Objective:</strong> Demonstrate how to protect a route by blocking anonymous requests and differentiating permissions between two distinct consumers.</p>
+<ol>
+<li><strong>Injection:</strong> A declarative file (<code>03-b3-acl.yaml</code>) that applies the <code>key-auth</code> and <code>acl</code> plugins is synchronized:
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>deck<span class="w"> </span>gateway<span class="w"> </span>sync<span class="w"> </span>workshop-assets/dia-1/07-securing-api-traffic/archivos-deck/03-b3-acl.yaml<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">5</span>
+</span></code></pre></div></li>
+<li><strong>Anonymity Validation:</strong> </li>
+</ol>
+<p>The instructor generates traffic without credentials:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<p>Using curl (alternative):
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+<p><strong>Result:</strong> <code>401 Unauthorized</code>. The API rejects unauthenticated traffic.
+3. <strong>Invalid Role Validation (Authorization):</strong> </p>
+<p>The route is invoked by sending a valid key from an internal user:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: internal-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<p>Using curl (alternative):
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: internal-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+<p><strong>Result:</strong> <code>403 Forbidden</code>. The credential is valid, but the associated group (<code>internal</code>) is not authorized in the ACL for this particular route.
+4. <strong>Legitimate Consumption:</strong> </p>
+<p>The route is invoked using the correct role's credential:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<p>Using curl (alternative):
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+<p><strong>Result:</strong> <code>200 OK</code>. Access permitted.</p>
+<h3 id="demonstration-2-perimeter-defense-ip-restriction">Demonstration 2: Perimeter Defense (IP Restriction)<a class="headerlink" href="#demonstration-2-perimeter-defense-ip-restriction" title="Permanent link">&para;</a></h3>
+<p><strong>Objective:</strong> Protect the perimeter by blocking access to unwanted IPs, verifying the effectiveness of Defense in Depth (even if the key was stolen).</p>
+<ol>
+<li><strong>Injection:</strong> To apply the <code>08-b8-ip-restriction.yaml</code> policy, we need to export the Docker gateway's IP. This is the actual IP that Kong sees as the origin of our requests.
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DECK_DOCKER_HOST_IP</span><span class="o">=</span><span class="k">$(</span>docker<span class="w"> </span>network<span class="w"> </span>inspect<span class="w"> </span>kong-workshop<span class="w"> </span>-r<span class="w"> </span><span class="s1">'.[0].IPAM.Config[0].Gateway'</span><span class="k">)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>deck<span class="w"> </span>gateway<span class="w"> </span>sync<span class="w"> </span>workshop-assets/dia-1/07-securing-api-traffic/archivos-deck/08-b8-ip-restriction.yaml<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">5</span>
+</span></code></pre></div></li>
+<li><strong>Network Block Validation (Negative Case - Blocked IP):</strong> </li>
+</ol>
+<p>Since the host's IP (your machine) is on the allowlist to permit other demos, we will invoke the route from an unauthorized IP using a temporary container within the Docker network:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--network<span class="w"> </span>kong-workshop<span class="w"> </span>curlimages/curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://kong-dp:8443/mock
+</span></code></pre></div>
+<p><strong>Result:</strong> <code>403 Forbidden</code>. The request is immediately rejected by the network rule even before the gateway validates the key.</p>
+<ol>
+<li><strong>Legitimate Consumption (Positive Case - Allowed IP):</strong> </li>
+</ol>
+<p>The instructor invokes the route again from the host's IP (which is on the <code>allow</code> list):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<p>Using curl (alternative):
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>-H<span class="w"> </span><span class="s2">"apikey: external-secret-123"</span><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+<p><strong>Result:</strong> <code>200 OK</code>. Access permitted because it originates from a trusted network.</p>
+<h3 id="demonstration-3-mutual-tls-and-openid-connect">Demonstration 3: Mutual TLS and OpenID Connect<a class="headerlink" href="#demonstration-3-mutual-tls-and-openid-connect" title="Permanent link">&para;</a></h3>
+<p><strong>Objective:</strong> Demonstrate how Kong allows stacking security layers (Transport + User Identity) without modifying the microservice code. We will implement a flow where a valid client certificate (mTLS) is first required, and then, additionally, a valid JWT Token issued by Konnect (OIDC).</p>
+<h4 id="phase-a-client-authentication-mtls">Phase A: Client Authentication (mTLS)<a class="headerlink" href="#phase-a-client-authentication-mtls" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>On-the-Fly Certificate Generation:</strong></li>
+</ol>
+<p>The instructor generates a local Certificate Authority (CA) and a client certificate signed by that CA:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Create the Root CA</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span>-x509<span class="w"> </span>-nodes<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span>-subj<span class="w"> </span><span class="s2">"/CN=kong-ca/O=MyOrg"</span><span class="w"> </span>-keyout<span class="w"> </span>ca.key<span class="w"> </span>-out<span class="w"> </span>ca.crt
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Create the Client Certificate (CN must match the Consumer's username in Kong)</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>openssl<span class="w"> </span>req<span class="w"> </span>-new<span class="w"> </span>-nodes<span class="w"> </span>-subj<span class="w"> </span><span class="s2">"/CN=App-External/O=MyOrg"</span><span class="w"> </span>-keyout<span class="w"> </span>client.key<span class="w"> </span>-out<span class="w"> </span>client.csr
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># Sign the Client Certificate with our CA</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>openssl<span class="w"> </span>x509<span class="w"> </span>-req<span class="w"> </span>-in<span class="w"> </span>client.csr<span class="w"> </span>-CA<span class="w"> </span>ca.crt<span class="w"> </span>-CAkey<span class="w"> </span>ca.key<span class="w"> </span>-CAcreateserial<span class="w"> </span>-out<span class="w"> </span>client.crt<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="c1"># Export the CA certificate to an environment variable as a valid string for injection into decK</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DECK_MTLS_CA_CERT</span><span class="o">=</span><span class="k">$(</span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import sys, json; print(json.dumps(sys.stdin.read()))'</span><span class="w"> </span>&lt;<span class="w"> </span>ca.crt<span class="k">)</span>
+</span></code></pre></div>
+<ol>
+<li><strong>CA and Policy Injection:</strong></li>
+</ol>
+<p>The <code>09-b9-mtls.yaml</code> file is synchronized, which associates our CA with Kong and activates the <code>mtls-auth</code> plugin. Since the Subject CN (<code>App-External</code>) matches our consumer, Kong will automatically map the identity.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>deck<span class="w"> </span>gateway<span class="w"> </span>sync<span class="w"> </span>workshop-assets/dia-1/07-securing-api-traffic/archivos-deck/09-b9-mtls.yaml<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">5</span>
+</span></code></pre></div>
+<ol>
+<li><strong>Block Validation (Without Certificate):</strong></li>
+</ol>
+<p>The route is invoked without presenting the client certificate:</p>
+<p>Using curl:
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443
+</span></code></pre></div>
+<p><strong>Result:</strong> <code>401 Unauthorized</code>. (Message: "No required TLS certificate was sent").</p>
+<ol>
+<li><strong>Legitimate Consumption (With Certificate):</strong></li>
+</ol>
+<p>The route is invoked by presenting the newly generated certificate:</p>
+<p>Using curl:
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>--cert<span class="w"> </span>client.crt<span class="w"> </span>--key<span class="w"> </span>client.key<span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443
+</span></code></pre></div>
+<p><strong>Result:</strong> <code>200 OK</code>. Kong validates the certificate against the CA, identifies the Subject, associates it with <code>App-External</code>, and allows passage.</p>
+<h4 id="phase-b-defense-in-depth-mtls-oidc">Phase B: Defense in Depth (mTLS + OIDC)<a class="headerlink" href="#phase-b-defense-in-depth-mtls-oidc" title="Permanent link">&para;</a></h4>
+<p>At this point, traffic is encrypted and machine-level authenticated. Now, we will add Application/User Identity by delegating authentication to the Kong Konnect Issuer (OIDC).</p>
+<ol>
+<li><strong>OIDC Policy Injection:</strong></li>
+</ol>
+<p>The <code>10-b10-mtls-oidc.yaml</code> file is synchronized, which adds the <code>openid-connect</code> plugin to the same route:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DECK_KONNECT_AUTH_ISSUER</span><span class="o">=</span><span class="nv">$KONNECT_AUTH_ISSUER</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DECK_KONNECT_AUTH_CLIENT_ID</span><span class="o">=</span><span class="nv">$KONNECT_AUTH_CLIENT_ID</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DECK_KONNECT_AUTH_CLIENT_SECRET</span><span class="o">=</span><span class="nv">$KONNECT_AUTH_CLIENT_SECRET</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>deck<span class="w"> </span>gateway<span class="w"> </span>sync<span class="w"> </span>workshop-assets/dia-1/07-securing-api-traffic/archivos-deck/10-b10-mtls-oidc.yaml<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">5</span>
+</span></code></pre></div>
+<ol>
+<li><strong>Block Validation (Without Token):</strong></li>
+</ol>
+<p>The same previous request is attempted (which sent a valid certificate but NOT a JWT token):</p>
+<p>Using curl:
+  <div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>--cert<span class="w"> </span>client.crt<span class="w"> </span>--key<span class="w"> </span>client.key<span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443
+</span></code></pre></div>
+<p><strong>Result:</strong> <code>401 Unauthorized</code>. (Message returned by the OIDC plugin requesting a Bearer token).</p>
+<ol>
+<li><strong>JWT Token Acquisition (Konnect Identity):</strong></li>
+</ol>
+<p>A token is requested from the local Issuer using Client Credentials.</p>
+<blockquote>
+<p><strong>Note on the Issuer:</strong> Since we are making the request from the host (your machine) to the Docker container, we will use <code>localhost</code> in the URL, but we will inject the <code>Host: mock-oidc:8081</code> header so that the generated JWT token contains the correct <code>iss</code> (Issuer) claim that Kong expects within the internal network.</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">LOCAL_ISSUER</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">KONNECT_AUTH_ISSUER</span><span class="p">//mock-oidc/localhost</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">HOST_HEADER</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="nv">$KONNECT_AUTH_ISSUER</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F/<span class="w"> </span><span class="s1">'{print $3}'</span><span class="k">)</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nb">export</span><span class="w"> </span><span class="nv">ACCESS_TOKEN</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-sX<span class="w"> </span>POST<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">LOCAL_ISSUER</span><span class="si">}</span><span class="s2">/token"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Host: </span><span class="nv">$HOST_HEADER</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/x-www-form-urlencoded'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">"client_id=</span><span class="si">${</span><span class="nv">KONNECT_AUTH_CLIENT_ID</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">"client_secret=</span><span class="si">${</span><span class="nv">KONNECT_AUTH_CLIENT_SECRET</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">'grant_type=client_credentials'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span>.access_token<span class="k">)</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$ACCESS_TOKEN</span>
+</span></code></pre></div>
+<ol>
+<li><strong>Final Legitimate Consumption (mTLS + Token):</strong></li>
+</ol>
+<p>The route is invoked by presenting <strong>both</strong> credentials (Certificate + Bearer Token):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>--cert<span class="w"> </span>client.crt<span class="w"> </span>--key<span class="w"> </span>client.key<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$ACCESS_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w"> </span>https://localhost:8443/mock
+</span></code></pre></div>
+<p><strong>Result:</strong> <code>200 OK</code>. Defense in depth achieved! Kong validated the transport certificate and the cryptographic validity of the JWT issued by the IdP.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

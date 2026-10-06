@@ -1,0 +1,2755 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/pt/dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal/">
+      
+      
+        <link rel="prev" href="../../02-kong-plugins/Guia_02_Kong_Plugins/">
+      
+      
+        <link rel="next" href="../../04-gateway-operations/Guia_04_Gateway_Operations/">
+      
+      
+        
+          <link rel="alternate" href="../../../../dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal/" hreflang="es">
+        
+          <link rel="alternate" href="./" hreflang="pt">
+        
+          <link rel="alternate" href="../../../../en/dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>DEV (30 min) Developer Portal - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#modulo-03-kong-developer-portal" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DEV (30 min) Developer Portal
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../../dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal/" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../../en/dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 1 - Teórico (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 1 - Teórico (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivos-do-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivos do Módulo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conceitos-fundamentais-do-portal-do-desenvolvedor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conceitos Fundamentais do Portal do Desenvolvedor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conceitos Fundamentais do Portal do Desenvolvedor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-apis-de-catalogo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. APIs de catálogo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-controle-de-versao-versoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Controle de Versão (Versões)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-especificacoes-oas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Especificações (OAS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-portal-do-desenvolvedor-e-catalogo-de-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Portal do desenvolvedor e catálogo de API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequencia-de-demonstracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequência de Demonstração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sequência de Demonstração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-1-criando-uma-api-no-catalogo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 1: Criando uma API no Catálogo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-2-publicacao-de-documentacao-oas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 2: Publicação de Documentação (OAS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demo-25-upload-de-documentacao-complementar-markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 2.5: Upload de Documentação Complementar (Markdown)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-3-habilite-e-explore-o-portal-do-desenvolvedor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 3: habilite e explore o portal do desenvolvedor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-4-habilitar-autenticacao-e-registro-de-aplicativos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 4: Habilitar autenticação e registro de aplicativos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-5-fluxo-do-desenvolvedor-integracao-de-autoatendimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 5: Fluxo do desenvolvedor (integração de autoatendimento)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-6-aprovacao-de-acesso-aprovacao-automatica-vs-manual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 6: Aprovação de acesso (aprovação automática vs manual)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-7-personalizacao-do-portal-paginas-aparencia-e-snippets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 7: Personalização do Portal (Páginas, Aparência e Snippets)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Observabilidade Avançada (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Integração ITSM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Gerenciamento de Segredos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Segurança OWASP WAF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 2 - Prático (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 2 - Prático (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Inicial
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup Inicial
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 3 - AI Gateway (Teoria e Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 3 - AI Gateway (Teoria e Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 00 Arquitetura AI Gateway 2.x e kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 01 Um endpoint, muitos LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 02 Governança, cotas e orçamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 03 Guardrails e PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) IA 04 Roteamento semântico, cache e compressão
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 05 RAG gerenciado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) IA 06 MCP (APIs como tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 07 Agentes e A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) IA 08 Observabilidade e FinOps de IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) IA 09 Novidades AI Summit 2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA Setup do AI Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Multi-LLM e Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) Lab IA Governança e Cotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) Lab IA Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Semântica e Cache
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab IA RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) Lab IA A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Lab IA Observabilidade (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Desafio IA Assistente de Crédito
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avaliação do Curso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivos-do-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivos do Módulo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conceitos-fundamentais-do-portal-do-desenvolvedor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conceitos Fundamentais do Portal do Desenvolvedor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conceitos Fundamentais do Portal do Desenvolvedor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-apis-de-catalogo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. APIs de catálogo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-controle-de-versao-versoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Controle de Versão (Versões)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-especificacoes-oas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Especificações (OAS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-portal-do-desenvolvedor-e-catalogo-de-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Portal do desenvolvedor e catálogo de API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequencia-de-demonstracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequência de Demonstração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sequência de Demonstração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-1-criando-uma-api-no-catalogo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 1: Criando uma API no Catálogo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-2-publicacao-de-documentacao-oas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 2: Publicação de Documentação (OAS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demo-25-upload-de-documentacao-complementar-markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demo 2.5: Upload de Documentação Complementar (Markdown)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-3-habilite-e-explore-o-portal-do-desenvolvedor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 3: habilite e explore o portal do desenvolvedor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-4-habilitar-autenticacao-e-registro-de-aplicativos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 4: Habilitar autenticação e registro de aplicativos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-5-fluxo-do-desenvolvedor-integracao-de-autoatendimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 5: Fluxo do desenvolvedor (integração de autoatendimento)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-6-aprovacao-de-acesso-aprovacao-automatica-vs-manual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 6: Aprovação de acesso (aprovação automática vs manual)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstracao-7-personalizacao-do-portal-paginas-aparencia-e-snippets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstração 7: Personalização do Portal (Páginas, Aparência e Snippets)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="modulo-03-kong-developer-portal">Módulo 03: Kong Developer Portal<a class="headerlink" href="#modulo-03-kong-developer-portal" title="Permanent link">&para;</a></h1>
+<p>Este módulo está enfocado en cómo exponer nuestras APIs hacia los desarrolladores (internos o externos) utilizando el <strong>Developer Portal</strong> de Kong Konnect.</p>
+<pre class="mermaid"><code>flowchart TD
+    classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+    classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+    classDef inner_cp fill:#bae6fd,stroke:#0284c7,stroke-width:1px,color:#0c4a6e;
+    classDef inner_dp fill:#fed7aa,stroke:#ea580c,stroke-width:1px,color:#7c2d12;
+    classDef portal_style fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b,rx:10,ry:10;
+    classDef inner_portal fill:#a7f3d0,stroke:#059669,stroke-width:1px,color:#064e3b;
+    classDef client_style fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:20,ry:20;
+
+    subgraph DataPlane ["Data Plane (Gateway)"]
+        direction TB
+        GS["Gateway Service&lt;br/&gt;(Microservicio Técnico)"]:::inner_dp
+    end
+    DataPlane:::dp_style
+
+    subgraph ControlPlane ["Control Plane (Konnect)"]
+        direction TB
+        AP["Catalog API&lt;br/&gt;(API Lógico)"]:::inner_cp
+        APV["Catalog API Version&lt;br/&gt;(ej. v1.0.0)"]:::inner_cp
+        OAS["Specification&lt;br/&gt;(OAS/Swagger)"]:::inner_cp
+
+        GS --&gt;|Se expone mediante| AP
+        AP --&gt;|Tiene múltiples| APV
+        APV --&gt;|Está documentado por| OAS
+    end
+    ControlPlane:::cp_style
+
+    subgraph PortalEnv ["Entorno Público"]
+        direction TB
+        Portal["Developer Portal&lt;br/&gt;(Sitio Web Front-End)"]:::inner_portal
+        Catalog["API Catalog&lt;br/&gt;(Directorio de Catalog APIs)"]:::inner_portal
+        DevApp(["Developer Application&lt;br/&gt;(Consumidor / Dev)"]):::client_style
+
+        OAS -.-&gt;|Se renderiza en| Catalog
+        APV -.-&gt;|Se publica en| Catalog
+        Portal &lt;==&gt;|Consume e Integra| Catalog
+        Catalog --&gt;|Es descubierto por| DevApp
+        DevApp -.-&gt;|Solicita acceso a| AP
+    end
+    PortalEnv:::portal_style
+
+    %% Link Styles
+    linkStyle 0 stroke:#0ea5e9,stroke-width:2px;
+    linkStyle 1 stroke:#0ea5e9,stroke-width:2px;
+    linkStyle 2 stroke:#0ea5e9,stroke-width:2px;
+    linkStyle 3 stroke:#10b981,stroke-width:2px,stroke-dasharray: 5 5;
+    linkStyle 4 stroke:#10b981,stroke-width:2px,stroke-dasharray: 5 5;
+    linkStyle 5 stroke:#10b981,stroke-width:2px;
+    linkStyle 6 stroke:#10b981,stroke-width:2px;
+    linkStyle 7 stroke:#10b981,stroke-width:2px,stroke-dasharray: 5 5;</code></pre>
+<h2 id="objetivos-do-modulo">Objetivos do Módulo<a class="headerlink" href="#objetivos-do-modulo" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>Nota Geral:</strong> Todos os comandos <code>curl</code> detalhados nas demos deste módulo podem ser substituídos por execuções diretas do seu cliente <strong>Insomnia</strong>, fazendo uso da coleção <code>insomnia_collection.json</code> fornecida no repositório.</p>
+</blockquote>
+<ol>
+<li><strong>Habilitar o Portal do Desenvolvedor</strong>: Configure o portal no Kong Konnect.</li>
+<li><strong>Especificações de publicação (OAS)</strong>: Faça upload de um arquivo Swagger/OpenAPI para documentar nossa API.</li>
+<li><strong>Catálogo de APIs</strong>: configure como os desenvolvedores descobrem e testam endpoints de forma interativa.</li>
+<li><strong>Developer Onboarding</strong>: Configurar e testar o ciclo de vida do Consumidor (cadastro no portal, criação de aplicações e solicitação de acesso).</li>
+<li><strong>Aprovação de acesso</strong>: Demonstra os fluxos de "Aprovação automática" (automática) e "Aprovação manual" (aprovação do administrador).</li>
+</ol>
+<hr />
+<h2 id="conceitos-fundamentais-do-portal-do-desenvolvedor">Conceitos Fundamentais do Portal do Desenvolvedor<a class="headerlink" href="#conceitos-fundamentais-do-portal-do-desenvolvedor" title="Permanent link">&para;</a></h2>
+<p>De acordo com a <a href="https://developer.konghq.com/dev-portal/">documentação oficial do Dev Portal</a>, o Developer Portal é a "cara" do seu programa API. É uma ferramenta projetada para <strong>simplificar a publicação de APIs, permitir o autoatendimento para desenvolvedores e centralizar a documentação</strong>.</p>
+<p>Antes de configurar nosso portal público, é importante entender as abstrações que Kong Konnect usa para separar a infraestrutura <strong>técnica</strong> da lógica <strong>de negócios</strong>.</p>
+<h3 id="1-apis-de-catalogo">1. APIs de catálogo<a class="headerlink" href="#1-apis-de-catalogo" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/konnect/api-management/api-catalog/">Documento oficial: Catálogo de API</a>*</li>
+</ul>
+<p>Para entender o Portal do Desenvolvedor, devemos primeiro diferenciar dois conceitos-chave do Kong: a parte técnica e a parte comercial.</p>
+<ul>
+<li><strong>A Parte Técnica (Gateway Service)</strong>: É a configuração interna. Inclui IPs, portas, protocolos e rotas físicas. É o que Kong usa internamente para saber como acessar seu servidor backend.</li>
+<li><strong>A Parte Negócio (API de Catálogo)</strong>: É a “vitrine” ou vitrine do seu serviço. É a entidade lógica que você agrupa, decora e expõe aos seus consumidores (os desenvolvedores).</li>
+</ul>
+<p>Uma <strong>API de catálogo</strong> funciona como o registro centralizado da sua interface. É esta API que os desenvolvedores irão assinar e explorar. </p>
+<p>Para que esta “vitrine” seja completa e útil para um desenvolvedor externo, ela é composta por várias peças-chave (visíveis quando você vai configurar uma API no Konnect):</p>
+<ul>
+<li>
+<p><strong>Visão geral e metadados</strong>
+  Aqui é definida a identidade da API (nome, descrição). Além disso, você pode atribuir <strong>rótulos</strong> e <strong>atributos personalizados</strong> que ajudam os desenvolvedores a filtrar e pesquisar APIs em portais muito grandes.</p>
+</li>
+<li>
+<p><strong>Especificação de API (OAS)</strong>
+  É o coração da documentação técnica. É um arquivo padrão (OpenAPI/Swagger) que ensina ao portal como renderizar um console interativo ("Experimente"). Graças a isso, o desenvolvedor pode ver quais endpoints existem, quais parâmetros eles precisam e enviar solicitações de teste de seu próprio navegador.</p>
+</li>
+<li>
+<p><strong>Documentação</strong>
+  Ao contrário da especificação técnica (OAS), aqui você pode adicionar guias passo a passo, tutoriais ou políticas de uso escritas em formato Markdown. É ótimo para fornecer contexto humano (por exemplo, "Como obter seu primeiro token").</p>
+</li>
+<li>
+<p><strong>Portal</strong>
+  É a “ponte” que liga esta entidade empresarial à realidade técnica. Aqui você vincula sua API de catálogo aos <strong>Serviços de gateway</strong> reais que processarão o tráfego.</p>
+</li>
+<li>
+<p><strong>Portais</strong>
+  A mesma API pode ser publicada em vários Portais ao mesmo tempo (por exemplo, um portal interno para funcionários e um portal externo para parceiros). A partir daqui você controla em quais vitrines ele aparece.</p>
+</li>
+<li>
+<p><strong>Aplicativos</strong>
+  Mostra quais desenvolvedores e aplicativos clientes registraram, assinaram e obtiveram credenciais (chaves de API) para consumir especificamente esta API.</p>
+</li>
+</ul>
+<h3 id="2-controle-de-versao-versoes">2. Controle de Versão (Versões)<a class="headerlink" href="#2-controle-de-versao-versoes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/konnect/api-management/api-catalog/">Documento oficial: versões da API</a>*</li>
+</ul>
+<p>As APIs evoluem com o tempo. Kong permite que você gerencie várias versões da mesma API de catálogo (por exemplo, <code>v1</code>, <code>v2</code>, <code>beta</code>). Cada versão funciona como uma subentidade que pode ter sua própria especificação vinculada, ser vinculada a um Gateway Service diferente e ser publicada de forma independente no Portal do Desenvolvedor.</p>
+<h3 id="3-especificacoes-oas">3. Especificações (OAS)<a class="headerlink" href="#3-especificacoes-oas" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/konnect/api-management/api-products/versions/specifications/">Documento oficial: Especificações OpenAPI</a>*</li>
+</ul>
+<p>Para que um desenvolvedor use sua API, ele precisa de documentação. Kong permite fazer upload de arquivos no padrão <strong>OpenAPI Specification (OAS)</strong> —anteriormente conhecido como Swagger— no formato JSON ou YAML. Esta especificação é renderizada interativamente no portal.</p>
+<h3 id="4-portal-do-desenvolvedor-e-catalogo-de-api">4. Portal do desenvolvedor e catálogo de API<a class="headerlink" href="#4-portal-do-desenvolvedor-e-catalogo-de-api" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://docs.konghq.com/konnect/api-management/dev-portal/">Documento oficial: Portal do desenvolvedor</a><em> | * <a href="https://developer.konghq.com/catalog/apis/">Documento oficial: Catálogo de serviços</a></em></li>
+</ul>
+<p>É vital compreender a diferença e a relação íntima entre o <strong>Portal do Desenvolvedor</strong> e a <strong>API de Catálogo</strong>:</p>
+<ul>
+<li><strong>Catálogo de APIs</strong>: É o repositório centralizado ou “vitrine” que indexa todas as <em>APIs de Catálogo</em> (e suas especificações) que sua organização decidiu expor. Ele serve como a única fonte de verdade para os serviços disponíveis.</li>
+<li>
+<p><strong>Portal do Desenvolvedor</strong>: É a interface web interativa pública (ou interna). O Portal <em>consome</em> as informações do Catálogo de APIs para apresentá-las aos desenvolvedores de forma navegável. Enquanto o Catálogo é a estrutura de dados que categoriza suas APIs, o Portal é o site personalizável (com marca, cores e URLs) onde os usuários fazem login.
+Através do Portal e do Catálogo integrado, o <strong>Cadastro de Aplicativos (Autoatendimento)</strong> é habilitado: Desenvolvedores se cadastram no portal, navegam no catálogo, descobrem uma API e criam "Aplicativos" lógicos. Ao fazer isso, o sistema provisiona automaticamente credenciais seguras (como chaves de API) para o gateway subjacente sem exigir a intervenção dos administradores.</p>
+</li>
+<li>
+<p><strong>Documentação interativa</strong>: Dentro do portal, os esquemas OAS do catálogo são renderizados fornecendo um console interativo ("Experimente") que gera fragmentos de código prontos para uso e permite iniciar solicitações de teste diretamente do navegador.</p>
+</li>
+</ul>
+<hr />
+<h2 id="sequencia-de-demonstracao">Sequência de Demonstração<a class="headerlink" href="#sequencia-de-demonstracao" title="Permanent link">&para;</a></h2>
+<p>Nesta seção, demonstraremos como criar um “Catálogo de APIs” que agrupe nossos serviços e como documentá-los para que desenvolvedores terceiros possam interagir com eles por meio do Portal do Desenvolvedor.</p>
+<blockquote>
+<p><strong>Nota para o instrutor</strong>: Usaremos o arquivo de especificação OpenAPI que já está incluído no repositório para não precisarmos escrevê-lo do zero. O arquivo está localizado no caminho: <code>workshop-assets/dia-1/03-developer-portal/openapi_mock.yaml</code>.</p>
+</blockquote>
+<h3 id="demonstracao-1-criando-uma-api-no-catalogo">Demonstração 1: Criando uma API no Catálogo<a class="headerlink" href="#demonstracao-1-criando-uma-api-no-catalogo" title="Permanent link">&para;</a></h3>
+<p>Uma API no Catálogo é a entidade lógica que agrupa um ou mais Gateway Services para serem apresentados ao consumidor final.</p>
+<ol>
+<li>
+<p><strong>Crie a API</strong></p>
+<ul>
+<li>No menu principal esquerdo do Konnect, navegue até a seção <strong>Catálogo</strong>.</li>
+<li>Verifique se você está na guia <strong>APIs</strong>.</li>
+<li>No canto superior direito, clique no botão <strong>Novo</strong> e selecione <strong>API</strong>.</li>
+<li><strong>Nome</strong>: <code>Gateway MockAPI</code></li>
+<li><strong>Descrição</strong>: <code>API para consultar respostas dinâmicas geradas por MockAPI.</code></li>
+<li>Clique em <strong>Salvar</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Vincular o serviço de gateway</strong></p>
+<ul>
+<li>Dentro da configuração da sua nova API (<code>MockAPI Gateway</code>), acesse a seção <strong>Gateway Services</strong>.</li>
+<li>Clique em <strong>Adicionar serviço de gateway</strong>.</li>
+<li>Selecione o serviço criado no módulo anterior (<code>mock-service</code>) e confirme.</li>
+</ul>
+</li>
+</ol>
+<h3 id="demonstracao-2-publicacao-de-documentacao-oas">Demonstração 2: Publicação de Documentação (OAS)<a class="headerlink" href="#demonstracao-2-publicacao-de-documentacao-oas" title="Permanent link">&para;</a></h3>
+<p>Para ajudar os desenvolvedores a entender como consumir nossa API, faremos upload de uma especificação OpenAPI (Swagger).</p>
+<ol>
+<li>
+<p><strong>Carregar arquivo YAML</strong></p>
+<ul>
+<li>Dentro da API <code>MockAPI Gateway</code>, acesse a aba <strong>Versões</strong>.</li>
+<li>Deve haver uma versão padrão (por exemplo, <code>v1</code> ou <code>1.0.0</code>). Digite-o.</li>
+<li>Na seção <strong>Especificações</strong>, clique em <strong>Adicionar Especificação</strong>.</li>
+<li>
+<p>Pesquise no seu explorador de arquivos local e selecione o arquivo localizado exatamente em: 
+ <code>workshop-assets/dia-1/03-developer-portal/openapi_mock.yaml</code> (dentro desta pasta do projeto).</p>
+</li>
+<li>
+<p>Clique em <strong>Salvar</strong>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Publicar no Portal</strong></p>
+<ul>
+<li>Depois de carregada, a especificação aparecerá na lista, mas poderá estar no status <em>Não publicada</em>.</li>
+<li>Clique no botão de opções (três pontos) ao lado da especificação e selecione <strong>Publicar</strong>.</li>
+<li>Agora, publique também a versão da API habilitando o switch que indica “Publicar no Portal” no canto superior direito.</li>
+</ul>
+</li>
+</ol>
+<h3 id="demo-25-upload-de-documentacao-complementar-markdown">Demo 2.5: Upload de Documentação Complementar (Markdown)<a class="headerlink" href="#demo-25-upload-de-documentacao-complementar-markdown" title="Permanent link">&para;</a></h3>
+<p>Além da especificação técnica, um Produto API geralmente vem acompanhado de guias e políticas.</p>
+<ol>
+<li>
+<p><strong>Carregar documentos de descontos</strong></p>
+<ul>
+<li>Na página de detalhes da API, navegue até a guia <strong>Documentos</strong>.</li>
+<li>Clique em <strong>Adicionar Documento</strong>.</li>
+<li>Pesquise e selecione o arquivo: <code>workshop-assets/dia-1/03-developer-portal/manual_usuario.md</code>.</li>
+<li>Atribua o título "Manual do Usuário" e salve/publique-o.</li>
+<li>Repita o processo para <code>legal_conditions.md</code>, intitulando-o "Termos e Condições".</li>
+</ul>
+</li>
+</ol>
+<h3 id="demonstracao-3-habilite-e-explore-o-portal-do-desenvolvedor">Demonstração 3: habilite e explore o portal do desenvolvedor<a class="headerlink" href="#demonstracao-3-habilite-e-explore-o-portal-do-desenvolvedor" title="Permanent link">&para;</a></h3>
+<p>Agora vamos habilitar a face pública para desenvolvedores e testar nossa documentação interativa.</p>
+<ol>
+<li>
+<p><strong>Ative o Portal Público</strong></p>
+<ul>
+<li>No menu esquerdo, navegue até <strong>Portal do Desenvolvedor</strong> (ou <strong>Portais</strong>).</li>
+<li>Selecione o portal padrão (Portal Padrão).</li>
+<li>Clique em <strong>Configurações</strong> e certifique-se de que o portal esteja habilitado (botão <strong>Ativar Portal</strong>).</li>
+<li><em>(Opcional)</em> Mostre ao público como alterar as cores da marca na seção <strong>Aparência</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Acesso como desenvolvedor externo</strong></p>
+<ul>
+<li>Copie a URL pública do portal (encontrada na visualização principal do Portal, por exemplo, <code>https://&lt;sua-org&gt;.developer.konnect.konghq.com</code>).</li>
+<li>Abra uma nova guia anônima (ou janela do navegador) e cole o URL.</li>
+<li>Acesse a aba <strong>Catálogo de APIs</strong>.</li>
+<li>Clique no cartão <code>MockAPI Gateway</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Teste interativo (experimente)</strong></p>
+<ul>
+<li>Na documentação interativa implantada, expanda o endpoint <code>GET /mock</code>.</li>
+<li>Você poderá ver os esquemas de resposta predefinidos em nosso arquivo YAML (status de sucesso e lista de dados simulados retornados pelo backend).</li>
+<li>A interface fornece fragmentos de código gerados automaticamente em múltiplas linguagens (curl, python, node, etc.) prontos para serem copiados pelos desenvolvedores que irão consumir o serviço.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3 id="demonstracao-4-habilitar-autenticacao-e-registro-de-aplicativos">Demonstração 4: Habilitar autenticação e registro de aplicativos<a class="headerlink" href="#demonstracao-4-habilitar-autenticacao-e-registro-de-aplicativos" title="Permanent link">&para;</a></h3>
+<p>Para que os desenvolvedores solicitem acesso às nossas APIs, devemos primeiro proteger o Portal e ativar o registro do aplicativo.</p>
+<ol>
+<li>
+<p><strong>Habilitar Autenticação no Portal</strong></p>
+<ul>
+<li>No menu principal, acesse <strong>Portais</strong> e clique em seu <strong>Portal Padrão</strong>.</li>
+<li>Vá para <strong>Configurações</strong> -&gt; <strong>Autenticação</strong>.</li>
+<li>Habilite a autenticação selecionando <strong>Konnect Identity</strong> (isso permite que os usuários se registrem com e-mail e senha diretamente no banco de dados Konnect).</li>
+</ul>
+</li>
+<li>
+<p><strong>Ative o "Registro de Aplicativo" no Portal</strong></p>
+<ul>
+<li>Dentro do mesmo <strong>Portal Padrão</strong>, acesse <strong>Configurações</strong> -&gt; <strong>Cadastro do Aplicativo</strong>.</li>
+<li>Clique em <strong>Ativar registro de aplicativo</strong>.</li>
+</ul>
+</li>
+<li>
+<p>Salve as alterações. Isso permitirá a funcionalidade na interface do portal público para que os desenvolvedores criem seus próprios aplicativos.</p>
+</li>
+<li>
+<p><strong>Configure a estratégia de autenticação na API de catálogo</strong></p>
+<ul>
+<li>Volte para a seção principal <strong>Catálogo</strong> e digite <code>MockAPI Gateway</code>.</li>
+<li>Navegue até <strong>Requisitos de autenticação</strong> no menu esquerdo.</li>
+<li>Clique em <strong>Nova estratégia de autenticação</strong>.</li>
+<li>Selecione <strong>Key Auth</strong> (isso define que os aplicativos que solicitarem acesso receberão um token estático ou chave de API gerada pelo Kong).</li>
+<li>Clique em <strong>Salvar</strong>.</li>
+</ul>
+</li>
+</ol>
+<h3 id="demonstracao-5-fluxo-do-desenvolvedor-integracao-de-autoatendimento">Demonstração 5: Fluxo do desenvolvedor (integração de autoatendimento)<a class="headerlink" href="#demonstracao-5-fluxo-do-desenvolvedor-integracao-de-autoatendimento" title="Permanent link">&para;</a></h3>
+<p>Agora fingiremos ser um desenvolvedor terceirizado que deseja consumir a API MockAPI.</p>
+<ol>
+<li>
+<p><strong>Inscrição (Inscreva-se)</strong></p>
+<ul>
+<li>Abra a guia anônima onde você tem o Portal do Desenvolvedor.</li>
+<li>Atualize a página. Você notará um novo botão <strong>Log In / Sign Up</strong> no canto superior direito.</li>
+<li>Clique em <strong>Cadastre-se</strong>, preencha um e-mail fictício (por exemplo, <code>dev@externo.com</code>) e uma senha.</li>
+<li>O Konnect gerará automaticamente sua conta e lhe dará acesso ao painel do desenvolvedor.</li>
+</ul>
+</li>
+<li>
+<p><strong>Crie um aplicativo</strong></p>
+<ul>
+<li>Uma vez logado no portal, vá para <strong>Meus Aplicativos</strong>.</li>
+<li>Clique em <strong>Novo aplicativo</strong>.</li>
+<li>Nomeie-o como <code>Mobile Travel App</code> e adicione uma breve descrição. Clique em <strong>Criar</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Solicitar acesso à API (Solicitar acesso)</strong></p>
+<ul>
+<li>Vá para a aba <strong>Catálogo de APIs</strong> e clique em <code>MockAPI Gateway</code>.</li>
+<li>Como você fez login e criou um aplicativo, agora você verá um botão <strong>Solicitar acesso</strong> no canto superior direito.</li>
+<li>Clique nele. Ele solicitará que você selecione qual aplicativo deseja acessar (escolha <code>Mobile Travel App</code>).</li>
+<li>Escolha o método de autenticação (<strong>Key Auth</strong>) e clique em <strong>Solicitar Acesso</strong>.</li>
+</ul>
+</li>
+</ol>
+<h3 id="demonstracao-6-aprovacao-de-acesso-aprovacao-automatica-vs-manual">Demonstração 6: Aprovação de acesso (aprovação automática vs manual)<a class="headerlink" href="#demonstracao-6-aprovacao-de-acesso-aprovacao-automatica-vs-manual" title="Permanent link">&para;</a></h3>
+<p>Dependendo das políticas da empresa, o acesso pode ser concedido instantaneamente ou exigir intervenção humana.
+1. <strong>Aprovação automática (comportamento padrão)</strong>
+    - Imediatamente após a etapa anterior, o portal do desenvolvedor mostrará uma mensagem de sucesso.
+    - Ele fornecerá sua <strong>chave de API</strong> recém-gerada na tela (por exemplo, <code>kpat_XXXX</code>).
+    - <em>(Instrutor)</em>: Neste momento, Konnect contatou o Data Plane e criou silenciosamente a credencial Key Auth sem qualquer intervenção do administrador. É a magia do Autoatendimento!</p>
+<ol>
+<li>
+<p><strong>Mudar para aprovação manual</strong></p>
+<ul>
+<li>Retorne ao console administrativo do Konnect (visualização do instrutor).</li>
+<li>Vá para <strong>Catálogo</strong> -&gt; <code>MockAPI Gateway</code> -&gt; <strong>Versões</strong> -&gt; selecione a versão (<code>v1</code>).</li>
+<li>Clique no botão editar e altere a opção <strong>Aprovação de solicitação de acesso</strong> de <code>Aprovação automática</code> para <code>Exigir aprovação manual</code>.</li>
+<li>Salve as alterações.</li>
+</ul>
+</li>
+<li>
+<p><strong>Teste de aprovação manual</strong></p>
+<ul>
+<li>Na janela do desenvolvedor, crie um novo aplicativo chamado <code>B2B Partner App</code> e solicite acesso à mesma API.</li>
+<li>Desta vez, a tela dirá <strong>"Solicitação de Acesso Pendente"</strong> e não entregará a credencial.</li>
+<li>Retorne ao console Konnect como instrutor e vá para <strong>Solicitações de aplicativos</strong> no menu esquerdo.</li>
+<li>Você verá a solicitação recebida (Pendente). Selecione-o e clique em <strong>Aprovar</strong>.</li>
+<li><em>(Opcional)</em>: Se o desenvolvedor atualizar seu portal neste momento, ele verá sua solicitação aprovada e poderá obter sua chave de API.</li>
+</ul>
+</li>
+</ol>
+<h3 id="demonstracao-7-personalizacao-do-portal-paginas-aparencia-e-snippets">Demonstração 7: Personalização do Portal (Páginas, Aparência e Snippets)<a class="headerlink" href="#demonstracao-7-personalizacao-do-portal-paginas-aparencia-e-snippets" title="Permanent link">&para;</a></h3>
+<p>Para adaptar o portal à "aparência" da nossa organização e fornecer conteúdo útil, Konnect fornece ferramentas avançadas de personalização baseadas em Markdown e YAML Frontmatter.</p>
+<ol>
+<li><strong>Aparência Global</strong><ul>
+<li>No menu do portal (<strong>Portais</strong> -&gt; <strong>Portal Padrão</strong>), vá em <strong>Aparência</strong>.</li>
+<li>Mostra como alterar as cores principais (Brand Color) e fontes.</li>
+<li>Faça upload de um logotipo personalizado, se desejar. Estas alterações serão refletidas imediatamente em todo o portal.</li>
+</ul>
+</li>
+<li>
+<p><strong>Edição de página (Markdown + Frontmatter)</strong></p>
+<ul>
+<li>Vá para a seção <strong>Conteúdo</strong> do seu portal.</li>
+<li>Selecione a <strong>página inicial</strong> para abrir o Editor de Conteúdo.</li>
+<li>Explique a estrutura da página: </li>
+<li>O <strong>Frontmatter</strong> (entre <code>---</code>) onde metadados como o <code>title</code> são definidos.</li>
+<li>Kong <strong>UI Components</strong> injetados por meio de sintaxe especial, por ex. <code>::page-hero</code> ou <code>::page-section</code>. Eles permitem que você crie seções responsivas injetando CSS diretamente, como <code>title-font-size</code> ou <code>color</code>.</li>
+<li>Modifique o texto de boas-vindas na página (por exemplo, altere "Kong API Dev Portal" para "MockAPI Developer Hub") e clique em <strong>Salvar</strong> -&gt; <strong>Publicar</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Uso de Snippets (Conteúdo Reutilizável)</strong></p>
+<ul>
+<li>Os snippets permitem criar blocos de conteúdo que podem ser repetidos em diversas páginas (como um rodapé ou um banner de aviso).</li>
+<li>No editor de <strong>Conteúdo</strong>, alterne para a guia <strong>Snippets</strong> na barra lateral esquerda.</li>
+<li>Clique em <strong>+ Novo trecho</strong>.</li>
+<li>Nomeie-o como <code>banner-support</code> e escreva algum texto em Markdown: <code>&gt; **Support:** Para ajuda com APIs, entre em contato com dev-support@mock.com</code>.</li>
+<li>Salve o trecho. Retorne à página <strong>home</strong> e injete o snippet no final do documento usando a sintaxe: <code>&lt;%- include('banner-support') %&gt;</code>. Publique as alterações e verifique na guia anônima.</li>
+</ul>
+</li>
+<li>
+<p><strong>Navegação</strong></p>
+<ul>
+<li>Por fim, vá para <strong>Navegação</strong> no menu do portal.</li>
+<li>Isto controla o menu superior e o <em>rodapé</em> da página pública.</li>
+<li>Clique em <strong>+ Novo Link</strong>, nomeie o link como "Suporte Técnico" e aponte a URL para <code>https://support.mock.com</code> (ou qualquer caminho que você preferir).</li>
+<li>Salve e verifique como o menu do Portal do Desenvolvedor agora contém esse novo atalho.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="resumo">Resumo<a class="headerlink" href="#resumo" title="Permanent link">&para;</a></h2>
+<p>Você conseguiu agrupar serviços técnicos em uma <strong>API de catálogo</strong> comercial e expô-los de forma interativa. Além disso, você demonstrou o imenso valor do Kong Konnect como plataforma de autoatendimento: permitindo que os desenvolvedores façam sua própria integração, registrem aplicativos e obtenham credenciais de forma automatizada ou controlada por administrador.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,173 @@
+#!/usr/bin/env bash
+cd "$(dirname "$0")/.."
+
+set -e
+
+# Colores para output
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+echo -e "${YELLOW}======================================================${NC}"
+echo -e "${YELLOW} Instalando Prerrequisitos (Mac/Linux)        ${NC}"
+echo -e "${YELLOW}======================================================${NC}\n"
+
+OS="$(uname -s)"
+DECK_VERSION="1.65.1"
+KONGCTL_VERSION="1.20.1"
+# Días 3-4 (AI Gateway 2.x): kongctl < 1.20.1 no conoce las entidades de AI Gateway 2.1/2.2.
+KONGCTL_MIN_VERSION="1.20.1"
+
+# true si kongctl está instalado y su versión es >= KONGCTL_MIN_VERSION
+kongctl_ok() {
+  command -v kongctl &> /dev/null || return 1
+  local v
+  v="$(kongctl version 2>/dev/null | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)"
+  [ -n "$v" ] && [ "$(printf '%s\n%s\n' "$KONGCTL_MIN_VERSION" "$v" | sort -V | head -n 1)" = "$KONGCTL_MIN_VERSION" ]
+}
+INSO_VERSION="13.3.0"
+
+if [ "$OS" = "Darwin" ]; then
+  echo -e "${GREEN}Detectado macOS. Usando Homebrew...${NC}"
+  
+  # 1) Instalar herramientas base de Apple si no existen (solo advertencia)
+  echo "Asegúrate de haber ejecutado: xcode-select --install"
+  
+  # 2) Instalar Homebrew si no está instalado
+  if ! command -v brew &> /dev/null; then
+    echo "Instalando Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+  
+  echo "Actualizando Homebrew..."
+  brew update
+  
+  echo "Instalando herramientas CLI..."
+  for cmd in git curl jq node; do
+    if ! command -v $cmd &> /dev/null; then
+      brew install $cmd || true
+    else
+      echo "$cmd ya instalado"
+    fi
+  done
+  
+  if ! command -v python3 &> /dev/null; then brew install python@3.12 || true; else echo "python3 ya instalado"; fi
+  if ! command -v deck &> /dev/null; then brew install kong/deck/deck || true; else echo "deck ya instalado"; fi
+  if ! command -v kongctl &> /dev/null; then
+    brew install kong/kongctl/kongctl || true
+  elif ! kongctl_ok; then
+    echo "kongctl anterior a ${KONGCTL_MIN_VERSION}: actualizando..."
+    brew upgrade kong/kongctl/kongctl || true
+  else
+    echo "kongctl ya instalado (>= ${KONGCTL_MIN_VERSION})"
+  fi
+  if ! command -v inso &> /dev/null; then brew install --cask inso || true; else echo "inso ya instalado"; fi
+  
+  if ! command -v terraform &> /dev/null; then
+    brew tap hashicorp/tap || true
+    brew install hashicorp/tap/terraform || true
+  else
+    echo "terraform ya instalado"
+  fi
+  
+  echo "Instalando aplicaciones desktop (Docker, Insomnia, VS Code)..."
+  if ! command -v docker &> /dev/null; then brew install --cask docker || true; else echo "docker ya instalado"; fi
+  if ! brew list --cask insomnia &> /dev/null; then brew install --cask insomnia || true; else echo "insomnia ya instalado"; fi
+  if ! command -v code &> /dev/null; then brew install --cask visual-studio-code || true; else echo "vscode ya instalado"; fi
+
+elif [ "$OS" = "Linux" ]; then
+  echo -e "${GREEN}Detectado Linux. Usando apt-get...${NC}"
+  
+  sudo apt-get update
+  sudo apt-get install -y ca-certificates curl wget gnupg lsb-release git unzip xz-utils jq python3 python3-pip python3-venv
+  ARCH="$(dpkg --print-architecture)"   # amd64 | arm64 (Codespaces: amd64)
+  
+  # Docker
+  if ! command -v docker &> /dev/null; then
+    echo "Instalando Docker..."
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg || true
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg || true
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo ${UBUNTU_CODENAME:-$VERSION_CODENAME}) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo usermod -aG docker $USER || true
+  fi
+  
+  # Terraform
+  if ! command -v terraform &> /dev/null; then
+    echo "Instalando Terraform..."
+    wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg || true
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    sudo apt-get update
+    sudo apt-get install -y terraform
+  fi
+  
+  # Node.js
+  if ! command -v node &> /dev/null; then
+    echo "Instalando Node.js..."
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+  fi
+  
+  # decK
+  if ! command -v deck &> /dev/null; then
+    echo "Instalando decK..."
+    curl -fsSL "https://github.com/Kong/deck/releases/download/v${DECK_VERSION}/deck_${DECK_VERSION}_linux_${ARCH}.tar.gz" -o /tmp/deck.tar.gz
+    rm -rf /tmp/deck-x && mkdir -p /tmp/deck-x
+    tar -xzf /tmp/deck.tar.gz -C /tmp/deck-x
+    sudo install -m 0755 "$(find /tmp/deck-x -type f -name deck | head -n 1)" /usr/local/bin/deck
+    rm -rf /tmp/deck.tar.gz /tmp/deck-x
+  fi
+
+  # kongctl (CLI de Konnect) — se instala o se actualiza si es anterior a KONGCTL_MIN_VERSION
+  if ! kongctl_ok; then
+    echo "Instalando kongctl ${KONGCTL_VERSION}..."
+    curl -fsSL "https://github.com/Kong/kongctl/releases/download/v${KONGCTL_VERSION}/kongctl_linux_${ARCH}.zip" -o /tmp/kongctl.zip
+    rm -rf /tmp/kongctl-x && mkdir -p /tmp/kongctl-x
+    unzip -o -q /tmp/kongctl.zip -d /tmp/kongctl-x
+    sudo install -m 0755 "$(find /tmp/kongctl-x -type f -name kongctl | head -n 1)" /usr/local/bin/kongctl
+    rm -rf /tmp/kongctl.zip /tmp/kongctl-x
+  fi
+
+  # inso (Insomnia CLI) - binario oficial solo para x64
+  if ! command -v inso &> /dev/null; then
+    if [ "$ARCH" = "amd64" ]; then
+      echo "Instalando inso..."
+      curl -fsSL "https://github.com/Kong/insomnia/releases/download/core%40${INSO_VERSION}/inso-linux-x64-${INSO_VERSION}.tar.xz" -o /tmp/inso.tar.xz
+      rm -rf /tmp/inso-x && mkdir -p /tmp/inso-x
+      tar -xJf /tmp/inso.tar.xz -C /tmp/inso-x
+      sudo install -m 0755 "$(find /tmp/inso-x -type f -name inso | head -n 1)" /usr/local/bin/inso
+      rm -rf /tmp/inso.tar.xz /tmp/inso-x
+    else
+      echo -e "${YELLOW}inso no tiene binario oficial para ${ARCH}; se omite (opcional).${NC}"
+    fi
+  fi
+  
+  echo -e "${YELLOW}Nota para Linux: Descarga Insomnia manualmente desde https://insomnia.rest/download${NC}"
+
+else
+  echo -e "${RED}Sistema Operativo no soportado por este script: $OS${NC}"
+  exit 1
+fi
+
+echo -e "\n${GREEN}======================================================${NC}"
+echo -e "${GREEN} Validación Rápida de Herramientas${NC}"
+echo -e "${GREEN}======================================================${NC}"
+
+git --version || echo -e "${RED}git falló${NC}"
+curl --version | head -n 1 || echo -e "${RED}curl falló${NC}"
+python3 --version || python --version || echo -e "${RED}python falló${NC}"
+node -v || echo -e "${RED}node falló${NC}"
+npm -v || echo -e "${RED}npm falló${NC}"
+docker version --format 'Docker Client: {{.Client.Version}}' || echo -e "${RED}docker falló (¿el daemon está corriendo?)${NC}"
+docker compose version || echo -e "${RED}docker compose falló${NC}"
+deck version || echo -e "${RED}deck falló${NC}"
+kongctl version || echo -e "${RED}kongctl falló${NC}"
+kongctl_ok || echo -e "${RED}kongctl debe ser >= ${KONGCTL_MIN_VERSION} para los Días 3-4 (AI Gateway)${NC}"
+inso --version || echo -e "${YELLOW}inso no disponible (opcional)${NC}"
+jq --version || echo -e "${RED}jq falló${NC}"
+terraform version | head -n 1 || echo -e "${RED}terraform falló${NC}"
+
+echo -e "\n${GREEN}¡Instalación y Validación Completada!${NC}"

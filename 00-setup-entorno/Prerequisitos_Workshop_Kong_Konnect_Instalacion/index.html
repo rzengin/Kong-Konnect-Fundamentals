@@ -1,0 +1,2634 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/">
+      
+      
+        <link rel="prev" href="../../dia-1-teoria-y-demos/10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/">
+      
+      
+        <link rel="next" href="../Requerimientos_Red_Workshop/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="es">
+        
+          <link rel="alternate" href="../../pt/00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" hreflang="pt">
+        
+          <link rel="alternate" href="../../en/00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Prerrequisitos de Instalación - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#elige-tu-camino-codespaces-a-o-instalacion-local-b" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Prerrequisitos de Instalación
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Seleccionar idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../pt/00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../en/00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 1 - Teórico (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 1 - Teórico (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Observabilidad Avanzada (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Integración ITSM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Gestión de Secretos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Seguridad OWASP WAF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 2 - Práctico (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 2 - Práctico (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Inicial
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup Inicial
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 3 - AI Gateway (Teoría y Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 3 - AI Gateway (Teoría y Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 00 Arquitectura AI Gateway 2.x y kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 01 Un endpoint, muchos LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 02 Gobierno, cuotas y presupuesto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 03 Guardrails y PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) IA 04 Ruteo semántico, caché y compresión
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 05 RAG gestionado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) IA 06 MCP (APIs como tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 07 Agentes y A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) IA 08 Observabilidad y FinOps de IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) IA 09 Novedades AI Summit 2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA Setup AI Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Multi-LLM y Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) Lab IA Gobierno y Cuotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) Lab IA Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Semántica y Caché
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab IA RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) Lab IA A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Lab IA Observabilidad (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Desafío IA Asistente de Crédito
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluación del Curso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p>KONG</p>
+<p>Prerrequisitos de Instalación</p>
+<p>Workshop Kong Konnect</p>
+<p>Guía simple para preparar la estación de trabajo del alumno</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Proveedor</td>
+<td>KONG</td>
+</tr>
+<tr>
+<td>Plataforma</td>
+<td>Kong Konnect - arquitectura híbrida con Control Plane SaaS y entornos locales de laboratorio</td>
+</tr>
+<tr>
+<td>Objetivo</td>
+<td>Indicar qué debe instalar cada alumno, qué debe estar configurado en Konnect y qué conectividad debe tener desde su estación de trabajo.</td>
+</tr>
+<tr>
+<td>Versión</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td>Fecha</td>
+<td>26-ago-2026</td>
+</tr>
+</tbody>
+</table>
+<p>Importante: no incluir tokens reales de Konnect en documentos, correos,
+tickets o repositorios. Cada alumno debe usar un PAT propio o un token
+temporal entregado por el instructor.</p>
+<p>1. Objetivo de este documento</p>
+<p>Este documento resume, de forma práctica, lo que cada alumno debe tener
+listo antes del workshop de Kong Konnect. El foco es preparar la laptop
+para ejecutar ejercicios locales, administrar configuración declarativa
+con decK, importar colecciones en Insomnia, levantar servicios de
+laboratorio con Docker y validar conexión contra la instancia de Kong
+Konnect asignada.</p>
+<p>El documento no reemplaza la guía del laboratorio. Su propósito es
+servir como checklist previo para evitar que el tiempo del workshop se
+consuma instalando herramientas básicas o resolviendo bloqueos de red.</p>
+<h1 id="elige-tu-camino-codespaces-a-o-instalacion-local-b">Elige tu camino: Codespaces (A) o instalación local (B)<a class="headerlink" href="#elige-tu-camino-codespaces-a-o-instalacion-local-b" title="Permanent link">&para;</a></h1>
+<div class="admonition tip">
+<p class="admonition-title">Camino A — GitHub Codespaces (recomendado)</p>
+<p>Un entorno Linux en la nube, listo en ~5 minutos, con <strong>Docker, decK, kongctl, inso, Terraform, Node.js, Python y jq</strong> ya instalados. Solo necesitas un navegador y una cuenta de GitHub con acceso al repositorio del curso. Evita las restricciones típicas de laptops corporativas (Docker Desktop sin licencia o bloqueado, Windows sin WSL2, proxies, permisos de administrador).</p>
+<p><a href="https://codespaces.new/rzengin/Kong-Konnect-Fundamentals?quickstart=1"><img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" /></a></p>
+<ol>
+<li>Pulsa el botón (o en GitHub: <strong>Code → Codespaces → Create codespace on main</strong>). Elige la máquina de <strong>4 núcleos / 16 GB</strong> (es la que exige el devcontainer y la necesaria para el Día 4 con Ollama).</li>
+<li>Espera a que termine la creación: el contenedor ejecuta <code>docs/00-setup-entorno/scripts/install_prereqs.sh</code> automáticamente.</li>
+<li>Define tus variables (mejor como <a href="https://github.com/settings/codespaces">secretos de Codespaces</a> <code>KONNECT_TOKEN</code> y <code>DEMO_PREFIX</code>, o en la terminal):
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KONNECT_TOKEN</span><span class="o">=</span><span class="s2">"kpat_..."</span><span class="w">   </span><span class="c1"># entregado por el instructor</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DEMO_PREFIX</span><span class="o">=</span><span class="s2">"tu_nombre"</span>
+</span></code></pre></div></li>
+<li>Los puertos del laboratorio se reenvían solos (pestaña <strong>Ports</strong>): 8000/8443 proxy de Kong, 8001 Admin API, 5080 OpenObserve, 6006 Phoenix, 4318 OTLP y, para los Días 3–4, 8010 proxy del AI Gateway, 8110 status del Data Plane y 8089 WireMock. Donde las guías digan <code>http://localhost:&lt;puerto&gt;</code>, usa <code>curl</code> desde la terminal del Codespace o abre la URL reenviada desde la pestaña <strong>Ports</strong>.</li>
+</ol>
+<p>Con el camino A puedes saltar directamente a la <a href="#4-configuracion-requerida-en-kong-konnect">sección 4</a> (configuración en Konnect); las secciones 2–3 solo aplican a la instalación local.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Camino B — Instalación local</p>
+<p>Si prefieres trabajar en tu laptop (o no tienes acceso a Codespaces), instala las herramientas siguiendo las secciones 2 y 3. En macOS y Linux el script <code>docs/00-setup-entorno/scripts/install_prereqs.sh</code> automatiza la mayor parte.</p>
+</div>
+<h1 id="2-checklist-minimo-antes-del-workshop">2. Checklist mínimo antes del workshop<a class="headerlink" href="#2-checklist-minimo-antes-del-workshop" title="Permanent link">&para;</a></h1>
+<table>
+<thead>
+<tr>
+<th><strong>Categoría</strong></th>
+<th><strong>Requisito (Versión Mínima)</strong></th>
+<th><strong>Uso en los ejercicios</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sistema operativo</td>
+<td>macOS, Linux o Windows (CMD)</td>
+<td>Ejecutar CLI, Docker, scripts y pruebas locales.</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>Docker Desktop o Docker Engine (v20.10+) con Docker Compose (v2.x)</td>
+<td>Levantar Kong Data Plane local, mocks, Keycloak, WireMock, Prism y stack de observabilidad.</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>Cliente Git instalado (v2.20+)</td>
+<td>Clonar o recibir el repositorio de assets del workshop.</td>
+</tr>
+<tr>
+<td>curl</td>
+<td>CLI curl disponible (v7.0+)</td>
+<td>Probar APIs, Konnect, mocks y endpoints locales.</td>
+</tr>
+<tr>
+<td>jq</td>
+<td>Procesador JSON de línea de comandos (v1.6+)</td>
+<td>Leer respuestas JSON de APIs y scripts.</td>
+</tr>
+<tr>
+<td>decK</td>
+<td>decK CLI (v1.65+) o versión indicada por el instructor</td>
+<td>Sincronizar servicios, rutas, plugins y consumers contra Konnect.</td>
+</tr>
+<tr>
+<td>kongctl</td>
+<td>kongctl CLI (v1.20.1+)</td>
+<td>Días 3–4: configuración declarativa del AI Gateway en Konnect (ver <a href="#8-dias-3-y-4-ai-gateway-requisitos-adicionales">sección 8</a>).</td>
+</tr>
+<tr>
+<td>Insomnia</td>
+<td>Aplicación desktop Insomnia (v8.0+)</td>
+<td>Importar colecciones, OpenAPI y ejecutar pruebas manuales o Runner.</td>
+</tr>
+<tr>
+<td>Terraform</td>
+<td>Terraform CLI (v1.5+), requerido para ejercicios APIOps/Portal/Catalog</td>
+<td>Gestionar recursos de plataforma cuando el laboratorio lo incluya.</td>
+</tr>
+<tr>
+<td>Node.js / npm / inso</td>
+<td>Node.js LTS (v18+) y, si aplica, Insomnia CLI</td>
+<td>Ejecutar pruebas por terminal con inso y utilitarios de apoyo.</td>
+</tr>
+<tr>
+<td>Editor</td>
+<td>VS Code u otro editor de texto</td>
+<td>Editar YAML, OpenAPI, .env y scripts.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="3-instalacion-por-sistema-operativo">3. Instalación por sistema operativo<a class="headerlink" href="#3-instalacion-por-sistema-operativo" title="Permanent link">&para;</a></h1>
+<h3 id="31-windows-cmd">3.1 Windows (CMD)<a class="headerlink" href="#31-windows-cmd" title="Permanent link">&para;</a></h3>
+<p>Si utilizas Windows y vas a ejecutar el workshop desde la línea de comandos <code>cmd.exe</code>:</p>
+<ul>
+<li><strong>Docker:</strong> Instala <a href="https://docs.docker.com/desktop/setup/install/windows-install/">Docker Desktop para Windows</a>.</li>
+<li><strong>Git y curl:</strong> Usualmente vienen incluidos en Windows 10/11. Puedes instalar Git descargándolo desde <a href="https://git-scm.com/">git-scm.com</a>.</li>
+<li><strong>decK CLI:</strong> Puedes instalarlo vía <code>winget</code> o descargando el binario:
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>winget install Kong.decK
+</span></code></pre></div></li>
+<li><strong>jq:</strong> Puedes instalarlo vía <code>winget</code>:
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>winget install jqlang.jq
+</span></code></pre></div></li>
+<li><strong>Terraform:</strong>
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>winget install Hashicorp.Terraform
+</span></code></pre></div></li>
+</ul>
+<h3 id="32-macos-intel-o-apple-silicon">3.2 macOS (Intel o Apple Silicon)<a class="headerlink" href="#32-macos-intel-o-apple-silicon" title="Permanent link">&para;</a></h3>
+<p>Las siguientes instrucciones son prácticas. Si KONG utiliza
+empaquetadores corporativos, Intune, SCCM, Jamf, repositorios internos o
+restricciones de software, usar el mecanismo corporativo equivalente y
+luego ejecutar las validaciones de la sección 6.</p>
+<h2 id="31-macos">3.1 macOS<a class="headerlink" href="#31-macos" title="Permanent link">&para;</a></h2>
+<p>Opción recomendada: Homebrew para herramientas CLI y
+descarga/instalación de Docker Desktop e Insomnia. Abrir Terminal y
+ejecutar:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># 1) Instalar herramientas base de Apple si no existen</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>xcode-select<span class="w"> </span>--install
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># 2) Instalar Homebrew si no está instalado</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">"</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># 3) Actualizar Homebrew</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>brew<span class="w"> </span>update
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># 4) Instalar herramientas CLI</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>brew<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>curl<span class="w"> </span>python@3.12<span class="w"> </span>node<span class="w"> </span>kong/deck/deck
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>brew<span class="w"> </span>tap<span class="w"> </span>hashicorp/tap
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>brew<span class="w"> </span>install<span class="w"> </span>hashicorp/tap/terraform
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="c1"># 5) Instalar aplicaciones desktop</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>docker<span class="w"> </span>insomnia<span class="w"> </span>visual-studio-code
+</span></code></pre></div>
+<p>Después de instalar Docker Desktop:</p>
+<ol>
+<li>
+<p>Abrir Docker Desktop desde Applications.</p>
+</li>
+<li>
+<p>Aceptar los términos de uso de Docker Desktop según la política de
+  KONG.</p>
+</li>
+<li>
+<p>En Settings &gt; Resources asignar al menos 4 GB de memoria si la
+  laptop lo permite. El stack de observabilidad (Módulo 06 / Lab 07:
+  OTel Collector + OpenObserve + Arize Phoenix) consume ~1.2 GB de ese
+  total; ya no se requieren los ~4 GB adicionales de la plataforma anterior.</p>
+</li>
+<li>
+<p>Esperar a que Docker indique estado Running.</p>
+</li>
+</ol>
+<p>Validación rápida en macOS:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>git<span class="w"> </span>--version
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>curl<span class="w"> </span>--version
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>python3<span class="w"> </span>--version
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>node<span class="w"> </span>-v
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>npm<span class="w"> </span>-v
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>docker<span class="w"> </span>version
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>deck<span class="w"> </span>version
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>terraform<span class="w"> </span>version
+</span></code></pre></div>
+<h2 id="33-linux">3.3 Linux<a class="headerlink" href="#33-linux" title="Permanent link">&para;</a></h2>
+<p>Las instrucciones siguientes cubren Ubuntu/Debian. Para Fedora/RHEL,
+usar dnf y paquetes rpm equivalentes. En Linux se puede usar Docker
+Desktop o Docker Engine; para el workshop, Docker Engine con Docker
+Compose suele ser suficiente.</p>
+<h3 id="331-ubuntudebian-herramientas-base">3.3.1 Ubuntu/Debian - herramientas base<a class="headerlink" href="#331-ubuntudebian-herramientas-base" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>ca-certificates<span class="w"> </span>curl<span class="w"> </span>gnupg<span class="w"> </span>lsb-release<span class="w"> </span>git<span class="w"> </span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>unzip<span class="w"> </span>python3<span class="w"> </span>python3-pip
+</span></code></pre></div>
+<h3 id="332-ubuntudebian-docker-engine-y-docker-compose">3.3.2 Ubuntu/Debian - Docker Engine y Docker Compose<a class="headerlink" href="#332-ubuntudebian-docker-engine-y-docker-compose" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>-d<span class="w"> </span>/etc/apt/keyrings
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://download.docker.com/linux/ubuntu/gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>gpg
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>--dearmor<span class="w"> </span>-o<span class="w"> </span>/etc/apt/keyrings/docker.gpg
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>sudo<span class="w"> </span>chmod<span class="w"> </span>a+r<span class="w"> </span>/etc/apt/keyrings/docker.gpg
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"deb [arch=</span><span class="k">$(</span>dpkg<span class="w"> </span>--print-architecture<span class="k">)</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="s2">signed-by=/etc/apt/keyrings/docker.gpg]</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s2">https://download.docker.com/linux/ubuntu </span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="si">${</span><span class="nv">UBUNTU_CODENAME</span><span class="k">:-</span><span class="nv">$VERSION_CODENAME</span><span class="si">}</span><span class="k">)</span><span class="s2"> stable"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>/etc/apt/sources.list.d/docker.list<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli<span class="w"> </span>containerd.io
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>docker-buildx-plugin<span class="w"> </span>docker-compose-plugin
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="c1"># Cerrar sesión y volver a entrar para que aplique el grupo docker.</span>
+</span></code></pre></div>
+<h3 id="333-ubuntudebian-terraform">3.3.3 Ubuntu/Debian - Terraform<a class="headerlink" href="#333-ubuntudebian-terraform" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>wget<span class="w"> </span>-O-<span class="w"> </span>https://apt.releases.hashicorp.com/gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>gpg<span class="w"> </span>--dearmor
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>-o<span class="w"> </span>/usr/share/keyrings/hashicorp-archive-keyring.gpg
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"deb</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s2">[signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg]</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s2">https://apt.releases.hashicorp.com </span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2"> main"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>tee<span class="w"> </span>/etc/apt/sources.list.d/hashicorp.list
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>terraform
+</span></code></pre></div>
+<h3 id="334-ubuntudebian-nodejs-lts">3.3.4 Ubuntu/Debian - Node.js LTS<a class="headerlink" href="#334-ubuntudebian-nodejs-lts" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://deb.nodesource.com/setup_lts.x<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>-E<span class="w"> </span>bash<span class="w"> </span>-
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nodejs
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>node<span class="w"> </span>-v
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>npm<span class="w"> </span>-v
+</span></code></pre></div>
+<h3 id="335-ubuntudebian-deck">3.3.5 Ubuntu/Debian - decK<a class="headerlink" href="#335-ubuntudebian-deck" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nv">DECK_VERSION</span><span class="o">=</span><span class="s2">"1.59.1"</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>curl<span class="w"> </span>-sL
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="s2">"https://github.com/Kong/deck/releases/download/v</span><span class="si">${</span><span class="nv">DECK_VERSION</span><span class="si">}</span><span class="s2">/deck_</span><span class="si">${</span><span class="nv">DECK_VERSION</span><span class="si">}</span><span class="s2">_linux_amd64.tar.gz"</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>-o<span class="w"> </span>deck.tar.gz
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>tar<span class="w"> </span>-xf<span class="w"> </span>deck.tar.gz
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>sudo<span class="w"> </span>mv<span class="w"> </span>deck<span class="w"> </span>/usr/local/bin/deck
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>rm<span class="w"> </span>deck.tar.gz
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>deck<span class="w"> </span>version
+</span></code></pre></div>
+<h3 id="336-ubuntudebian-insomnia">3.3.6 Ubuntu/Debian - Insomnia<a class="headerlink" href="#336-ubuntudebian-insomnia" title="Permanent link">&para;</a></h3>
+<p>Descargar el paquete Linux desde el sitio oficial de Insomnia. Si se
+descarga un .deb, instalarlo así desde la carpeta Downloads:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">cd</span><span class="w"> </span>~/Downloads
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>./Insomnia<span class="se">\*</span>.deb
+</span></code></pre></div>
+<p>Validación rápida en Linux:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>git<span class="w"> </span>--version
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>curl<span class="w"> </span>--version
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>python3<span class="w"> </span>--version
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>node<span class="w"> </span>-v
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>npm<span class="w"> </span>-v
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>docker<span class="w"> </span>version
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>deck<span class="w"> </span>version
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>terraform<span class="w"> </span>version
+</span></code></pre></div>
+<h1 id="4-configuracion-requerida-en-kong-konnect">4. Configuración requerida en Kong Konnect<a class="headerlink" href="#4-configuracion-requerida-en-kong-konnect" title="Permanent link">&para;</a></h1>
+<p>Cada alumno debe tener acceso a la organización de Konnect usada en el
+workshop y al Control Plane asignado para los ejercicios. El instructor
+o administrador de la plataforma debe validar estos puntos antes de
+iniciar.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Elemento</strong></th>
+<th><strong>Debe estar listo</strong></th>
+<th><strong>Validación esperada</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cuenta Konnect</td>
+<td>Usuario invitado y con acceso a la organización del workshop.</td>
+<td>El alumno puede iniciar sesión en Konnect.</td>
+</tr>
+<tr>
+<td>Control Plane</td>
+<td>Control Plane disponible para los ejercicios. Para esta guía: <code>tu_nombre_MockAPI</code></td>
+<td>El alumno puede ver el Control Plane en Konnect.</td>
+</tr>
+<tr>
+<td>Permisos</td>
+<td>Permisos suficientes para leer Data Plane Nodes y administrar servicios, rutas, plugins, consumers y credenciales según el laboratorio.</td>
+<td>El alumno puede ejecutar deck gateway ping y sincronizar configuración si el ejercicio lo requiere.</td>
+</tr>
+<tr>
+<td>Personal Access Token</td>
+<td>PAT personal o token temporal provisto por el instructor. No debe compartirse ni documentarse.</td>
+<td>El token permite conexión de decK a Konnect.</td>
+</tr>
+<tr>
+<td>Data Plane local</td>
+<td>Assets, certificados o docker-compose provistos por el instructor si el alumno debe levantar su propio Data Plane.</td>
+<td>En Konnect, el Data Plane debe aparecer conectado y, cuando aplique, en estado In Sync.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="41-variables-de-entorno">4.1 Variables de entorno<a class="headerlink" href="#41-variables-de-entorno" title="Permanent link">&para;</a></h2>
+<p>Usar los valores definidos para el workshop. El token real debe ser
+introducido por cada alumno en su propia estación de trabajo.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># macOS / Linux / Codespaces</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KONNECT_TOKEN</span><span class="o">=</span><span class="s2">"&lt;PAT_PERSONAL_O_TOKEN_TEMPORAL&gt;"</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DEMO_PREFIX</span><span class="o">=</span><span class="s2">"tu_nombre"</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KONNECT_CONTROL_PLANE_NAME</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">DEMO_PREFIX</span><span class="si">}</span><span class="s2">_MockAPI"</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CONTROL_PLANE_NAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$KONNECT_CONTROL_PLANE_NAME</span><span class="s2">"</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KONNECT_ADDR</span><span class="o">=</span><span class="s2">"https://us.api.konghq.com"</span>
+</span></code></pre></div>
+<h2 id="42-archivo-deckyaml">4.2 Archivo .deck.yaml<a class="headerlink" href="#42-archivo-deckyaml" title="Permanent link">&para;</a></h2>
+<p>Si el repositorio del workshop incluye un script de setup, usar ese
+script. Si se requiere crear el archivo manualmente, desde la carpeta
+del laboratorio:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># macOS / Linux / Codespaces</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>.deck.yaml<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="s">konnect-token: "$KONNECT_TOKEN"</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="s">konnect-addr: "$KONNECT_ADDR"</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="s">konnect-control-plane-name: "$KONNECT_CONTROL_PLANE_NAME"</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="s">EOF</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="c1"># Validar</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>deck<span class="w"> </span>gateway<span class="w"> </span>ping
+</span></code></pre></div>
+<h1 id="5-conectividad-requerida-desde-la-estacion-de-trabajo">5. Conectividad requerida desde la estación de trabajo<a class="headerlink" href="#5-conectividad-requerida-desde-la-estacion-de-trabajo" title="Permanent link">&para;</a></h1>
+<p>Antes del workshop, validar que la red corporativa, VPN, proxy,
+antivirus y firewall local no bloqueen la comunicación necesaria. Si
+KONG usa inspección TLS, puede ser necesario permitir excepciones para
+los dominios de Konnect y repositorios de software.</p>
+<table>
+<thead>
+<tr>
+<th>Destino / Puerto</th>
+<th>Uso</th>
+<th>Requisito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://us.api.konghq.com:443</code></td>
+<td>API de Konnect usada por decK y scripts.</td>
+<td>Salida HTTPS permitida desde la laptop.</td>
+</tr>
+<tr>
+<td>Dominios runtime de Konnect / <code>*.konghq.com:443</code></td>
+<td>Conexión del Data Plane local con el Control Plane SaaS.</td>
+<td>Salida TLS permitida; evitar ruptura por inspección TLS.</td>
+</tr>
+<tr>
+<td><code>github.com</code> / <code>releases.githubusercontent.com:443</code></td>
+<td>Descarga de decK, assets y dependencias.</td>
+<td>Salida HTTPS permitida.</td>
+</tr>
+<tr>
+<td><code>registry-1.docker.io</code> / <code>auth.docker.io</code> / Docker Hub:443</td>
+<td>Descarga de imágenes Docker del laboratorio.</td>
+<td>Salida HTTPS permitida; autenticarse si la red tiene rate limits.</td>
+</tr>
+<tr>
+<td><code>npmjs.org</code> / <code>nodejs.org</code> / <code>deb.nodesource.com:443</code></td>
+<td>Node.js, npm e inso CLI cuando aplique.</td>
+<td>Salida HTTPS permitida.</td>
+</tr>
+<tr>
+<td><code>releases.hashicorp.com</code> / <code>apt.releases.hashicorp.com:443</code></td>
+<td>Instalación de Terraform.</td>
+<td>Salida HTTPS permitida.</td>
+</tr>
+<tr>
+<td><code>github.com/Kong/terraform-provider-konnect:443</code></td>
+<td>Descarga del provider kong/konnect.</td>
+<td>Salida HTTPS permitida.</td>
+</tr>
+<tr>
+<td><code>insomnia.rest</code> / GitHub releases:443</td>
+<td>Descarga de Insomnia.</td>
+<td>Salida HTTPS permitida.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="51-puertos-locales-que-deben-estar-libres">5.1 Puertos locales que deben estar libres<a class="headerlink" href="#51-puertos-locales-que-deben-estar-libres" title="Permanent link">&para;</a></h2>
+<p>Los ejercicios pueden levantar varios contenedores locales. Antes de
+iniciar, cerrar servicios que estén usando estos puertos o solicitar al
+instructor variables alternativas.</p>
+<table>
+<thead>
+<tr>
+<th>Puerto local</th>
+<th>Servicio típico</th>
+<th>Uso en laboratorio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8000</td>
+<td>Kong Proxy</td>
+<td>Entrada principal para probar APIs expuestas por Kong.</td>
+</tr>
+<tr>
+<td>8010</td>
+<td>Segundo Data Plane opcional / Proxy del AI Gateway</td>
+<td>Día 2: ejercicio de clustering / escalabilidad. Días 3–4: proxy del AI Gateway (<code>AIGW_PROXY_PORT</code> si ambos coinciden).</td>
+</tr>
+<tr>
+<td>8110</td>
+<td>Status del Data Plane del AI Gateway</td>
+<td>Health check del Data Plane 2.2 (Días 3–4).</td>
+</tr>
+<tr>
+<td>8089</td>
+<td>WireMock (AI Gateway)</td>
+<td>Core bancario REST (→ MCP), agentes A2A y proveedor caído (Días 3–4).</td>
+</tr>
+<tr>
+<td>8080</td>
+<td>Prism Mock</td>
+<td>Mock de API basado en OpenAPI.</td>
+</tr>
+<tr>
+<td>9081</td>
+<td>httpbin-backend</td>
+<td>Backend echo para validar headers, body y transformaciones.</td>
+</tr>
+<tr>
+<td>8082</td>
+<td>WireMock</td>
+<td>Mock de APIs de negocio.</td>
+</tr>
+<tr>
+<td>8083</td>
+<td>Keycloak</td>
+<td>Servidor OIDC local para ejercicios de autenticación.</td>
+</tr>
+<tr>
+<td>8100</td>
+<td>Kong metrics</td>
+<td>Endpoint local de métricas Prometheus.</td>
+</tr>
+<tr>
+<td>5080</td>
+<td>OpenObserve</td>
+<td>UI de observabilidad: trazas, métricas, logs y dashboards (Módulo 06 / Lab 07).</td>
+</tr>
+<tr>
+<td>6006</td>
+<td>Arize Phoenix</td>
+<td>UI de trazas orientada a LLM / IA (Módulo 06 / Lab 07).</td>
+</tr>
+<tr>
+<td>4317 / 4318</td>
+<td>OpenTelemetry Collector</td>
+<td>Recepción OTLP gRPC / HTTP de trazas, métricas y logs.</td>
+</tr>
+<tr>
+<td>13133</td>
+<td>OpenTelemetry Collector</td>
+<td>Health check (solo <code>127.0.0.1</code>).</td>
+</tr>
+<tr>
+<td>9092</td>
+<td>Kafka</td>
+<td>Broker para pruebas de Event Gateway (Lab 12).</td>
+</tr>
+</tbody>
+</table>
+<h1 id="6-validacion-antes-del-workshop">6. Validación antes del workshop<a class="headerlink" href="#6-validacion-antes-del-workshop" title="Permanent link">&para;</a></h1>
+<p>Ejecutar esta validación al menos un día antes del workshop. Si falla
+cualquier punto, levantarlo como bloqueo operativo.</p>
+<h2 id="61-validar-herramientas-locales">6.1 Validar herramientas locales<a class="headerlink" href="#61-validar-herramientas-locales" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>git<span class="w"> </span>--version
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>curl<span class="w"> </span>--version
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>python3<span class="w"> </span>--version<span class="w"> </span><span class="o">||</span><span class="w"> </span>python<span class="w"> </span>--version
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>node<span class="w"> </span>-v
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>npm<span class="w"> </span>-v
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>docker<span class="w"> </span>version
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>deck<span class="w"> </span>version
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>terraform<span class="w"> </span>version
+</span></code></pre></div>
+<h2 id="62-validar-docker">6.2 Validar Docker<a class="headerlink" href="#62-validar-docker" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>hello-world
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>version
+</span></code></pre></div>
+<h2 id="63-validar-conectividad-con-konnect">6.3 Validar conectividad con Konnect<a class="headerlink" href="#63-validar-conectividad-con-konnect" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>curl<span class="w"> </span>-I<span class="w"> </span>https://us.api.konghq.com
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>deck<span class="w"> </span>gateway<span class="w"> </span>ping
+</span></code></pre></div>
+<h2 id="64-validar-data-plane-local-cuando-este-levantado">6.4 Validar Data Plane local cuando esté levantado<a class="headerlink" href="#64-validar-data-plane-local-cuando-este-levantado" title="Permanent link">&para;</a></h2>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://localhost:8000/qualquer-rota
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Respuesta esperada si Kong está activo pero sin rutas:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1"># HTTP/1.1 404 Not Found</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="c1"># {"message":"no Route matched with those values"}</span>
+</span></code></pre></div></p>
+<h1 id="7-problemas-comunes-y-correccion-rapida">7. Problemas comunes y corrección rápida<a class="headerlink" href="#7-problemas-comunes-y-correccion-rapida" title="Permanent link">&para;</a></h1>
+<table>
+<thead>
+<tr>
+<th><strong>Síntoma</strong></th>
+<th><strong>Causa probable</strong></th>
+<th><strong>Acción sugerida</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker: command not found</td>
+<td>Docker no instalado o PATH no actualizado.</td>
+<td>Abrir nueva terminal y verificar instalación.</td>
+</tr>
+<tr>
+<td>Cannot connect to the Docker daemon</td>
+<td>Docker Desktop no está iniciado o el usuario no pertenece al grupo docker en Linux.</td>
+<td>Iniciar Docker Desktop. En Linux ejecutar <code>usermod -aG docker $USER</code> y reabrir sesión.</td>
+</tr>
+<tr>
+<td>deck gateway ping falla con 401/403</td>
+<td>PAT inválido, expirado o sin permisos.</td>
+<td>Regenerar PAT o validar permisos en Konnect.</td>
+</tr>
+<tr>
+<td>deck gateway ping no resuelve DNS o timeout</td>
+<td>Proxy, VPN, DNS o firewall bloquean salida a Konnect.</td>
+<td>Validar salida HTTPS a us.api.konghq.com y dominios runtime de Konnect.</td>
+</tr>
+<tr>
+<td>Puerto local ocupado</td>
+<td>Otro proceso usa el puerto requerido.</td>
+<td>Identificar proceso y liberar puerto, o pedir al instructor variable alternativa.</td>
+</tr>
+<tr>
+<td>Docker no descarga imágenes</td>
+<td>Bloqueo a Docker Hub, proxy no configurado o rate limit.</td>
+<td>Configurar proxy corporativo en Docker Desktop o usar mirror corporativo.</td>
+</tr>
+<tr>
+<td>Insomnia no importa colección</td>
+<td>Archivo incorrecto o versión desactualizada.</td>
+<td>Actualizar Insomnia y volver a importar el workspace entregado.</td>
+</tr>
+<tr>
+<td>terraform init falla con error 403/timeout</td>
+<td>Restricción de red o proxy impide descargar el provider.</td>
+<td>Realizar instalación offline del provider (Ver Sección 7.1).</td>
+</tr>
+</tbody>
+</table>
+<h1 id="8-dias-3-y-4-ai-gateway-requisitos-adicionales">8. Días 3 y 4 — AI Gateway (requisitos adicionales)<a class="headerlink" href="#8-dias-3-y-4-ai-gateway-requisitos-adicionales" title="Permanent link">&para;</a></h1>
+<p>Los Días 3 y 4 usan <strong>Kong AI Gateway 2.2</strong> (Control Plane en Konnect + Data Plane <code>kong/kong-ai-gateway:2.2.0</code> en Docker) junto con Redis Stack, WireMock y <strong>Ollama</strong> con modelos open-weight pequeños (CPU, sin claves de pago). Además de lo anterior, cada participante necesita:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Requisito</strong></th>
+<th><strong>Detalle</strong></th>
+<th><strong>Validación</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kongctl</td>
+<td><strong>v1.20.1 o superior</strong> (la 1.16 no conoce las entidades de AI Gateway 2.1/2.2). Binarios en la release <a href="https://github.com/Kong/kongctl/releases/tag/v1.20.1">v1.20.1</a>; <code>install_prereqs.sh</code> lo instala o lo actualiza.</td>
+<td><code>kongctl version</code></td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>Al menos <strong>8 GB de RAM</strong> asignados a Docker (10–12 GB si además se levanta el stack de observabilidad del Lab IA 08).</td>
+<td><code>docker info</code></td>
+</tr>
+<tr>
+<td>Disco</td>
+<td><strong>~6 GB libres</strong>: imagen del Data Plane, Redis Stack, WireMock, Ollama y ~2,1 GB de modelos (<code>llama3.2:1b</code>, <code>qwen3:0.6b</code>, <code>nomic-embed-text</code>).</td>
+<td><code>docker system df</code></td>
+</tr>
+<tr>
+<td>jq, curl, openssl, python3</td>
+<td>Las mismas de los Días 1–2 (confirmar <code>jq</code>).</td>
+<td><code>jq --version &amp;&amp; python3 --version</code></td>
+</tr>
+<tr>
+<td>Puertos libres</td>
+<td><code>8010</code> (proxy del AI Gateway), <code>8110</code> (status del Data Plane), <code>8089</code> (WireMock). Configurables con <code>AIGW_PROXY_PORT</code>, <code>AIGW_STATUS_PORT</code> y <code>AIGW_WIREMOCK_PORT</code>.</td>
+<td>Ver <a href="#51-puertos-locales-que-deben-estar-libres">sección 5.1</a></td>
+</tr>
+<tr>
+<td>Konnect</td>
+<td>Permiso para crear un <strong>AI Gateway</strong> (versión 2.2) en la organización del curso; el PAT del participante debe poder administrarlo.</td>
+<td>Lab IA 00</td>
+</tr>
+<tr>
+<td>Red</td>
+<td>Salida HTTPS a <code>registry.ollama.ai</code> / <code>ollama.com</code> (modelos), <code>github.com</code> (kongctl) y <code>ghcr.io</code>.</td>
+<td>Ver <a href="../Requerimientos_Red_Workshop/">Requerimientos de Red</a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Codespaces: máquina de 4 núcleos / 16 GB</p>
+<p>El devcontainer del curso exige una máquina de <strong>4 núcleos / 16 GB</strong> (<code>hostRequirements</code>), suficiente para los cuatro días. La de 2 núcleos / 8 GB <strong>no alcanza</strong> para el Día 4 con Ollama (Data Plane + Redis + WireMock + Ollama + modelos). Si creas un Codespace sin el devcontainer (por ejemplo, un Codespace en blanco), elige igualmente la máquina de 4 núcleos / 16 GB.</p>
+</div>
+<p>Validación previa (también se hace en el Health Check del final del Día 3):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kongctl<span class="w"> </span>version
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>docker<span class="w"> </span>pull<span class="w"> </span>kong/kong-ai-gateway:2.2.0
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>docker<span class="w"> </span>pull<span class="w"> </span>ollama/ollama:latest
+</span></code></pre></div>
+<h1 id="9-referencias-oficiales-para-instalacion">9. Referencias oficiales para instalación<a class="headerlink" href="#9-referencias-oficiales-para-instalacion" title="Permanent link">&para;</a></h1>
+<p>Estas referencias se incluyen para alumnos que necesiten validar
+compatibilidad, versiones actuales o instrucciones alternativas de
+instalación.</p>
+<ul>
+<li>
+<p>Docker Desktop: https://docs.docker.com/desktop/</p>
+</li>
+<li>
+<p>Docker Desktop para macOS:
+ https://docs.docker.com/desktop/setup/install/mac-install/</p>
+</li>
+<li>
+<p>Docker Desktop para Linux:
+ https://docs.docker.com/desktop/setup/install/linux/</p>
+</li>
+<li>
+<p>Kong decK: https://developer.konghq.com/deck/</p>
+</li>
+<li>
+<p>Insomnia: https://insomnia.rest/</p>
+</li>
+<li>
+<p>Terraform: https://developer.hashicorp.com/terraform/install</p>
+</li>
+<li>
+<p>Node.js / npm:
+ https://docs.npmjs.com/downloading-and-installing-node-js-and-npm/</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

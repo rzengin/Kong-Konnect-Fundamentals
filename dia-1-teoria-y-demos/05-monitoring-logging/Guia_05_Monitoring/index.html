@@ -1,0 +1,2440 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring/">
+      
+      
+        <link rel="prev" href="../../04-gateway-operations/Guia_04_Gateway_Operations/">
+      
+      
+        <link rel="next" href="../../06-observability/Guia_06_Observability/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="es">
+        
+          <link rel="alternate" href="../../../pt/dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring/" hreflang="pt">
+        
+          <link rel="alternate" href="../../../en/dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>OPS (30 min) Monitoring & Logging - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#modulo-05-api-observability-konnect-analytics" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../../.." title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OPS (30 min) Monitoring & Logging
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Seleccionar idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../pt/dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring/" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 1 - Teórico (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 1 - Teórico (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-conceptos-teoricos-observabilidad-en-konnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Conceptos Teóricos: Observabilidad en Konnect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Conceptos Teóricos: Observabilidad en Konnect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquitectura-de-telemetria-como-fluyen-los-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitectura de Telemetría: ¿Cómo fluyen los datos?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-preparacion-generacion-de-telemetria-instructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Preparación: Generación de Telemetría (Instructor)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-demostraciones-practicas-guiadas-en-konnect-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Demostraciones Prácticas guiadas en Konnect UI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Demostraciones Prácticas guiadas en Konnect UI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-1-summary-resumen-ejecutivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 1: Summary (Resumen Ejecutivo)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-2-dashboards-metricas-detalladas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 2: Dashboards (Métricas Detalladas)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-3-explorer-analisis-multidimensional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 3: Explorer (Análisis Multidimensional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-4-reports-reportes-a-medida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 4: Reports (Reportes a Medida)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-5-requests-gateway-log-inspection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 5: Requests (Gateway Log Inspection)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-6-debugger-active-tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 6: Debugger (Active Tracing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-proximos-pasos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Próximos Pasos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Observabilidad Avanzada (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Integración ITSM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Gestión de Secretos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Seguridad OWASP WAF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 2 - Práctico (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 2 - Práctico (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Inicial
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup Inicial
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 3 - AI Gateway (Teoría y Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 3 - AI Gateway (Teoría y Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 00 Arquitectura AI Gateway 2.x y kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 01 Un endpoint, muchos LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 02 Gobierno, cuotas y presupuesto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 03 Guardrails y PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) IA 04 Ruteo semántico, caché y compresión
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 05 RAG gestionado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) IA 06 MCP (APIs como tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 07 Agentes y A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) IA 08 Observabilidad y FinOps de IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) IA 09 Novedades AI Summit 2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Día 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Día 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA Setup AI Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Multi-LLM y Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) Lab IA Gobierno y Cuotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) Lab IA Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Semántica y Caché
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab IA RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) Lab IA A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Lab IA Observabilidad (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Desafío IA Asistente de Crédito
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluación del Curso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-conceptos-teoricos-observabilidad-en-konnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Conceptos Teóricos: Observabilidad en Konnect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Conceptos Teóricos: Observabilidad en Konnect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquitectura-de-telemetria-como-fluyen-los-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitectura de Telemetría: ¿Cómo fluyen los datos?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-preparacion-generacion-de-telemetria-instructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Preparación: Generación de Telemetría (Instructor)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-demostraciones-practicas-guiadas-en-konnect-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Demostraciones Prácticas guiadas en Konnect UI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Demostraciones Prácticas guiadas en Konnect UI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-1-summary-resumen-ejecutivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 1: Summary (Resumen Ejecutivo)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-2-dashboards-metricas-detalladas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 2: Dashboards (Métricas Detalladas)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-3-explorer-analisis-multidimensional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 3: Explorer (Análisis Multidimensional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-4-reports-reportes-a-medida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 4: Reports (Reportes a Medida)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-5-requests-gateway-log-inspection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 5: Requests (Gateway Log Inspection)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demostracion-6-debugger-active-tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demostración 6: Debugger (Active Tracing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-proximos-pasos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Próximos Pasos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="modulo-05-api-observability-konnect-analytics">Módulo 05: API Observability (Konnect Analytics)<a class="headerlink" href="#modulo-05-api-observability-konnect-analytics" title="Permanent link">&para;</a></h1>
+<p>En arquitecturas distribuidas basadas en microservicios o arquitecturas Cloud-Native, perder la visibilidad del tráfico es uno de los mayores riesgos operativos. Este módulo está diseñado para demostrar cómo <strong>Kong Konnect</strong> proporciona telemetría, métricas y trazabilidad <em>out-of-the-box</em>, sin necesidad de configurar y mantener complejos stacks externos (como ELK o Datadog) desde el primer día.</p>
+<hr />
+<h2 id="1-conceptos-teoricos-observabilidad-en-konnect">1. Conceptos Teóricos: Observabilidad en Konnect<a class="headerlink" href="#1-conceptos-teoricos-observabilidad-en-konnect" title="Permanent link">&para;</a></h2>
+<p>La <strong>Observabilidad de APIs</strong> en Konnect no se limita a saber si un servicio está "arriba o abajo", sino a entender <em>por qué</em> y <em>cómo</em> el tráfico fluye a través del ecosistema. Konnect recopila automáticamente métricas de los Data Planes y las presenta en la nube a través de su suite analítica.</p>
+<p>Las capacidades nativas de Konnect se dividen en:</p>
+<ol>
+<li><strong>Summary &amp; Dashboards:</strong> Monitoreo en tiempo real de latencias, tasas de error (4xx, 5xx) y volumen de uso (incluyendo consumo de tokens para IA).</li>
+<li><strong>Explorer:</strong> Análisis multidimensional (Cross-runtime observability). Permite aislar problemas cruzando métricas por Servicio, Ruta, Consumidor o Data Plane.</li>
+<li><strong>Requests:</strong> Inspección profunda de los Gateway logs (Access Logs unificados).</li>
+<li><strong>Reports:</strong> Generación de informes programados y a medida para distintos stakeholders (ej. Reportes de uso para facturación).</li>
+<li><strong>Debugger (Active Tracing):</strong> Trazabilidad contextual para diagnosticar problemas de rendimiento directamente en la cadena de plugins del Gateway.</li>
+</ol>
+<blockquote>
+<p>[!NOTE]
+Kong Konnect permite, si la organización lo requiere, exportar todas estas métricas de forma transparente hacia plataformas de terceros (Dynatrace, Datadog, Prometheus, Splunk, Kafka) mediante plugins, garantizando flexibilidad total a futuro.</p>
+</blockquote>
+<h3 id="arquitectura-de-telemetria-como-fluyen-los-datos">Arquitectura de Telemetría: ¿Cómo fluyen los datos?<a class="headerlink" href="#arquitectura-de-telemetria-como-fluyen-los-datos" title="Permanent link">&para;</a></h3>
+<p>Es vital entender qué ocurre por debajo de la interfaz de Konnect cuando monitoreamos nuestras APIs. </p>
+<pre class="mermaid"><code>flowchart LR
+    classDef client fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:5,ry:5;
+    classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+    classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+    classDef discard fill:#fee2e2,stroke:#f87171,stroke-width:1px,color:#7f1d1d,stroke-dasharray: 5 5,rx:5,ry:5;
+
+    C(["Usuario / Cliente"]):::client
+    DP["Kong Gateway (Data Plane)"]:::dp_style
+    CP["Konnect Analytics (Control Plane)"]:::cp_style
+    B["Body/Payload"]:::discard
+
+    C -- "Request HTTP" --&gt; DP
+    DP -. "Descarta Payload por Privacidad" .-&gt; B
+    DP == "Envía Metadata Agregada&lt;br/&gt;(mTLS Puerto 443)" ==&gt; CP</code></pre>
+<div class="admonition info">
+<p class="admonition-title">¿Desde dónde se genera?</p>
+<p>La telemetría siempre es recolectada por los <strong>Data Planes</strong> locales, ya que ellos procesan el tráfico. El Control Plane en la nube nunca toca el tráfico real de los usuarios.</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">¿Qué tipo de información viaja a la nube?</p>
+<p>Se envía exclusivamente <strong>metadata agregada</strong>. Esto incluye:</p>
+<ul>
+<li>Contadores (Requests, Status Codes).</li>
+<li>Histogramas (Latencias de Kong y del Upstream).</li>
+<li>Identificadores de rutas y servicios.</li>
+<li>Metadatos del Access Log (IP del cliente, User Agent, tamaño del payload).</li>
+</ul>
+<p><strong>Nunca se envía el <em>body</em> de la petición o respuesta</strong>, asegurando el cumplimiento de normas de privacidad (GDPR, PCI).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">¿Cómo se envía y por cuánto tiempo se retiene?</p>
+<ul>
+<li><strong>Envío:</strong> De forma asíncrona (para no impactar la latencia) hacia el endpoint de Telemetría de Konnect, a través de una conexión segura <strong>mTLS</strong>.</li>
+<li><strong>Retención:</strong> Por defecto, los datos granulares (como los Access Logs) se retienen por <strong>30 días</strong> en la base de datos analítica de Konnect. Si requieres retención a largo plazo por auditoría, puedes derivar los logs a almacenamiento en frío (S3, Splunk, etc.).</li>
+</ul>
+</div>
+<hr />
+<h2 id="2-preparacion-generacion-de-telemetria-instructor">2. Preparación: Generación de Telemetría (Instructor)<a class="headerlink" href="#2-preparacion-generacion-de-telemetria-instructor" title="Permanent link">&para;</a></h2>
+<p>Para que los paneles analíticos de Konnect muestren datos relevantes (y no estén vacíos o completamente "verdes"), el instructor inyectará un volumen mixto de peticiones (éxitos, errores 401 y errores 404).</p>
+<ol>
+<li>Abre tu terminal y ejecuta el script generador de tráfico:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>workshop-assets/dia-1/05-monitoring-logging
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./scripts/generate_traffic.sh
+</span></code></pre></div></li>
+<li>Espera unos segundos a que el script finalice. Las métricas serán enviadas asíncronamente desde tus Data Planes locales hacia Konnect.</li>
+</ol>
+<hr />
+<h2 id="3-demostraciones-practicas-guiadas-en-konnect-ui">3. Demostraciones Prácticas guiadas en Konnect UI<a class="headerlink" href="#3-demostraciones-practicas-guiadas-en-konnect-ui" title="Permanent link">&para;</a></h2>
+<p>El instructor realizará un recorrido demostrativo por la consola de <strong>Konnect -&gt; Observability</strong>.</p>
+<h3 id="demostracion-1-summary-resumen-ejecutivo">Demostración 1: Summary (Resumen Ejecutivo)<a class="headerlink" href="#demostracion-1-summary-resumen-ejecutivo" title="Permanent link">&para;</a></h3>
+<p><strong>Objetivo:</strong> Mostrar una visión general (pájaro) de la salud del sistema.</p>
+<ol>
+<li>En Konnect, navega a <strong>Observability -&gt; Summary</strong>.</li>
+<li>
+<p>Modifica el selector de tiempo (arriba a la derecha) a "Last 15 minutes" para acotar los datos a la inyección recién realizada.</p>
+</li>
+<li>
+<p><strong>Análisis detallado de la UI (Qué observar):</strong></p>
+<ul>
+<li><strong>KPIs Superiores (Tarjetas):</strong><ul>
+<li><strong>Requests:</strong> Volumen total de tráfico procesado.</li>
+<li><strong>Error rate:</strong> Porcentaje de transacciones fallidas (es normal ver un porcentaje alto en nuestra demo porque inyectamos fallos intencionales mediante Auth y Rate Limiting para poblar el log).</li>
+<li><strong>P99 Latency:</strong> Muestra el tiempo máximo que esperó el 99% de los usuarios. Es el indicador más realista para medir SLAs, mejor que el promedio.</li>
+</ul>
+</li>
+<li><strong>Total traffic over time (Centro-Izquierda):</strong> Gráfico histórico que permite detectar rápidamente picos (spikes) anómalos o caídas abruptas de servicio (DDoS o apagones).</li>
+<li><strong>Kong vs upstream latency over time (Abajo):</strong> Gráfico vital. Separa en líneas de tiempo distintas la latencia de Kong vs la del backend. Si la línea de <code>Upstream</code> tiene picos, los microservicios se degradaron. Si la de <code>Kong</code> tiene picos, hay una sobrecarga en la evaluación de plugins.</li>
+</ul>
+</li>
+</ol>
+<h3 id="demostracion-2-dashboards-metricas-detalladas">Demostración 2: Dashboards (Métricas Detalladas)<a class="headerlink" href="#demostracion-2-dashboards-metricas-detalladas" title="Permanent link">&para;</a></h3>
+<p><strong>Objetivo:</strong> Profundizar en métricas específicas.</p>
+<ol>
+<li>Navega a <strong>Observability -&gt; Dashboards</strong>.</li>
+<li><strong>Dashboard Overview:</strong> Mostrar los gráficos de torta con los Códigos de Estado HTTP generados por nuestro script (verás éxitos 2xx, junto con 401s y 404s).</li>
+<li><strong>Dashboard Latency:</strong> Analizar cómo los tiempos de respuesta varían en el tiempo.</li>
+<li><strong>Dashboard AI Analytics:</strong> Menciona que Konnect posee gráficos dedicados para Gateway de IA (consumo de tokens de LLMs, proveedores usados), listos para cuando habilitemos plugins de IA.</li>
+</ol>
+<h3 id="demostracion-3-explorer-analisis-multidimensional">Demostración 3: Explorer (Análisis Multidimensional)<a class="headerlink" href="#demostracion-3-explorer-analisis-multidimensional" title="Permanent link">&para;</a></h3>
+<p><strong>Objetivo:</strong> Realizar consultas interactivas complejas.</p>
+<ol>
+<li>Navega a <strong>Observability -&gt; Explorer</strong>.</li>
+<li><strong>Caso de uso de filtrado:</strong> Imagina que el <em>Summary</em> mostró un aumento de errores 4xx.</li>
+<li>En el panel de <strong>Group By</strong>, selecciona <code>Status Code</code>.</li>
+<li>En la barra de filtros de arriba, aplica el filtro <code>Status Code IS 401</code>.</li>
+<li>Cambia el <strong>Group By</strong> a <code>Service</code>.</li>
+<li>¡La herramienta revelará exactamente qué servicio está rechazando el tráfico! (En este caso, debería apuntar a <code>/customers</code> en el Internal DP).</li>
+</ol>
+<h3 id="demostracion-4-reports-reportes-a-medida">Demostración 4: Reports (Reportes a Medida)<a class="headerlink" href="#demostracion-4-reports-reportes-a-medida" title="Permanent link">&para;</a></h3>
+<p><strong>Objetivo:</strong> Crear un informe operativo personalizado.</p>
+<ol>
+<li>Navega a <strong>Observability -&gt; Reports</strong>.</li>
+<li>Haz clic en <strong>Create Report</strong> (arriba a la derecha).</li>
+<li><strong>Configuración del Reporte:</strong><ul>
+<li><strong>Name:</strong> Escribe "Reporte de Consumo por Servicio".</li>
+<li><strong>Metric:</strong> Selecciona <code>Request Count</code>.</li>
+<li><strong>Group by:</strong> Selecciona <code>Service</code>.</li>
+<li><strong>Time Range:</strong> Elige los últimos 15 minutos (para ver los datos inyectados).</li>
+</ul>
+</li>
+<li>Haz clic en <strong>Save</strong>.</li>
+<li><strong>Valor de Negocio:</strong> Muestra el gráfico generado al grupo y explica que estos reportes (que pueden descargarse como CSV) son la herramienta esencial para los equipos de Finanzas y Producto para auditar cuotas, cobrar a terceros (monetización) y medir la adopción de cada API.</li>
+</ol>
+<h3 id="demostracion-5-requests-gateway-log-inspection">Demostración 5: Requests (Gateway Log Inspection)<a class="headerlink" href="#demostracion-5-requests-gateway-log-inspection" title="Permanent link">&para;</a></h3>
+<p><strong>Objetivo:</strong> Ver el detalle a nivel de transacción individual sin tener que hacer SSH al servidor.</p>
+<ol>
+<li>Navega a <strong>Observability -&gt; Requests</strong>.</li>
+<li>Utiliza los <strong>Filtros de Búsqueda</strong> (barra superior) para buscar anomalias. Escribe <code>status_code &gt;= 400</code> y dale a Enter, o selecciona un código exitoso.</li>
+<li>
+<p>Haz clic sobre una de las peticiones para abrir el <strong>panel de detalle</strong>.</p>
+</li>
+<li>
+<p><strong>Inspección de la pestaña General:</strong></p>
+<ul>
+<li><strong>Barra de Latencias (Arriba):</strong> Desglose crítico. Muestra el tiempo total, dividido en <strong>Kong internal</strong> (tiempo evaluando plugins) y <strong>Upstream</strong> (tiempo en el backend procesando la lógica). Es la herramienta definitiva para resolver la clásica disputa de <em>"¿Está lenta la Red o el Servidor?"</em>.</li>
+<li><strong>Client IP:</strong> La IP de origen de la transacción. Indispensable para auditar atacantes o configurar listas negras en el plugin de IP Restriction.</li>
+<li><strong>Data plane node / Gateway service:</strong> Permite identificar de manera exacta qué nodo físico o pod específico de Kong procesó esta solicitud y hacia qué servicio la ruteó.</li>
+</ul>
+</li>
+<li>
+<p><strong>Inspección de la pestaña Request:</strong></p>
+<ul>
+<li><strong>User agent:</strong> Revela con qué herramienta o navegador se originó la llamada.</li>
+<li><strong>HTTP method &amp; Request URI:</strong> El endpoint exacto al que el atacante (o usuario) intentó acceder.</li>
+<li><strong>Request size:</strong> Muestra el peso de la petición entrante. Muy útil para detectar anomalías donde envían payloads inmensos para saturar la API.</li>
+</ul>
+</li>
+</ol>
+<h3 id="demostracion-6-debugger-active-tracing">Demostración 6: Debugger (Active Tracing)<a class="headerlink" href="#demostracion-6-debugger-active-tracing" title="Permanent link">&para;</a></h3>
+<p><strong>Objetivo:</strong> Demostrar el poder de diagnosticar problemas internos complejos en tiempo real.</p>
+<ol>
+<li>Navega a <strong>Observability -&gt; Debugger</strong>.</li>
+<li><strong>Teoría:</strong> Cuando una petición falla o es lenta, a veces no basta con ver el log. Necesitamos saber <strong>qué plugin específico</strong> (ej. transformación, limitación, autenticación) introdujo la latencia o rechazó la llamada. El Debugger permite iniciar una sesión temporal de "Tracing Activo".</li>
+<li><em>(Opcional)</em> Si el instructor lo desea, puede iniciar una sesión de Debugger apuntando a la IP del Data Plane y disparar una petición manual por consola para ver la cascada de ejecución de plugins.</li>
+</ol>
+<hr />
+<h2 id="4-proximos-pasos">4. Próximos Pasos<a class="headerlink" href="#4-proximos-pasos" title="Permanent link">&para;</a></h2>
+<p>Con la telemetría nativa funcionando y las herramientas analíticas demostradas, tenemos una base sólida de monitoreo. Sin embargo, para entornos distribuidos y diagnósticos a nivel de código, necesitamos ir un paso más allá. En el próximo módulo <strong>(Observabilidad Avanzada)</strong>, configuraremos OpenTelemetry para habilitar el rastreo distribuido (Distributed Tracing) con un OpenTelemetry Collector, OpenObserve y Arize Phoenix.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

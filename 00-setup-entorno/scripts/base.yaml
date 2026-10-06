@@ -1,0 +1,105 @@
+_format_version: "3.0"
+_info:
+  defaults: {}
+  select_tags:
+  - core
+_konnect:
+  control_plane_name: RZE_MockAPI
+plugins:
+- config:
+    access_logs:
+      custom_attributes_by_lua: null
+      endpoint: http://otel-collector:4318/v1/logs
+    access_logs_endpoint: http://otel-collector:4318/v1/logs
+    batch_flush_delay: null
+    batch_span_count: null
+    connect_timeout: 1000
+    header_type: w3c
+    headers: null
+    http_response_header_for_traceid: null
+    logs_endpoint: http://otel-collector:4318/v1/logs
+    metrics:
+      enable_ai_metrics: false
+      enable_bandwidth_metrics: true
+      enable_consumer_attribute: false
+      enable_latency_metrics: true
+      enable_request_metrics: true
+      enable_upstream_health_metrics: false
+      endpoint: http://otel-collector:4318/v1/metrics
+      push_interval: 60
+    propagation:
+      clear: null
+      default_format: w3c
+      extract: null
+      inject: null
+    queue:
+      concurrency_limit: 1
+      initial_retry_delay: 0.01
+      max_batch_size: 200
+      max_bytes: null
+      max_coalescing_delay: 1
+      max_entries: 10000
+      max_retry_delay: 60
+      max_retry_time: 60
+    read_timeout: 5000
+    resource_attributes:
+      alumno_id: RZE
+      service.name: RZE_kong_dp
+    sampling_rate: null
+    sampling_strategy: parent_drop_probability_fallback
+    send_timeout: 5000
+    traces_endpoint: http://otel-collector:4318/v1/traces
+  enabled: true
+  name: opentelemetry
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+  tags:
+  - core
+services:
+- connect_timeout: 60000
+  enabled: true
+  host: localhost
+  name: Healthcheck-Service
+  port: 8000
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: Healthcheck-Route
+    path_handling: v0
+    paths:
+    - /healthcheck
+    plugins:
+    - config:
+        body: null
+        content_type: null
+        echo: false
+        message: Kong Gateway is Alive! Control Plane Sync is working.
+        status_code: 200
+        trigger: null
+      enabled: true
+      name: request-termination
+      protocols:
+      - grpc
+      - grpcs
+      - http
+      - https
+      tags:
+      - core
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+    tags:
+    - core
+  tags:
+  - core
+  write_timeout: 60000

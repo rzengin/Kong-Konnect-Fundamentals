@@ -1,0 +1,2544 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/en/dia-1-teoria-y-demos/06-observability/Guia_06_Observability/">
+      
+      
+        <link rel="prev" href="../../05-monitoring-logging/Guia_05_Monitoring/">
+      
+      
+        <link rel="next" href="../../07-securing-api-traffic/Guia_07_Securing_API_Traffic/">
+      
+      
+        
+          <link rel="alternate" href="../../../../dia-1-teoria-y-demos/06-observability/Guia_06_Observability/" hreflang="es">
+        
+          <link rel="alternate" href="../../../../pt/dia-1-teoria-y-demos/06-observability/Guia_06_Observability/" hreflang="pt">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>OPS (45 min) Advanced Observability (OTel) - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-06-advanced-observability-and-opentelemetry" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OPS (45 min) Advanced Observability (OTel)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../../dia-1-teoria-y-demos/06-observability/Guia_06_Observability/" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../../pt/dia-1-teoria-y-demos/06-observability/Guia_06_Observability/" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 1 - Theory (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 1 - Theory (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Advanced Observability (OTel)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Advanced Observability (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-kong-integration-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Kong Integration Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-opentelemetry-otel-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OpenTelemetry (OTel) Architectures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. OpenTelemetry (OTel) Architectures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-direct-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Direct Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-architecture-with-otel-collector-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Architecture with OTel Collector (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-course-observability-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The Course Observability Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-demonstration-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Demonstration Sequence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Demonstration Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-1-start-the-observability-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 1: Start the Observability Stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-2-enable-opentelemetry-and-generate-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 2: Enable OpenTelemetry and Generate Traffic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-3-openobserve-traces-logs-metrics-and-dashboards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 3: OpenObserve — Traces, Logs, Metrics, and Dashboards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-4-arize-phoenix-llm-ai-oriented-trace-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 4: Arize Phoenix — LLM / AI-Oriented Trace View
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) ITSM Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Secrets Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) OWASP WAF Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 2 - Practical (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 2 - Practical (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initial Setup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Initial Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 3 - AI Gateway (Theory & Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 3 - AI Gateway (Theory & Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI 00 AI Gateway 2.x Architecture and kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI 01 One endpoint, many LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) AI 02 Governance, quotas and budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) AI 03 Guardrails and PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) AI 04 Semantic routing, caching and compression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI 05 Managed RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) AI 06 MCP (APIs as tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI 07 Agents and A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) AI 08 AI Observability and FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) AI 09 AI Summit 2026 Announcements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Lab AI Gateway Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) AI Lab Multi-LLM and Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) AI Lab Governance and Quotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) AI Lab Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) AI Lab Semantics and Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) AI Lab RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Lab MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI Lab A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) AI Lab Observability (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Challenge Governed Credit Assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-kong-integration-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Kong Integration Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-opentelemetry-otel-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OpenTelemetry (OTel) Architectures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. OpenTelemetry (OTel) Architectures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-direct-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Direct Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-architecture-with-otel-collector-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Architecture with OTel Collector (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-course-observability-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The Course Observability Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-demonstration-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Demonstration Sequence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Demonstration Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-1-start-the-observability-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 1: Start the Observability Stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-2-enable-opentelemetry-and-generate-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 2: Enable OpenTelemetry and Generate Traffic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-3-openobserve-traces-logs-metrics-and-dashboards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 3: OpenObserve — Traces, Logs, Metrics, and Dashboards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-4-arize-phoenix-llm-ai-oriented-trace-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 4: Arize Phoenix — LLM / AI-Oriented Trace View
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="module-06-advanced-observability-and-opentelemetry">Module 06: Advanced Observability and OpenTelemetry<a class="headerlink" href="#module-06-advanced-observability-and-opentelemetry" title="Permanent link">&para;</a></h1>
+<p>Observability is not simply "having logs." It's the ability to understand the internal state of a complex system from its external outputs (Logs, Metrics, and Traces).</p>
+<p>In microservices architectures, a single user request can traverse dozens of different services. If something fails or becomes slow, traditional monitoring tools (which look server by server) are insufficient. We need <strong>Distributed Tracing</strong>.</p>
+<hr />
+<h2 id="1-kong-integration-options">1. Kong Integration Options<a class="headerlink" href="#1-kong-integration-options" title="Permanent link">&para;</a></h2>
+<p>Kong Gateway sits at the entry point of all traffic, making it the ideal place to generate centralized telemetry. Kong offers multiple integration options:</p>
+<ol>
+<li><strong>Specific Native Integrations:</strong> Dedicated plugins for platforms like <code>datadog</code>, <code>prometheus</code>, <code>statsd</code>, or <code>zipkin</code>. They are easy to configure if you are already "tied" to one of these providers.</li>
+<li><strong>Logs to Aggregators:</strong> Plugins like <code>http-log</code>, <code>tcp-log</code>, or <code>kafka-log</code> to output raw transactions to systems like ELK (Elasticsearch, Logstash, Kibana) or Splunk.</li>
+<li><strong>The Open Standard (OpenTelemetry):</strong> The <code>opentelemetry</code> plugin exports traces, logs, and metrics using the industry-standard protocol (OTLP). This is the recommended option today because it avoids "vendor lock-in" (you can switch from Datadog to Dynatrace, OpenObserve, or any OTLP-compatible backend without touching Kong).</li>
+</ol>
+<hr />
+<h2 id="2-opentelemetry-otel-architectures">2. OpenTelemetry (OTel) Architectures<a class="headerlink" href="#2-opentelemetry-otel-architectures" title="Permanent link">&para;</a></h2>
+<p>When using the OTLP protocol, there are two main deployment patterns:</p>
+<h3 id="a-direct-integration">A. Direct Integration<a class="headerlink" href="#a-direct-integration" title="Permanent link">&para;</a></h3>
+<p>Kong Gateway sends traces directly to the observability backend (e.g., Honeycomb or Datadog) using the <code>opentelemetry</code> plugin.
+*   <strong>Advantage:</strong> Fewer moving parts.
+*   <strong>Disadvantage:</strong> Kong uses network resources talking directly to the external provider, and if there are connectivity issues, traces can be lost. Also, every new backend means reconfiguring every Data Plane.</p>
+<h3 id="b-architecture-with-otel-collector-recommended">B. Architecture with OTel Collector (Recommended)<a class="headerlink" href="#b-architecture-with-otel-collector-recommended" title="Permanent link">&para;</a></h3>
+<p>Kong Gateway sends traces to a local component called the <strong>OpenTelemetry Collector</strong>. This collector receives the data, processes it, batches it, and then sends it asynchronously to one or more final backends.
+*   <strong>Advantage:</strong> High performance. The Gateway does not block. The Collector can filter noise, enrich or anonymize data (remove PII), and <strong>duplicate</strong> telemetry to several destinations (<em>fan-out</em>) without Kong knowing about it.
+*   <strong>Disadvantage:</strong> Requires maintaining the Collector's infrastructure.</p>
+<p>In this course we use pattern <strong>B</strong>: Kong only talks to the Collector, and the Collector distributes the telemetry to two backends with different purposes.</p>
+<hr />
+<h2 id="3-the-course-observability-stack">3. The Course Observability Stack<a class="headerlink" href="#3-the-course-observability-stack" title="Permanent link">&para;</a></h2>
+<p>The stack is defined in <code>workshop-assets/dia-1/06-observability/otel-stack/docker-compose.yml</code> and runs in Docker next to the Data Plane (<code>kong-workshop</code> network). It consists of <strong>3 lightweight containers</strong> (~1.2 GB of RAM in total):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Container</th>
+<th style="text-align: left;">Image (pinned version)</th>
+<th style="text-align: center;">Ports</th>
+<th style="text-align: center;">RAM limit</th>
+<th style="text-align: left;">Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>otel-collector</code></td>
+<td style="text-align: left;"><code>otel/opentelemetry-collector-contrib:0.161.0</code></td>
+<td style="text-align: center;"><code>4317</code> (gRPC), <code>4318</code> (HTTP)</td>
+<td style="text-align: center;">200 MB</td>
+<td style="text-align: left;">Receives OTLP from Kong, filters/enriches, batches, and distributes: <strong>traces → OpenObserve + Phoenix</strong>, <strong>metrics and logs → OpenObserve</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>openobserve</code></td>
+<td style="text-align: left;"><code>openobserve/openobserve:v1.0.4</code></td>
+<td style="text-align: center;"><code>5080</code></td>
+<td style="text-align: center;">512 MB</td>
+<td style="text-align: left;">"All-in-one" observability backend: traces, metrics, logs, dashboards, log search (SQL / full text), and alerts. Compressed columnar storage in a single binary.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>phoenix</code></td>
+<td style="text-align: left;"><code>arizephoenix/phoenix:20.19.0</code></td>
+<td style="text-align: center;"><code>6006</code></td>
+<td style="text-align: center;">512 MB</td>
+<td style="text-align: left;"><strong>Arize Phoenix</strong>: LLM / AI-oriented trace viewer (OpenInference). Shows prompts, responses, tokens, costs, and latency per model call.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why two backends?</strong></p>
+<ul>
+<li><strong>OpenObserve</strong> is the day-to-day operations tool: "how many requests per second?, which route has 5xx errors?, what happened to the request with <code>x-correlation-id = ...</code>?". It covers the three pillars (traces, metrics, logs) in a single UI.</li>
+<li><strong>Phoenix</strong> is built for AI traffic. When Kong acts as an <strong>AI Gateway</strong> (<code>ai-proxy</code>, <code>ai-prompt-guard</code> plugins, etc.) or when applications are instrumented with OpenInference, Phoenix shows each LLM call with its prompt, response, token usage, and latency. For "classic" HTTP traffic (like the one in this module) it shows the span tree and the latency of each span, like any trace viewer.</li>
+<li>Thanks to the Collector, both receive <strong>the same traces</strong> without any extra configuration in Kong.</li>
+</ul>
+<p><strong>Architecture Diagram:</strong></p>
+<pre class="mermaid"><code>flowchart TD
+    classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+    classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+    classDef inner_cp fill:#bae6fd,stroke:#0284c7,stroke-width:1px,color:#0c4a6e;
+    classDef inner_dp fill:#fed7aa,stroke:#ea580c,stroke-width:1px,color:#7c2d12;
+    classDef client_style fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:20,ry:20;
+    classDef server_style fill:#f1f5f9,stroke:#94a3b8,stroke-width:2px,color:#0f172a,rx:10,ry:10;
+    classDef tool_style fill:#ccfbf1,stroke:#0d9488,stroke-width:1px,color:#0f172a,rx:5,ry:5;
+
+    %% Cloud / Konnect
+    subgraph Cloud ["Kong Konnect (Cloud)"]
+        CP["Control Plane"]:::inner_cp
+    end
+    Cloud:::cp_style
+
+    %% Local Environment
+    subgraph LocalEnv ["Local Environment (Docker - kong-workshop network)"]
+        DP["Kong Gateway DP&lt;br&gt;(opentelemetry plugin)"]:::inner_dp
+        subgraph OtelStack ["otel-stack (docker compose)"]
+            OTel["OTel Collector&lt;br&gt;:4317 gRPC / :4318 HTTP"]:::tool_style
+            O2[("OpenObserve&lt;br&gt;UI :5080")]:::tool_style
+            PX[("Arize Phoenix&lt;br&gt;UI :6006")]:::tool_style
+        end
+    end
+    LocalEnv:::dp_style
+    OtelStack:::server_style
+
+    %% User / Instructor
+    User(["Web browser"]):::client_style
+
+    %% Relationships
+    CP -- "1. Syncs Config (mTLS)" --&gt; DP
+    DP -- "2. Traces, logs, and metrics (OTLP/HTTP)" --&gt; OTel
+    OTel -- "3a. Traces + metrics + logs" --&gt; O2
+    OTel -- "3b. Traces" --&gt; PX
+    User -- "4. Dashboards, logs, and traces" --&gt; O2
+    User -- "5. LLM / AI view" --&gt; PX</code></pre>
+<blockquote>
+<p><strong>Centralized mode (optional):</strong> the same <code>docker-compose.yml</code> can run on an instructor server. In that case the Data Planes point to <code>http://&lt;SERVER_IP&gt;:4318</code> instead of <code>http://otel-collector:4318</code>, and ports <code>4318</code>, <code>5080</code>, and <code>6006</code> are opened in the firewall.</p>
+</blockquote>
+<hr />
+<h2 id="4-demonstration-sequence">4. Demonstration Sequence<a class="headerlink" href="#4-demonstration-sequence" title="Permanent link">&para;</a></h2>
+<h3 id="demonstration-1-start-the-observability-stack">Demonstration 1: Start the Observability Stack<a class="headerlink" href="#demonstration-1-start-the-observability-stack" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Prerequisite:</strong> the <code>kong-dp</code> Data Plane must be running on the <code>kong-workshop</code> network (created by <code>docs/00-setup-entorno/scripts/start_dps.sh</code>).</li>
+<li><strong>Start the stack:</strong></li>
+</ol>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>./workshop-assets/dia-1/06-observability/scripts/setup-observability.sh
+</span></code></pre></div>
+<p>The script:</p>
+<ul>
+<li>Checks that Docker and Docker Compose are available.</li>
+<li>Checks the images: if they are not in Docker, it loads them from <code>workshop-assets/dia-1/06-observability/docker-images/*.tar</code> (offline mode, generated with <code>scripts/save-images.sh</code>) or pulls them.</li>
+<li>Creates the <code>kong-workshop</code> network if it does not exist and runs <code>docker compose up -d</code>.</li>
+<li>Waits until OpenObserve (<code>/healthz</code>), Phoenix, and the Collector (<code>:13133</code>) respond, and prints the URLs and credentials.</li>
+</ul>
+<p>Useful commands: <code>setup-observability.sh status</code> (status and URLs), <code>setup-observability.sh down</code> (stop, keeping data), and <code>setup-observability.sh reset</code> (stop and delete data).</p>
+<ol>
+<li><strong>Walk through the Collector configuration</strong> (<code>otel-stack/otel-collector-config.yaml</code>). Points to explain:<ul>
+<li><strong>Receivers:</strong> <code>otlp</code> listening on <code>4317</code> (gRPC) and <code>4318</code> (HTTP).</li>
+<li><strong>Processors:</strong> <code>memory_limiter</code> (protects the Collector), <code>filter/health_checks</code> (drops <code>/health</code> and <code>/internal/status</code> spans), <code>attributes/enrich</code> (adds <code>pipeline.processed_by</code>), <code>transform/kong_spans</code> (derives <code>peer.service</code>), <code>transform/phoenix_project</code> (uses <code>service.name</code> as the Phoenix project), and <code>batch</code>.</li>
+<li><strong>Exporters:</strong> <code>otlphttp/openobserve</code> (with Basic Auth: the Collector holds the credentials, Kong does not know them) and <code>otlphttp/phoenix</code>.</li>
+<li><strong>Pipelines:</strong> <code>traces → [OpenObserve, Phoenix]</code>, <code>metrics → OpenObserve</code>, <code>logs → OpenObserve</code>.</li>
+</ul>
+</li>
+</ol>
+<h3 id="demonstration-2-enable-opentelemetry-and-generate-traffic">Demonstration 2: Enable OpenTelemetry and Generate Traffic<a class="headerlink" href="#demonstration-2-enable-opentelemetry-and-generate-traffic" title="Permanent link">&para;</a></h3>
+<p>For Kong to start emitting telemetry, we enable the plugin globally pointing to the Collector. Since the Collector is on the same Docker network as the Data Plane, Kong resolves it by container name: <code>otel-collector</code>.</p>
+<ol>
+<li><strong>Review the configuration:</strong>
+    Open the file <code>workshop-assets/dia-1/06-observability/archivos-deck/solucion-kong.yaml</code>. Besides the <code>/mock</code> service, it contains the following block:</li>
+</ol>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">plugins</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">opentelemetry</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">header_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">w3c</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">traces_endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://otel-collector:4318/v1/traces</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">logs_endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://otel-collector:4318/v1/logs</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="nt">access_logs</span><span class="p">:</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://otel-collector:4318/v1/logs</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="nt">custom_attributes_by_lua</span><span class="p">:</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">          </span><span class="nt">request.id</span><span class="p">:</span><span class="w"> </span><span class="s">"return</span><span class="nv"> </span><span class="s">kong.request.get_header('x-correlation-id')</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">'none'"</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">metrics</span><span class="p">:</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://otel-collector:4318/v1/metrics</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="nt">enable_request_metrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="nt">enable_latency_metrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">        </span><span class="nt">enable_bandwidth_metrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="nt">resource_attributes</span><span class="p">:</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">        </span><span class="nt">service.name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kong-gateway</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">        </span><span class="nt">deployment.environment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">workshop</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">correlation-id</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">      </span><span class="nt">header_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x-correlation-id</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">      </span><span class="nt">echo_downstream</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div>
+<ul>
+<li><code>traces_endpoint</code>: spans for every request (including Kong's internal phases and the upstream call).</li>
+<li><code>logs_endpoint</code> / <code>access_logs</code>: Gateway logs and one <em>access log</em> per request, enriched with attributes computed in Lua (IP, consumer, user-agent, correlation id).</li>
+<li><code>metrics</code>: request, latency, and bandwidth metrics exported over OTLP (the <code>prometheus</code> plugin is not needed).</li>
+<li>
+<p><code>resource_attributes</code>: labels shared by all telemetry. <code>service.name</code> is the key to filter in OpenObserve and the project name in Phoenix.</p>
+</li>
+<li>
+<p><strong>Apply and Test:</strong>
+    Run the following block to sync, wait for the Data Plane to update, and generate a batch of 10 requests spaced half a second apart:</p>
+</li>
+</ul>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>deck<span class="w"> </span>gateway<span class="w"> </span>sync<span class="w"> </span>workshop-assets/dia-1/06-observability/archivos-deck/solucion-kong.yaml<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Waiting 10s for Konnect to update the Data Plane..."</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Generating 10 test requests..."</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..10<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>curl<span class="w"> </span>-k<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s2">"HTTP Code: %{http_code}\n"</span><span class="w"> </span>https://localhost:8443/mock<span class="p">;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">0</span>.5<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</span></code></pre></div>
+<p><strong>Analyzing the result:</strong></p>
+<ul>
+<li>You will see <code>HTTP Code: 200</code> printed in the console for all 10 requests.</li>
+<li>Silently, Kong batched the telemetry for these transactions (including internal and backend processing times) and sent it asynchronously to the Collector, which forwarded it to OpenObserve and Phoenix.</li>
+<li>This ensures that telemetry collection <strong>does not add blocking latency</strong> to end-client requests.</li>
+<li>Metrics are sent in periodic batches (every 60 s by default): they can take up to a minute to appear.</li>
+</ul>
+<h3 id="demonstration-3-openobserve-traces-logs-metrics-and-dashboards">Demonstration 3: OpenObserve — Traces, Logs, Metrics, and Dashboards<a class="headerlink" href="#demonstration-3-openobserve-traces-logs-metrics-and-dashboards" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Open <code>http://localhost:5080</code> and log in with the stack's root user (default email <code>admin@kong.com</code>; the password is <strong>random</strong>: <code>setup-observability.sh</code> generates it on its first run into <code>otel-stack/.env</code> —permissions 600, outside git— and prints it at the end; <code>setup-observability.sh status</code> shows it again).</li>
+<li><strong>Traces (Distributed Tracing):</strong><ul>
+<li>Left menu → <strong>Traces</strong>. Select the <code>default</code> stream and a recent time range (e.g., <em>Past 15 minutes</em>).</li>
+<li>Filter by service: <code>service_name = 'kong-gateway'</code> (OpenObserve turns dots in attribute names into underscores: <code>service.name</code> → <code>service_name</code>).</li>
+<li>Click a trace to open the <strong>Waterfall</strong> view.</li>
+<li><strong>What to explain to the student:</strong><ul>
+<li>The root span (e.g., <code>kong</code>) represents the total time from when the client made the request until it received a response.</li>
+<li>The sub-spans detail how many milliseconds <strong>Kong</strong> consumed (<code>access</code> phase, plugins, DNS, balancer) and how many the <strong>Backend</strong> consumed (<code>kong.upstream</code> / HTTP call to the upstream).</li>
+<li>The attributes panel shows <code>http.status_code</code>, the route, <code>pipeline.processed_by</code> (added by the Collector), and the <code>resource_attributes</code> defined in the plugin.</li>
+<li>This demonstrates the ability to instantly isolate the source of latency in a complex system.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Logs (search):</strong><ul>
+<li>Left menu → <strong>Logs</strong>, stream <code>default</code>.</li>
+<li>Full-text search: <code>match_all('mock')</code>. Field search: <code>service_name = 'kong-gateway'</code>.</li>
+<li>Copy an <code>x-correlation-id</code> value (visible with <code>curl -k -i https://localhost:8443/mock</code>) and search for it to find the exact <em>access log</em> of that request. Show that the log contains <code>trace_id</code>: from the log you can jump to the matching trace.</li>
+<li>SQL mode: <code>SELECT * FROM "default" WHERE service_name = 'kong-gateway' ORDER BY _timestamp DESC LIMIT 20</code>.</li>
+</ul>
+</li>
+<li><strong>Metrics:</strong><ul>
+<li>Left menu → <strong>Metrics</strong>. Expand the metric list and look for the ones emitted by Kong (request count, latencies, bytes transferred).</li>
+<li>Show how to chart a metric grouped by an attribute (e.g., status code or route).</li>
+</ul>
+</li>
+<li><strong>Dashboards:</strong><ul>
+<li>Left menu → <strong>Dashboards → New Dashboard</strong> (e.g., "Kong Workshop").</li>
+<li><strong>Add Panel</strong>: choose the request metric as a time series; add a second panel with latency. Save the dashboard.</li>
+<li>Explain that OpenObserve also supports <strong>alerts</strong> on logs or metrics (e.g., 5xx rate).</li>
+</ul>
+</li>
+</ol>
+<h3 id="demonstration-4-arize-phoenix-llm-ai-oriented-trace-view">Demonstration 4: Arize Phoenix — LLM / AI-Oriented Trace View<a class="headerlink" href="#demonstration-4-arize-phoenix-llm-ai-oriented-trace-view" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Open <code>http://localhost:6006</code> (Phoenix requires no login in this stack).</li>
+<li>The <strong>Projects</strong> screen shows the <code>kong-gateway</code> project: the Collector copies <code>service.name</code> into <code>openinference.project.name</code>, so every service (or every student, in Lab 07) gets its own project.</li>
+<li>Open the project: the <strong>Traces / Spans</strong> table shows every request with its latency, status, and time. Click a trace to see the span tree and its attributes.</li>
+<li><strong>What to explain to the student:</strong><ul>
+<li>For "classic" HTTP traffic Phoenix behaves like any other trace viewer (generic span kind).</li>
+<li>Its value shows with <strong>AI</strong> traffic: when spans carry OpenInference attributes (for example, applications instrumented with the OpenInference SDKs, or LLM traffic going through Kong AI Gateway), Phoenix shows the <strong>prompt</strong> and <strong>response</strong>, input/output <strong>tokens</strong>, the model used, and the <strong>latency</strong> of each call, and also supports evaluations and experiment comparison.</li>
+<li>OpenObserve and Phoenix see <strong>the same trace</strong> (same <code>trace_id</code>): the Collector performs the fan-out with no changes in Kong.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="5-summary">5. Summary<a class="headerlink" href="#5-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Operational question</th>
+<th style="text-align: left;">Where to look</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Why was this request slow? Kong or the backend?</td>
+<td style="text-align: left;">OpenObserve → Traces (Waterfall) or Phoenix</td>
+</tr>
+<tr>
+<td style="text-align: left;">What happened to the request with <code>x-correlation-id = ...</code>?</td>
+<td style="text-align: left;">OpenObserve → Logs</td>
+</tr>
+<tr>
+<td style="text-align: left;">How many requests/errors/latency per route?</td>
+<td style="text-align: left;">OpenObserve → Metrics / Dashboards</td>
+</tr>
+<tr>
+<td style="text-align: left;">Which prompt was sent to the LLM, how many tokens did it use, and how long did it take?</td>
+<td style="text-align: left;">Phoenix</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

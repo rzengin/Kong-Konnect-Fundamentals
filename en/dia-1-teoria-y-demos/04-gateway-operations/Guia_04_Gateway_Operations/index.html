@@ -1,0 +1,2644 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/en/dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations/">
+      
+      
+        <link rel="prev" href="../../03-developer-portal/Guia_03_Developer_Portal/">
+      
+      
+        <link rel="next" href="../../05-monitoring-logging/Guia_05_Monitoring/">
+      
+      
+        
+          <link rel="alternate" href="../../../../dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations/" hreflang="es">
+        
+          <link rel="alternate" href="../../../../pt/dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations/" hreflang="pt">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>OPS (60 min) Gateway Operations (IaC) - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-04-gateway-operations-iac" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OPS (60 min) Gateway Operations (IaC)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../../dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations/" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../../pt/dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations/" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../" title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 1 - Theory (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 1 - Theory (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theoretical-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Theoretical Concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Theoretical Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-as-code-iac-and-gitops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure as Code (IaC) and GitOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deck-declarative-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decK: Declarative Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-control-planes-and-separation-of-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Control Planes and Separation of Responsibilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-as-code-iac-and-gitops_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure as Code (IaC) and GitOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deck-declarative-gateway-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decK: Declarative Gateway Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kongctl-declarative-platform-configuration-konnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kongctl: Declarative Platform Configuration (Konnect)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promotion-between-environments-cicd-and-specific-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Promotion Between Environments (CI/CD) and Specific Variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-global-control-plane-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The "Global Control Plane" Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstration-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration Sequence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Demonstration Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-1-infrastructure-governance-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 1: Infrastructure Governance (Terraform)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-2-data-plane-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 2: Data Plane Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-3-permission-isolation-rbac-and-teams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 3: Permission Isolation (RBAC and Teams)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-4-declarative-synchronization-with-deck-routes-and-global-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 4: Declarative Synchronization with decK (Routes and Global Policies)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleanup-total-reset-instructor-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cleanup: Total Reset (Instructor Only)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Advanced Observability (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) ITSM Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Secrets Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) OWASP WAF Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 2 - Practical (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 2 - Practical (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initial Setup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Initial Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_00_Setup_Local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-2-labs/Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 3 - AI Gateway (Theory & Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 3 - AI Gateway (Theory & Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI 00 AI Gateway 2.x Architecture and kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI 01 One endpoint, many LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) AI 02 Governance, quotas and budget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) AI 03 Guardrails and PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) AI 04 Semantic routing, caching and compression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI 05 Managed RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) AI 06 MCP (APIs as tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI 07 Agents and A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) AI 08 AI Observability and FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) AI 09 AI Summit 2026 Announcements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Day 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Day 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Lab AI Gateway Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) AI Lab Multi-LLM and Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) AI Lab Governance and Quotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) AI Lab Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) AI Lab Semantics and Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) AI Lab RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Lab MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) AI Lab A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) AI Lab Observability (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) AI Challenge Governed Credit Assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theoretical-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Theoretical Concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Theoretical Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-as-code-iac-and-gitops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure as Code (IaC) and GitOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deck-declarative-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decK: Declarative Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-control-planes-and-separation-of-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Control Planes and Separation of Responsibilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-as-code-iac-and-gitops_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure as Code (IaC) and GitOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deck-declarative-gateway-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decK: Declarative Gateway Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kongctl-declarative-platform-configuration-konnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kongctl: Declarative Platform Configuration (Konnect)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promotion-between-environments-cicd-and-specific-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Promotion Between Environments (CI/CD) and Specific Variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-global-control-plane-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The "Global Control Plane" Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#demonstration-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration Sequence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Demonstration Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-1-infrastructure-governance-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 1: Infrastructure Governance (Terraform)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-2-data-plane-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 2: Data Plane Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-3-permission-isolation-rbac-and-teams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 3: Permission Isolation (RBAC and Teams)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstration-4-declarative-synchronization-with-deck-routes-and-global-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demonstration 4: Declarative Synchronization with decK (Routes and Global Policies)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleanup-total-reset-instructor-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cleanup: Total Reset (Instructor Only)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="module-04-gateway-operations-iac">Module 04: Gateway Operations (IaC)<a class="headerlink" href="#module-04-gateway-operations-iac" title="Permanent link">&para;</a></h1>
+<p>This module introduces operations and security teams to best practices for managing Kong Konnect at an enterprise scale, using modern automation tools and declarative approaches.</p>
+<hr />
+<h2 id="module-objectives">Module Objectives<a class="headerlink" href="#module-objectives" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Understand the difference between managing Kong using graphical interfaces (UI) and automated flows (GitOps).</li>
+<li>Comprehend how to use <strong>Terraform</strong> to provision base infrastructure (Control Planes, Teams).</li>
+<li>Master <strong>decK</strong>, Kong's official declarative configuration tool.</li>
+<li>Design segregated architectures using multiple Control Planes.</li>
+<li>Promote global security and observability standards without duplicating configuration.</li>
+</ol>
+<hr />
+<h2 id="theoretical-concepts">Theoretical Concepts<a class="headerlink" href="#theoretical-concepts" title="Permanent link">&para;</a></h2>
+<p>Before interacting with the tools, it is essential to establish the architectural and operational patterns that ensure resilience and security in complex environments.</p>
+<h3 id="infrastructure-as-code-iac-and-gitops">Infrastructure as Code (IaC) and GitOps<a class="headerlink" href="#infrastructure-as-code-iac-and-gitops" title="Permanent link">&para;</a></h3>
+<p>Managing Kong through the Konnect UI is excellent for development environments and for visualizing traffic, but it does not scale in production. Human errors, lack of version control, and unaudited changes ("drift") can lead to massive outages.
+Through <strong>GitOps</strong>, the desired state of all APIs and security policies lives in Git repositories as text files (YAML, HCL). Tools like Terraform and decK read these files and automatically synchronize them to Kong Konnect via CI/CD pipelines.</p>
+<h3 id="deck-declarative-configuration">decK: Declarative Configuration<a class="headerlink" href="#deck-declarative-configuration" title="Permanent link">&para;</a></h3>
+<p><strong>decK (declarative Kong)</strong> is an official CLI tool that allows managing the state of Control Planes.
+Instead of making 10 REST API calls to create a service, 5 routes, and 4 plugins, decK takes a YAML file with the entire desired state and internally calculates the difference ("diff") with what currently exists in Konnect, executing only the necessary updates.</p>
+<p>Key commands:</p>
+<ul>
+<li><code>deck gateway ping</code> → Verifies authentication with Konnect.</li>
+<li><code>deck gateway dump</code> → Exports the current Gateway configuration to a YAML file (backup).</li>
+<li><code>deck gateway diff</code> → Shows what would change, without modifying anything (preview, ideal for Pull Requests).</li>
+<li><code>deck gateway apply</code> → Adds/modifies what is declared <strong>without deleting</strong> what already exists (safe merge).</li>
+<li><code>deck gateway sync</code> → Makes the CP state <strong>exactly</strong> what the file says (deletes anything not declared, ensuring no "ghost" entities).</li>
+</ul>
+<h3 id="multiple-control-planes-and-separation-of-responsibilities">Multiple Control Planes and Separation of Responsibilities<a class="headerlink" href="#multiple-control-planes-and-separation-of-responsibilities" title="Permanent link">&para;</a></h3>
+<p>In medium and large organizations, a single Control Plane can become an organizational bottleneck and a single point of failure (Blast Radius). Kong Konnect allows creating <strong>multiple logical Control Planes</strong> instantly, acting as completely isolated partitions.</p>
+<p><strong>Why divide them and what are the most common use cases?</strong></p>
+<ol>
+<li>
+<p><strong>By Network Topology (Internal vs. External Traffic):</strong>
+   In an Enterprise environment, you never mix public and private traffic. You can have a Control Plane called <code>External-CP</code> (exposed to the Internet, with strict WAF and Rate Limiting rules) and another <code>Internal-CP</code> (only accessible by the Intranet, without heavy encryption to optimize latency).</p>
+</li>
+<li>
+<p><strong>By Software Development Life Cycle (SDLC) Environments:</strong>
+   To isolate testing from production. It is standard to have <code>Dev-CP</code>, <code>QA-CP</code>, and <code>Prod-CP</code>. If a developer breaks a route while testing a plugin in <code>Dev-CP</code>, the Production Data Planes are unaffected.</p>
+</li>
+<li>
+<p><strong>By Business Domains (Mesh Architecture / Micro-Gateways):</strong>
+   The "Payments" team manages its own <code>Payments-CP</code> and the "Shipping" team manages its <code>Logistics-CP</code>. Each team has total autonomy over their routes and plugins without the risk of overwriting each other's configuration (reducing the <em>Blast Radius</em> or impact radius in case of errors).</p>
+</li>
+</ol>
+<h3 id="infrastructure-as-code-iac-and-gitops_1">Infrastructure as Code (IaC) and GitOps<a class="headerlink" href="#infrastructure-as-code-iac-and-gitops_1" title="Permanent link">&para;</a></h3>
+<p>Kong promotes platform teams adopting IaC to manage these multiple environments. Instead of clicking through an interface, administrators define the desired state in Git repositories, and tools like Terraform or decK apply those changes. This allows for auditing, fast <em>rollbacks</em>, and the elimination of "handcrafted" configurations.</p>
+<h3 id="deck-declarative-gateway-configuration">decK: Declarative Gateway Configuration<a class="headerlink" href="#deck-declarative-gateway-configuration" title="Permanent link">&para;</a></h3>
+<p>Kong provides <strong>decK</strong> (Declarative Configuration for Kong), a CLI tool written in Go focused on the <em>Gateway</em> (Data Plane). It allows exporting and importing the configuration of routes, services, and plugins in YAML format (known as <em>Kong Declarative Configuration</em>). decK compares the state of the YAML with the current state of the Gateway and applies only the difference (diff) idempotently.</p>
+<h3 id="kongctl-declarative-platform-configuration-konnect">kongctl: Declarative Platform Configuration (Konnect)<a class="headerlink" href="#kongctl-declarative-platform-configuration-konnect" title="Permanent link">&para;</a></h3>
+<p>While <code>decK</code> handles routes and plugins (Gateway level), <strong>kongctl</strong> is Kong's new CLI tool specifically designed to manage the <strong>Kong Konnect</strong> platform at a higher level.</p>
+<p>With <code>kongctl</code> you can manage Konnect's "native" cloud resources using YAML, such as:
+- Creation and management of <strong>Control Planes</strong>.
+- Management of <strong>API Catalog</strong> entities and Developer Portals.
+- User and team (RBAC) administration.</p>
+<p>In modern Konnect architectures, <code>kongctl</code> and <code>decK</code> work together: you use <code>kongctl</code> to provision the base infrastructure (the Control Plane and the Portal) and you use <code>decK</code> to populate that Control Plane with your APIs' routing and security rules.</p>
+<h3 id="promotion-between-environments-cicd-and-specific-variables">Promotion Between Environments (CI/CD) and Specific Variables<a class="headerlink" href="#promotion-between-environments-cicd-and-specific-variables" title="Permanent link">&para;</a></h3>
+<p>When working with multiple environments (e.g., <code>Dev-CP</code> ➔ <code>QA-CP</code> ➔ <code>Prod-CP</code>), it is essential to understand that there are <strong>two parallel but distinct information flows</strong> when promoting configurations:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Configuration Type</th>
+<th style="text-align: center;">Is it promoted?</th>
+<th style="text-align: left;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Logical Configuration</strong></td>
+<td style="text-align: center;">✅ Yes</td>
+<td style="text-align: left;">Business rules, plugins (Rate Limiting), routes (<code>/api/v1/payments</code>). This YAML file travels intact from Development to Production to ensure consistency.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Environment-Specific</strong></td>
+<td style="text-align: center;">❌ No</td>
+<td style="text-align: left;">Backend IPs (<code>10.0.0.5</code> vs <code>192.168.1.100</code>), SSL certificates, secrets. This information <strong>belongs to the environment</strong> and never travels with the code.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">How does decK handle this?</p>
+<p>decK solves this by using <strong>Environment Variables</strong>. In your YAML file, instead of putting a fixed production IP, you place a variable:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ env "BACKEND_PAYMENTS_URL" }}</span>
+</span></code></pre></div>
+When executing <code>deck gateway sync</code> in your pipeline (CI/CD), decK injects the specific values for that environment on the fly. This way, the <strong>same YAML file</strong> serves all environments.</p>
+</div>
+<h3 id="the-global-control-plane-pattern">The "Global Control Plane" Pattern<a class="headerlink" href="#the-global-control-plane-pattern" title="Permanent link">&para;</a></h3>
+<p>Imagine you work at a large bank with 50 different development teams (Cards, Loans, Investments, etc.). To avoid bottlenecks, you give each team <strong>its own Control Plane</strong> in Kong Konnect so they can manage their routes with total autonomy.</p>
+<div class="admonition warning">
+<p class="admonition-title">The Security Challenge</p>
+<p>One day, the <strong>CISO (Security Department)</strong> issues an non-negotiable directive: <em>"Absolutely all HTTP traffic in the company must be logged in a central system (Log) and a Correlation Header must be injected for traceability"</em>.</p>
+<p>How do you apply this mandatory rule without having to manually configure the plugins in all 50 Control Planes one by one (and praying that no developer deletes them by mistake)?</p>
+</div>
+<p>This is where decK's declarative power shines using the <strong>Global Control Plane</strong> pattern:</p>
+<ol>
+<li><strong>Global Definition:</strong> The Platform/Security team creates a "master" YAML file that contains <em>only</em> the mandatory plugins (e.g., <code>file-log</code>, <code>correlation-id</code>).</li>
+<li><strong>Automatic Merge:</strong> In the deployment pipelines (CI/CD) of the 50 teams, just before applying changes, the pipeline automatically executes the <code>deck file merge</code> command. This command takes the Cards team's YAML (which only knows about its own routes) and <strong>merges</strong> it with the Global Security YAML.</li>
+<li><strong>Transparent Inheritance:</strong> When the final configuration is synchronized, the Cards team's services automatically inherit the corporate security policies, without developers having had to touch them.</li>
+</ol>
+<pre class="mermaid"><code>flowchart LR
+    classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+    classDef yaml_style fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:5,ry:5;
+    classDef action_style fill:#c2410c,stroke:#fdba74,stroke-width:2px,color:#fff7ed,rx:20,ry:20;
+
+    Y_Global["Security YAML&lt;br/&gt;(Global Plugins)"]:::yaml_style
+    Y_Team["Team YAML&lt;br/&gt;(Card Routes)"]:::yaml_style
+
+    Merge(("deck file merge")):::action_style
+
+    Y_Combined["Combined YAML&lt;br/&gt;(Routes + Security)"]:::yaml_style
+
+    CP["Team Control Plane"]:::cp_style
+
+    Y_Global --&gt; Merge
+    Y_Team --&gt; Merge
+
+    Merge --&gt; Y_Combined
+    Y_Combined --&gt;|deck gateway sync| CP</code></pre>
+<hr />
+<h2 id="reference-architecture">Reference Architecture<a class="headerlink" href="#reference-architecture" title="Permanent link">&para;</a></h2>
+<p>In the following demonstrations, the instructor will build the following automated architecture step-by-step:</p>
+<pre class="mermaid"><code>flowchart TB
+    classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+    classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+    classDef inner_cp fill:#bae6fd,stroke:#0284c7,stroke-width:1px,color:#0c4a6e;
+    classDef inner_dp fill:#fed7aa,stroke:#ea580c,stroke-width:1px,color:#7c2d12;
+    classDef client_style fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:20,ry:20;
+
+    subgraph SaaS ["Kong Konnect (Cloud SaaS)"]
+        CP_M["Control Plane: MockAPI"]:::inner_cp
+    end
+    SaaS:::cp_style
+
+    subgraph Local ["Local Network (Instructor)"]
+        DP_1["Data Plane (Port 8000)"]:::inner_dp
+
+        Backends["Backends (Mock/Routes/Customers/Echo)&lt;br/&gt;(Port 9081)"]:::inner_dp
+
+        FileLog["file-log&lt;br/&gt;(/tmp/kong-requests.log)"]:::inner_dp
+    end
+    Local:::dp_style
+
+    Client(["Client / cURL"]):::client_style
+
+    CP_M -.-&gt;|Synchronizes Policies| DP_1
+
+    Client --&gt;|HTTP Request| DP_1
+
+    DP_1 --&gt;|Proxy| Backends
+    DP_1 -.-&gt;|Logs JSON| FileLog</code></pre>
+<blockquote>
+<p><strong>Summary of final state:</strong>
+We will have 1 logical Control Plane in the cloud (MockAPI) and 1 local physical Gateway managing traffic for multiple simulated microservices.</p>
+</blockquote>
+<hr />
+<h2 id="demonstration-sequence">Demonstration Sequence<a class="headerlink" href="#demonstration-sequence" title="Permanent link">&para;</a></h2>
+<p>Before starting the Day 2 demonstrations, you must <strong>destroy and clean up</strong> the environment that was automatically set up in the Day 1 Setup module. If you don't, Terraform will tell you "no changes to apply" and you won't be able to show how the infrastructure is created live.</p>
+<p>Run the following from the project root to clean everything:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 1. Clean up local Gateway containers and residual state</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./docs/00-setup-entorno/scripts/reset_all.sh
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># 2. Destroy the Control Plane in Konnect using Terraform</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">cd</span><span class="w"> </span>docs/00-setup-entorno/terraform
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>terraform<span class="w"> </span>destroy<span class="w"> </span>-var<span class="o">=</span><span class="s2">"konnect_token=</span><span class="nv">$KONNECT_TOKEN</span><span class="s2">"</span><span class="w"> </span>-var<span class="o">=</span><span class="s2">"demo_prefix=</span><span class="nv">$DEMO_PREFIX</span><span class="s2">"</span><span class="w"> </span>-auto-approve
+</span></code></pre></div>
+<h3 id="demonstration-1-infrastructure-governance-terraform">Demonstration 1: Infrastructure Governance (Terraform)<a class="headerlink" href="#demonstration-1-infrastructure-governance-terraform" title="Permanent link">&para;</a></h3>
+<p>Terraform will be used to automatically provision the base "MockAPI" Control Plane and RBAC Teams in Konnect.</p>
+<ol>
+<li><strong>Initialize and validate Terraform:</strong>
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>docs/00-setup-entorno/terraform
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>terraform<span class="w"> </span>init
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>terraform<span class="w"> </span>validate
+</span></code></pre></div></li>
+<li><strong>Apply the changes:</strong> (this will create 1 Control Plane named MockAPI and the API Developers team).
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>terraform<span class="w"> </span>apply<span class="w"> </span>-var<span class="o">=</span><span class="s2">"konnect_token=</span><span class="nv">$KONNECT_TOKEN</span><span class="s2">"</span><span class="w"> </span>-var<span class="o">=</span><span class="s2">"demo_prefix=</span><span class="nv">$DEMO_PREFIX</span><span class="s2">"</span>
+</span></code></pre></div></li>
+<li>The instructor will visually show in Konnect (<strong>Gateway Manager</strong> and <strong>Teams</strong>) that the Control Plane and Group were successfully created in seconds, eliminating manual processes.</li>
+</ol>
+<h3 id="demonstration-2-data-plane-deployment">Demonstration 2: Data Plane Deployment<a class="headerlink" href="#demonstration-2-data-plane-deployment" title="Permanent link">&para;</a></h3>
+<p>To materialize traffic, we will bring up the engine (Data Plane) that will securely consume Konnect's configuration (mTLS).</p>
+<ol>
+<li>
+<p>The instructor will generate the necessary secure certificates to connect the Data Plane to the MockAPI Control Plane:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>../scripts
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>python3<span class="w"> </span>generate_certs.py
+</span></code></pre></div>
+    &gt; <strong>Note:</strong> <code>generate_certs.py</code> (requires <code>KONNECT_TOKEN</code> and <code>DEMO_PREFIX</code>, set by <code>kong-env</code>) generates <code>certs/mock/tls.key</code>, <code>certs/mock/tls.crt</code> and <code>endpoints.env</code> locally. These files are <strong>not versioned</strong> in the repository (private keys and organization endpoints): each participant generates them with this step. See <code>endpoints.env.example</code> for the format.</p>
+</li>
+<li>
+<p>The Docker instance will be started (Data Plane on port 8000):
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./start_dps.sh
+</span></code></pre></div></p>
+</li>
+<li>The instructor will show in Konnect how the MockAPI Control Plane reports <code>1 Data Plane In Sync</code>, demonstrating that the local Edge node is ready to receive policies.</li>
+</ol>
+<h3 id="demonstration-3-permission-isolation-rbac-and-teams">Demonstration 3: Permission Isolation (RBAC and Teams)<a class="headerlink" href="#demonstration-3-permission-isolation-rbac-and-teams" title="Permanent link">&para;</a></h3>
+<p>To test the organizational security implemented with Terraform:</p>
+<ol>
+<li>The instructor will show the <strong>Teams</strong> section in Konnect.</li>
+<li>They will validate that the created group (<code>API Developers</code>) has an <strong>Admin</strong> role only for the <code>MockAPI</code> Control Plane, allowing developers to operate securely and within defined limits.</li>
+</ol>
+<h3 id="demonstration-4-declarative-synchronization-with-deck-routes-and-global-policies">Demonstration 4: Declarative Synchronization with decK (Routes and Global Policies)<a class="headerlink" href="#demonstration-4-declarative-synchronization-with-deck-routes-and-global-policies" title="Permanent link">&para;</a></h3>
+<p>Next, we will use <code>decK</code> to immutably load the routes of our 4 simulated microservices (<code>/mock</code>, <code>/routes</code>, <code>/customers</code>, <code>/echo</code>) along with global Log policies (<code>file-log</code>) and traceability (<code>correlation-id</code>).</p>
+<ol>
+<li>The instructor will review the <code>archivos-deck/estado-base.yaml</code> file, showing how routes and global plugins are declared in a combined manner.</li>
+<li>They will perform a <code>diff</code> and then a <code>sync</code> to inject this state into the <code>MockAPI</code> Control Plane:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>../dia-1-teoria-y-demos/04-gateway-operations
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>deck<span class="w"> </span>gateway<span class="w"> </span>diff<span class="w"> </span>archivos-deck/estado-base.yaml<span class="w"> </span>--konnect-token<span class="w"> </span><span class="s2">"</span><span class="nv">$KONNECT_TOKEN</span><span class="s2">"</span><span class="w"> </span>--konnect-control-plane-name<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">DEMO_PREFIX</span><span class="si">}</span><span class="s2">_MockAPI"</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>deck<span class="w"> </span>gateway<span class="w"> </span>sync<span class="w"> </span>archivos-deck/estado-base.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span>--konnect-token<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="s2">"</span><span class="nv">$KONNECT_TOKEN</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span>--konnect-control-plane-name<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="s2">"</span><span class="si">${</span><span class="nv">DEMO_PREFIX</span><span class="si">}</span><span class="s2">_MockAPI"</span>
+</span></code></pre></div></li>
+<li>The instructor will generate bursts of traffic through the local Data Plane (port 8000) to validate that the routes and policies operate successfully:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://localhost:8000/mock
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..100<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>http://localhost:8000/mock<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</span></code></pre></div></li>
+<li>Finally, they will extract the audits written in real-time by the <code>file-log</code> plugin (globally declared in the YAML) to validate its application:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>kong-dp<span class="w"> </span>wc<span class="w"> </span>-l<span class="w"> </span>/tmp/kong-requests.log
+</span></code></pre></div></li>
+</ol>
+<p>With the automated infrastructure ready (Control Plane and Data Plane) and the base traffic declaratively established using decK, the environment is prepared to begin the Monitoring and Observability Module (Day 2).</p>
+<hr />
+<h2 id="cleanup-total-reset-instructor-only">Cleanup: Total Reset (Instructor Only)<a class="headerlink" href="#cleanup-total-reset-instructor-only" title="Permanent link">&para;</a></h2>
+<p>If it is necessary to repeat the workshop or clean the environment, this script removes Docker containers and Konnect CPs:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">cd</span><span class="w"> </span>workshop-assets/dia-1/04-gateway-operations
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>./scripts/reset_all.sh
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

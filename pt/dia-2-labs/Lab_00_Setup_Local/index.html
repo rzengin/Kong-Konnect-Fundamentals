@@ -1,0 +1,2334 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formación práctica en API Gateway, AI Gateway, GitOps, Seguridad y Observabilidad">
+      
+      
+      
+        <link rel="canonical" href="https://rzengin.github.io/Kong-Konnect-Fundamentals/pt/dia-2-labs/Lab_00_Setup_Local/">
+      
+      
+        <link rel="prev" href="../../00-setup-entorno/Requerimientos_Red_Workshop/">
+      
+      
+        <link rel="next" href="../Lab_01_Declarative_Routing/">
+      
+      
+        
+          <link rel="alternate" href="../../../dia-2-labs/Lab_00_Setup_Local/" hreflang="es">
+        
+          <link rel="alternate" href="./" hreflang="pt">
+        
+          <link rel="alternate" href="../../../en/dia-2-labs/Lab_00_Setup_Local/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../../public/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>DEV (45 min) Lab Setup Local - Kong Konnect Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#laboratorio-00-configuracao-do-ambiente" class="md-skip">
+          Ir para o conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../../" title="Kong Konnect Workshop" class="md-header__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kong Konnect Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DEV (45 min) Lab Setup Local
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Selecione o idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../dia-2-labs/Lab_00_Setup_Local/" hreflang="es" class="md-select__link">
+              Español
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="pt" class="md-select__link">
+              Português
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/dia-2-labs/Lab_00_Setup_Local/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando a pesquisa
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="Kong Konnect Workshop" class="md-nav__button md-logo" aria-label="Kong Konnect Workshop" data-md-component="logo">
+      
+  <img src="../../../public/kong-logomark-lime.svg" alt="logo">
+
+    </a>
+    Kong Konnect Workshop
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 1 - Teórico (Devs & Ops)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 1 - Teórico (Devs & Ops)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/00-arquitectura-setup/Guia_00_Arquitectura_y_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Arquitectura y Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/01-kong-konnect-gateway/Guia_01_Konnect_Basico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Kong Konnect Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/02-kong-plugins/Guia_02_Kong_Plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (120 min) Kong Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/03-developer-portal/Guia_03_Developer_Portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Developer Portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/04-gateway-operations/Guia_04_Gateway_Operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Gateway Operations (IaC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/05-monitoring-logging/Guia_05_Monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Monitoring & Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/06-observability/Guia_06_Observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Observabilidade Avançada (OTel)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/07-securing-api-traffic/Guia_07_Securing_API_Traffic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Securing API Traffic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/08-integracion-itsm/Dia1_Demo_Integracion_ITSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (30 min) Integração ITSM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/09-gestion-secretos/Dia1_Demo_Gestion_de_Secretos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Gerenciamento de Segredos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-1-teoria-y-demos/10-seguridad-owasp-waf/Dia1_Demo_Seguridad_OWASP_WAF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Segurança OWASP WAF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 2 - Prático (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 2 - Prático (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Inicial
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup Inicial
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prerrequisitos de Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-setup-entorno/Requerimientos_Red_Workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requerimientos de Red
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Setup Local
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#revisao-da-arquitetura-hibrida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revisão da arquitetura híbrida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flowchart-lr-classdef-cp_style-fille0f2festroke0284c7stroke-width2pxcolor0c4a6erx10ry10-classdef-dp_style-fillffedd5strokeea580cstroke-width2pxcolor7c2d12rx10ry10-classdef-obs_style-filld1fae5stroke059669stroke-width2pxcolor064e3brx10ry10-classdef-inner_cp-fillbae6fdstroke0284c7stroke-width1pxcolor0c4a6e-classdef-inner_dp-fillfed7aastrokeea580cstroke-width1pxcolor7c2d12-classdef-inner_obs-filla7f3d0stroke059669stroke-width1pxcolor064e3b-classdef-client_style-fillf8fafcstroke64748bstroke-width2pxcolor0f172arx20ry20-subgraph-nube-observabilidade-docker-otel-stack-direction-tb-subgraph-obs-local-ou-opcionalmente-centralizado-pelo-instrutor-direction-tb-otelotel-collector-4318inner_obs-o2openobserve-ui-5080inner_obs-pxphoenix-ui-6006inner_obs-end-end-nubeobs_style-obsobs_style-subgraph-local-local-server-docker-host-maquina-del-participante-direction-tb-clientcliente-curlinsomniaclient_style-dpkong-data-plane-8000brnginxopenresty-worker-processesinner_dp-subgraph-backends-backend-microservices-direction-tb-mockhttpbin-backend-9081inner_dp-end-backendsdp_style-end-localdp_style-subgraph-konnect-kong-konnect-saas-control-plane-direction-tb-cpcontrol-plane-tuprefijo_mockapibrmanagement-console-admin-api-policy-engineinner_cp-kakonnect-analyticsinner_cp-end-konnectcp_style-connections-client-api-traffic-dp-dp-proxy-traffic-mock-cp-grpc-tunnel-mtlsbrsincronizacion-de-config-politicas-y-certs-dp-dp-otlphttp-otel-otel-o2-otel-px-dp-metricas-de-negocio-ka-link-styles-to-match-colors-linkstyle-0-stroke10b981stroke-width2px-linkstyle-1-strokef97316stroke-width2px-linkstyle-2-stroke0ea5e9stroke-width2px-linkstyle-3-stroke10b981stroke-width2px-linkstyle-4-stroke10b981stroke-width2px-linkstyle-5-stroke10b981stroke-width2px-linkstyle-6-stroke0ea5e9stroke-width2pxstroke-dasharray-5-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        flowchart LR classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10; classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10; classDef obs_style fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b,rx:10,ry:10; classDef inner_cp fill:#bae6fd,stroke:#0284c7,stroke-width:1px,color:#0c4a6e; classDef inner_dp fill:#fed7aa,stroke:#ea580c,stroke-width:1px,color:#7c2d12; classDef inner_obs fill:#a7f3d0,stroke:#059669,stroke-width:1px,color:#064e3b; classDef client_style fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:20,ry:20; subgraph Nube ["OBSERVABILIDADE (Docker - otel-stack)"] direction TB subgraph Obs ["Local ou, opcionalmente, centralizado pelo instrutor"] direction TB OTel["OTel Collector :4318"]:::inner_obs O2["OpenObserve UI :5080"]:::inner_obs PX["Phoenix UI :6006"]:::inner_obs end end Nube:::obs_style Obs:::obs_style subgraph Local ["LOCAL SERVER (Docker Host - Máquina del participante)"] direction TB Client(["Cliente (curl/Insomnia)"]):::client_style DP["Kong Data Plane :8000&lt;br/&gt;(NGINX/OpenResty &amp; Worker Processes)"]:::inner_dp subgraph Backends ["Backend Microservices"] direction TB mock["httpbin-backend :9081"]:::inner_dp end Backends:::dp_style end Local:::dp_style subgraph Konnect ["KONG KONNECT (SaaS Control Plane)"] direction TB CP["Control Plane: TUPREFIJO_MockAPI&lt;br/&gt;(Management Console, Admin API, Policy Engine)"]:::inner_cp KA["Konnect Analytics"]:::inner_cp end Konnect:::cp_style %% Connections Client --&gt;|"API Traffic"| DP DP --&gt;|"Proxy Traffic"| mock CP &lt;==&gt;|"gRPC Tunnel (mTLS)&lt;br/&gt;Sincronización de config, políticas y certs"| DP DP ==&gt;|"OTLP/HTTP"| OTel OTel --&gt; O2 OTel --&gt; PX DP -.-&gt;|"Métricas de negocio"| KA %% Link Styles to match colors linkStyle 0 stroke:#10b981,stroke-width:2px; linkStyle 1 stroke:#f97316,stroke-width:2px; linkStyle 2 stroke:#0ea5e9,stroke-width:2px; linkStyle 3 stroke:#10b981,stroke-width:2px; linkStyle 4 stroke:#10b981,stroke-width:2px; linkStyle 5 stroke:#10b981,stroke-width:2px; linkStyle 6 stroke:#0ea5e9,stroke-width:2px,stroke-dasharray: 5 5;
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do Ambiente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do Ambiente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcao-1-recomendada-codespaces-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opção 1 (recomendada): Codespaces GitHub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcao-2-instalacao-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opção 2: instalação local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-2-inicializar-variaveis-e-aumentar-conteineres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2: inicializar variáveis e aumentar contêineres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-3-validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3: Validação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_01_Declarative_Routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Routing Declarativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_02_Upstreams_Health_Checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Upstreams & Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_03_Catalog_APIs_OAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Catalog APIs & OAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_04_Transformaciones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab Transformaciones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_05_Ruteo_Inteligente/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Ruteo Inteligente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_06_Validacion_JSON/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab Validación JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_07_Observabilidad_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (60 min) Lab OTel, OpenObserve & Phoenix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_08_Zero_Trust_Security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (25 min) Lab Zero Trust (Key Auth)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_10_Autenticacion_Avanzada/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) Lab OIDC & ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_09_IP_Restriction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (15 min) Lab Restricción de IPs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_11_OPA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (30 min) Lab OPA Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lab_12_Event_Gateway_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) Lab Event Gateway (Kafka)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 3 - AI Gateway (Teoria e Demos)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 3 - AI Gateway (Teoria e Demos)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/00-arquitectura-ai-gateway/Guia_IA_00_Arquitectura_y_kongctl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 00 Arquitetura AI Gateway 2.x e kongctl
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/01-multi-llm/Guia_IA_01_Un_Endpoint_Muchos_LLMs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) IA 01 Um endpoint, muitos LLMs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/02-gobierno-y-cuotas/Guia_IA_02_Gobierno_Identidad_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 02 Governança, cotas e orçamento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/03-guardrails-pii/Guia_IA_03_Guardrails_y_PII/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (45 min) IA 03 Guardrails e PII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/04-semantica/Guia_IA_04_Ruteo_Semantico_Cache_Compresion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (40 min) IA 04 Roteamento semântico, cache e compressão
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/05-rag/Guia_IA_05_RAG_Gestionado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 05 RAG gerenciado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/06-mcp/Guia_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (50 min) IA 06 MCP (APIs como tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/07-agentes-a2a/Guia_IA_07_Agentes_y_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) IA 07 Agentes e A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/08-observabilidad-finops/Guia_IA_08_Observabilidad_y_FinOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) IA 08 Observabilidade e FinOps de IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-3-ai-gateway-teoria-y-demos/09-novedades-roadmap/Guia_IA_09_Novedades_AI_Summit_2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (20 min) IA 09 Novidades AI Summit 2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dia 4 - AI Gateway (Labs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Dia 4 - AI Gateway (Labs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_00_Setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA Setup do AI Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Multi-LLM e Failover
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_02_Gobierno_Cuotas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (40 min) Lab IA Governança e Cotas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_03_Guardrails/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC (35 min) Lab IA Guardrails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_04_Semantica_Cache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (35 min) Lab IA Semântica e Cache
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_05_RAG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (30 min) Lab IA RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_06_MCP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Lab IA MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_07_A2A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (25 min) Lab IA A2A
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_08_Observabilidad/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OPS (45 min) Lab IA Observabilidade (OpenObserve & Phoenix)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dia-4-ai-gateway-labs/Lab_IA_09_Desafio_Credito/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEV (45 min) Desafio IA Assistente de Crédito
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Evaluacion_del_Curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avaliação do Curso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#revisao-da-arquitetura-hibrida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revisão da arquitetura híbrida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flowchart-lr-classdef-cp_style-fille0f2festroke0284c7stroke-width2pxcolor0c4a6erx10ry10-classdef-dp_style-fillffedd5strokeea580cstroke-width2pxcolor7c2d12rx10ry10-classdef-obs_style-filld1fae5stroke059669stroke-width2pxcolor064e3brx10ry10-classdef-inner_cp-fillbae6fdstroke0284c7stroke-width1pxcolor0c4a6e-classdef-inner_dp-fillfed7aastrokeea580cstroke-width1pxcolor7c2d12-classdef-inner_obs-filla7f3d0stroke059669stroke-width1pxcolor064e3b-classdef-client_style-fillf8fafcstroke64748bstroke-width2pxcolor0f172arx20ry20-subgraph-nube-observabilidade-docker-otel-stack-direction-tb-subgraph-obs-local-ou-opcionalmente-centralizado-pelo-instrutor-direction-tb-otelotel-collector-4318inner_obs-o2openobserve-ui-5080inner_obs-pxphoenix-ui-6006inner_obs-end-end-nubeobs_style-obsobs_style-subgraph-local-local-server-docker-host-maquina-del-participante-direction-tb-clientcliente-curlinsomniaclient_style-dpkong-data-plane-8000brnginxopenresty-worker-processesinner_dp-subgraph-backends-backend-microservices-direction-tb-mockhttpbin-backend-9081inner_dp-end-backendsdp_style-end-localdp_style-subgraph-konnect-kong-konnect-saas-control-plane-direction-tb-cpcontrol-plane-tuprefijo_mockapibrmanagement-console-admin-api-policy-engineinner_cp-kakonnect-analyticsinner_cp-end-konnectcp_style-connections-client-api-traffic-dp-dp-proxy-traffic-mock-cp-grpc-tunnel-mtlsbrsincronizacion-de-config-politicas-y-certs-dp-dp-otlphttp-otel-otel-o2-otel-px-dp-metricas-de-negocio-ka-link-styles-to-match-colors-linkstyle-0-stroke10b981stroke-width2px-linkstyle-1-strokef97316stroke-width2px-linkstyle-2-stroke0ea5e9stroke-width2px-linkstyle-3-stroke10b981stroke-width2px-linkstyle-4-stroke10b981stroke-width2px-linkstyle-5-stroke10b981stroke-width2px-linkstyle-6-stroke0ea5e9stroke-width2pxstroke-dasharray-5-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        flowchart LR classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10; classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10; classDef obs_style fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b,rx:10,ry:10; classDef inner_cp fill:#bae6fd,stroke:#0284c7,stroke-width:1px,color:#0c4a6e; classDef inner_dp fill:#fed7aa,stroke:#ea580c,stroke-width:1px,color:#7c2d12; classDef inner_obs fill:#a7f3d0,stroke:#059669,stroke-width:1px,color:#064e3b; classDef client_style fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:20,ry:20; subgraph Nube ["OBSERVABILIDADE (Docker - otel-stack)"] direction TB subgraph Obs ["Local ou, opcionalmente, centralizado pelo instrutor"] direction TB OTel["OTel Collector :4318"]:::inner_obs O2["OpenObserve UI :5080"]:::inner_obs PX["Phoenix UI :6006"]:::inner_obs end end Nube:::obs_style Obs:::obs_style subgraph Local ["LOCAL SERVER (Docker Host - Máquina del participante)"] direction TB Client(["Cliente (curl/Insomnia)"]):::client_style DP["Kong Data Plane :8000&lt;br/&gt;(NGINX/OpenResty &amp; Worker Processes)"]:::inner_dp subgraph Backends ["Backend Microservices"] direction TB mock["httpbin-backend :9081"]:::inner_dp end Backends:::dp_style end Local:::dp_style subgraph Konnect ["KONG KONNECT (SaaS Control Plane)"] direction TB CP["Control Plane: TUPREFIJO_MockAPI&lt;br/&gt;(Management Console, Admin API, Policy Engine)"]:::inner_cp KA["Konnect Analytics"]:::inner_cp end Konnect:::cp_style %% Connections Client --&gt;|"API Traffic"| DP DP --&gt;|"Proxy Traffic"| mock CP &lt;==&gt;|"gRPC Tunnel (mTLS)&lt;br/&gt;Sincronización de config, políticas y certs"| DP DP ==&gt;|"OTLP/HTTP"| OTel OTel --&gt; O2 OTel --&gt; PX DP -.-&gt;|"Métricas de negocio"| KA %% Link Styles to match colors linkStyle 0 stroke:#10b981,stroke-width:2px; linkStyle 1 stroke:#f97316,stroke-width:2px; linkStyle 2 stroke:#0ea5e9,stroke-width:2px; linkStyle 3 stroke:#10b981,stroke-width:2px; linkStyle 4 stroke:#10b981,stroke-width:2px; linkStyle 5 stroke:#10b981,stroke-width:2px; linkStyle 6 stroke:#0ea5e9,stroke-width:2px,stroke-dasharray: 5 5;
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparacao-do-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparação do Ambiente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparação do Ambiente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcao-1-recomendada-codespaces-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opção 1 (recomendada): Codespaces GitHub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcao-2-instalacao-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opção 2: instalação local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-2-inicializar-variaveis-e-aumentar-conteineres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 2: inicializar variáveis e aumentar contêineres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapa-3-validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Etapa 3: Validação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="laboratorio-00-configuracao-do-ambiente">Laboratório 00: Configuração do ambiente<a class="headerlink" href="#laboratorio-00-configuracao-do-ambiente" title="Permanent link">&para;</a></h1>
+<h2 id="revisao-da-arquitetura-hibrida">Revisão da arquitetura híbrida<a class="headerlink" href="#revisao-da-arquitetura-hibrida" title="Permanent link">&para;</a></h2>
+<p>Antes de montar nosso laboratório, vamos relembrar brevemente a topologia com a qual iremos interagir ao longo deste dia prático:</p>
+<ol>
+<li><strong>Stack de Observabilidade (OpenTelemetry)</strong>: Contêineres Docker leves (OTel Collector, OpenObserve e Arize Phoenix, ~1,2 GB de RAM) que recebem e representam graficamente os traces, métricas e logs do Data Plane. Rodam na máquina de cada participante (ou, opcionalmente, em um servidor centralizado do instrutor que consolida a telemetria de todos os participantes).</li>
+<li><strong>Servidor Local (Máquina Participante)</strong>: O ambiente local de cada aluno onde o Kong Gateway <em>Data Plane</em> (baseado em NGINX/OpenResty) e as APIs simuladas (backends) serão executadas. Todo o tráfego acontece localmente aqui.</li>
+<li><strong>Kong Konnect (SaaS Control Plane)</strong>: O console de administração e banco de dados mestre (Fonte da Verdade) hospedado na nuvem Kong, de onde configuraremos as políticas. Ele se comunica com o <em>Data Plane</em> por meio de um túnel gRPC seguro (mTLS).</li>
+</ol>
+<h2 id="flowchart-lr-classdef-cp_style-fille0f2festroke0284c7stroke-width2pxcolor0c4a6erx10ry10-classdef-dp_style-fillffedd5strokeea580cstroke-width2pxcolor7c2d12rx10ry10-classdef-obs_style-filld1fae5stroke059669stroke-width2pxcolor064e3brx10ry10-classdef-inner_cp-fillbae6fdstroke0284c7stroke-width1pxcolor0c4a6e-classdef-inner_dp-fillfed7aastrokeea580cstroke-width1pxcolor7c2d12-classdef-inner_obs-filla7f3d0stroke059669stroke-width1pxcolor064e3b-classdef-client_style-fillf8fafcstroke64748bstroke-width2pxcolor0f172arx20ry20-subgraph-nube-observabilidade-docker-otel-stack-direction-tb-subgraph-obs-local-ou-opcionalmente-centralizado-pelo-instrutor-direction-tb-otelotel-collector-4318inner_obs-o2openobserve-ui-5080inner_obs-pxphoenix-ui-6006inner_obs-end-end-nubeobs_style-obsobs_style-subgraph-local-local-server-docker-host-maquina-del-participante-direction-tb-clientcliente-curlinsomniaclient_style-dpkong-data-plane-8000brnginxopenresty-worker-processesinner_dp-subgraph-backends-backend-microservices-direction-tb-mockhttpbin-backend-9081inner_dp-end-backendsdp_style-end-localdp_style-subgraph-konnect-kong-konnect-saas-control-plane-direction-tb-cpcontrol-plane-tuprefijo_mockapibrmanagement-console-admin-api-policy-engineinner_cp-kakonnect-analyticsinner_cp-end-konnectcp_style-connections-client-api-traffic-dp-dp-proxy-traffic-mock-cp-grpc-tunnel-mtlsbrsincronizacion-de-config-politicas-y-certs-dp-dp-otlphttp-otel-otel-o2-otel-px-dp-metricas-de-negocio-ka-link-styles-to-match-colors-linkstyle-0-stroke10b981stroke-width2px-linkstyle-1-strokef97316stroke-width2px-linkstyle-2-stroke0ea5e9stroke-width2px-linkstyle-3-stroke10b981stroke-width2px-linkstyle-4-stroke10b981stroke-width2px-linkstyle-5-stroke10b981stroke-width2px-linkstyle-6-stroke0ea5e9stroke-width2pxstroke-dasharray-5-5"><pre class="mermaid"><code>flowchart LR
+  classDef cp_style fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e,rx:10,ry:10;
+  classDef dp_style fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12,rx:10,ry:10;
+  classDef obs_style fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b,rx:10,ry:10;
+  classDef inner_cp fill:#bae6fd,stroke:#0284c7,stroke-width:1px,color:#0c4a6e;
+  classDef inner_dp fill:#fed7aa,stroke:#ea580c,stroke-width:1px,color:#7c2d12;
+  classDef inner_obs fill:#a7f3d0,stroke:#059669,stroke-width:1px,color:#064e3b;
+  classDef client_style fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,rx:20,ry:20;
+
+  subgraph Nube ["OBSERVABILIDADE (Docker - otel-stack)"]
+    direction TB
+    subgraph Obs ["Local ou, opcionalmente, centralizado pelo instrutor"]
+      direction TB
+      OTel["OTel Collector :4318"]:::inner_obs
+      O2["OpenObserve UI :5080"]:::inner_obs
+      PX["Phoenix UI :6006"]:::inner_obs
+    end
+  end
+  Nube:::obs_style
+  Obs:::obs_style
+
+  subgraph Local ["LOCAL SERVER (Docker Host - Máquina del participante)"]
+    direction TB
+    Client(["Cliente (curl/Insomnia)"]):::client_style
+    DP["Kong Data Plane :8000&lt;br/&gt;(NGINX/OpenResty &amp; Worker Processes)"]:::inner_dp
+
+    subgraph Backends ["Backend Microservices"]
+      direction TB
+      mock["httpbin-backend :9081"]:::inner_dp
+    end
+    Backends:::dp_style
+  end
+  Local:::dp_style
+
+  subgraph Konnect ["KONG KONNECT (SaaS Control Plane)"]
+    direction TB
+    CP["Control Plane: TUPREFIJO_MockAPI&lt;br/&gt;(Management Console, Admin API, Policy Engine)"]:::inner_cp
+    KA["Konnect Analytics"]:::inner_cp
+  end
+  Konnect:::cp_style
+
+  %% Connections
+  Client --&gt;|"API Traffic"| DP
+  DP --&gt;|"Proxy Traffic"| mock
+  CP &lt;==&gt;|"gRPC Tunnel (mTLS)&lt;br/&gt;Sincronización de config, políticas y certs"| DP
+  DP ==&gt;|"OTLP/HTTP"| OTel
+  OTel --&gt; O2
+  OTel --&gt; PX
+  DP -.-&gt;|"Métricas de negocio"| KA
+
+  %% Link Styles to match colors
+  linkStyle 0 stroke:#10b981,stroke-width:2px;
+  linkStyle 1 stroke:#f97316,stroke-width:2px;
+  linkStyle 2 stroke:#0ea5e9,stroke-width:2px;
+  linkStyle 3 stroke:#10b981,stroke-width:2px;
+  linkStyle 4 stroke:#10b981,stroke-width:2px;
+  linkStyle 5 stroke:#10b981,stroke-width:2px;
+  linkStyle 6 stroke:#0ea5e9,stroke-width:2px,stroke-dasharray: 5 5;</code></pre><a class="headerlink" href="#flowchart-lr-classdef-cp_style-fille0f2festroke0284c7stroke-width2pxcolor0c4a6erx10ry10-classdef-dp_style-fillffedd5strokeea580cstroke-width2pxcolor7c2d12rx10ry10-classdef-obs_style-filld1fae5stroke059669stroke-width2pxcolor064e3brx10ry10-classdef-inner_cp-fillbae6fdstroke0284c7stroke-width1pxcolor0c4a6e-classdef-inner_dp-fillfed7aastrokeea580cstroke-width1pxcolor7c2d12-classdef-inner_obs-filla7f3d0stroke059669stroke-width1pxcolor064e3b-classdef-client_style-fillf8fafcstroke64748bstroke-width2pxcolor0f172arx20ry20-subgraph-nube-observabilidade-docker-otel-stack-direction-tb-subgraph-obs-local-ou-opcionalmente-centralizado-pelo-instrutor-direction-tb-otelotel-collector-4318inner_obs-o2openobserve-ui-5080inner_obs-pxphoenix-ui-6006inner_obs-end-end-nubeobs_style-obsobs_style-subgraph-local-local-server-docker-host-maquina-del-participante-direction-tb-clientcliente-curlinsomniaclient_style-dpkong-data-plane-8000brnginxopenresty-worker-processesinner_dp-subgraph-backends-backend-microservices-direction-tb-mockhttpbin-backend-9081inner_dp-end-backendsdp_style-end-localdp_style-subgraph-konnect-kong-konnect-saas-control-plane-direction-tb-cpcontrol-plane-tuprefijo_mockapibrmanagement-console-admin-api-policy-engineinner_cp-kakonnect-analyticsinner_cp-end-konnectcp_style-connections-client-api-traffic-dp-dp-proxy-traffic-mock-cp-grpc-tunnel-mtlsbrsincronizacion-de-config-politicas-y-certs-dp-dp-otlphttp-otel-otel-o2-otel-px-dp-metricas-de-negocio-ka-link-styles-to-match-colors-linkstyle-0-stroke10b981stroke-width2px-linkstyle-1-strokef97316stroke-width2px-linkstyle-2-stroke0ea5e9stroke-width2px-linkstyle-3-stroke10b981stroke-width2px-linkstyle-4-stroke10b981stroke-width2px-linkstyle-5-stroke10b981stroke-width2px-linkstyle-6-stroke0ea5e9stroke-width2pxstroke-dasharray-5-5" title="Permanent link">&para;</a></h2>
+<h2 id="preparacao-do-ambiente">Preparação do Ambiente<a class="headerlink" href="#preparacao-do-ambiente" title="Permanent link">&para;</a></h2>
+<p>Tudo o que faremos durante os laboratórios pressupõe que você tenha esse ambiente base funcional. Preparamos duas opções para que você possa elevar o meio ambiente:</p>
+<h3 id="opcao-1-recomendada-codespaces-github">Opção 1 (recomendada): Codespaces GitHub<a class="headerlink" href="#opcao-1-recomendada-codespaces-github" title="Permanent link">&para;</a></h3>
+<p>Se seu instrutor compartilhou o arquivo <code>kong-workshop-assets.zip</code> com você para usar no laboratório:</p>
+<ol>
+<li>Abra um <strong>Codespace em branco</strong> (ou seu próprio repositório GitHub).</li>
+<li><strong>Arraste e solte</strong> o arquivo <code>kong-workshop-assets.zip</code> na barra lateral esquerda (File Explorer) do seu Codespace.</li>
+<li>Abra um terminal e descompacte o arquivo executando:  </li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="w">  </span>unzip<span class="w"> </span>kong-workshop-assets.zip
+</span></code></pre></div>
+4. Pronto! Você já tem as pastas de ativos e os scripts de configuração em seu ambiente. Vá diretamente para a <strong>Etapa 2</strong>.</p>
+<h3 id="opcao-2-instalacao-local">Opção 2: instalação local<a class="headerlink" href="#opcao-2-instalacao-local" title="Permanent link">&para;</a></h3>
+<p>Se preferir rodar tudo em sua própria máquina (Windows, Mac ou Linux), é necessário ter os seguintes pré-requisitos instalados:</p>
+<ul>
+<li>
+<p><strong>Docker/Docker Compose</strong></p>
+</li>
+<li>
+<p><strong>decK</strong> (versão <code>1.65.1</code> ou superior)</p>
+</li>
+<li>
+<p><strong>cURL</strong></p>
+</li>
+<li>
+<p>** Idiota **</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>Nota:</strong> Você pode ver instruções detalhadas por sistema operacional em <a href="../../00-setup-entorno/Prerequisitos_Workshop_Kong_Konnect_Instalacion/">Prerequisitos Workshop</a>.</p>
+</blockquote>
+<p>Para usuários de Mac/Linux, você também pode executar nosso script automatizado que instala ferramentas CLI (como <code>decK</code>):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>../../00-setup-entorno
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./scripts/install_prereqs.sh
+</span></code></pre></div>
+<h3 id="etapa-2-inicializar-variaveis-e-aumentar-conteineres">Etapa 2: inicializar variáveis e aumentar contêineres<a class="headerlink" href="#etapa-2-inicializar-variaveis-e-aumentar-conteineres" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Credenciais</strong>: Você precisará de um token de acesso pessoal (<code>kpat_...</code>) do Kong Konnect. Pergunte ao seu instrutor.</li>
+<li>Defina as variáveis no seu terminal:</li>
+</ol>
+<p><strong>No Mac/Linux (Bash):</strong></p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KONNECT_TOKEN</span><span class="o">=</span><span class="s2">"kpat_xxxxx"</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DEMO_PREFIX</span><span class="o">=</span><span class="s2">"tu_nombre_o_iniciales"</span>
+</span></code></pre></div>
+<strong>No Windows (CMD):</strong></p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>set KONNECT_TOKEN=kpat_xxxxx
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>set DEMO_PREFIX=tu_nombre_o_iniciales
+</span></code></pre></div>
+3. Execute o script de configuração que configurará os back-ends simulados e o plano de dados:</p>
+<p><strong>No Mac/Linux (Bash):</strong></p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>../../00-setup-entorno
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>./scripts/setup.sh
+</span></code></pre></div>
+<strong>No Windows (CMD):</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cd ..\..\00-setup-entorno
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>scripts\setup.bat
+</span></code></pre></div>
+<h3 id="etapa-3-validacao">Etapa 3: Validação<a class="headerlink" href="#etapa-3-validacao" title="Permanent link">&para;</a></h3>
+<p>Se tudo deu certo, você verá uma mensagem verde indicando que o ambiente está pronto. </p>
+<ol>
+<li><strong>Validar contêineres:</strong> Execute <code>docker ps</code> para confirmar se você tem os seguintes contêineres em execução:</li>
+<li><code>kong-dp</code> (o gateway de API local)</li>
+<li><code>httpbin-backend</code> (Nossa API de serviços simulados)</li>
+<li><code>mock-oidc</code> (provedor de identidade simulado para práticas avançadas)</li>
+<li><code>opa</code> (mecanismo de agente de política aberta para demonstrações de confiança zero)</li>
+<li>
+<p><code>kafka</code> (Apache Kafka para testes do Event Gateway)</p>
+</li>
+<li>
+<p><strong>Validar o back-end (httpbin):</strong>
+  Envie uma solicitação direta ao back-end simulado para verificar se ele está escutando.  </p>
+</li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">  </span>curl<span class="w"> </span>-s<span class="w"> </span>-i<span class="w"> </span>http://localhost:9081/anything/ping
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>200 OK</code> com uma carga útil no formato JSON.</p>
+<ol>
+<li><strong>Validar plano de dados e sincronização do Kong:</strong>
+  Verifique se o plano de dados local está ativo e baixou com êxito a configuração do plano de controle. Para isso, enviaremos uma solicitação para a rota <code>/healthcheck</code> (que foi criada automaticamente pelo script Terraform).  </li>
+</ol>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w">  </span>curl<span class="w"> </span>-k<span class="w"> </span>-i<span class="w"> </span>https://localhost:8443/healthcheck
+</span></code></pre></div>
+<strong>Resultado esperado:</strong> <code>200 OK</code> e uma mensagem informando: <code>"Kong Gateway está ativo! Sincronização do plano de controle está funcionando."</code>. Isto confirma que o seu Data Plane tem conectividade de saída com o Konnect.</p>
+<hr />
+<p>Excelente! Você tem sua infraestrutura local instalada e funcionando e vinculada ao Control Plane na nuvem. Você está pronto para iniciar os laboratórios.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
