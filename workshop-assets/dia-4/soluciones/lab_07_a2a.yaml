@@ -1,0 +1,49 @@
+# >>> ARCHIVO DE SOLUCIÓN — usar con: workshop-assets/dia-4/scripts/aplicar.sh <NN> --solucion
+# =============================================================================
+# Lab IA 07 — A2A: un agente (copiloto) delega en otro agente (antifraude)
+#
+# El tráfico agente-a-agente (protocolo A2A, JSON-RPC) pasa por el mismo plano de
+# control que los LLMs y las tools MCP: autenticación, ACL, logging y analytics.
+#   agente-antifraude   type: a2a   /agentes/antifraude   sólo agentes-operaciones
+# Backend: WireMock (mocks/wiremock/mappings/a2a-antifraude-*.json).
+#
+# SOLUCIÓN aplicada. Ejercicio original (ver Lab_IA_07_A2A.md):
+#   Publica el agente de scoring crediticio (WireMock: /scoring/) en /agentes/scoring,
+#   accesible sólo para el grupo plan-premium.
+# Solución: workshop-assets/dia-4/soluciones/lab_07_a2a.yaml
+# =============================================================================
+ai_gateway_agents:
+  - ref: agente-antifraude
+    ai_gateway: !ref lab-ai-gw#id
+    type: a2a
+    name: agente-antifraude
+    display_name: Agente antifraude (A2A)
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+      acls:
+        allow: [agentes-operaciones]
+    config:
+      url: http://wiremock:8080/antifraude/
+      route:
+        paths: [/agentes/antifraude]
+      logging:
+        payloads: true
+        statistics: true
+
+  # SOLUCIÓN: segundo agente A2A publicado y gobernado por el gateway
+  - ref: agente-scoring
+    ai_gateway: !ref lab-ai-gw#id
+    type: a2a
+    name: agente-scoring
+    display_name: Agente de scoring crediticio (A2A)
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+      acls:
+        allow: [plan-premium]
+    config:
+      url: http://wiremock:8080/scoring/
+      route:
+        paths: [/agentes/scoring]
+      logging:
+        payloads: true
+        statistics: true

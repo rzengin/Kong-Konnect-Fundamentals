@@ -1,0 +1,75 @@
+# >>> ARCHIVO DE SOLUCIÓN — usar con: workshop-assets/dia-4/scripts/aplicar.sh <NN> --solucion
+# =============================================================================
+# Lab IA 05 — RAG gestionado por el gateway
+#
+# El gateway busca en la base de conocimiento (Redis, prefijo kong_rag_injector:)
+# los fragmentos más parecidos a la pregunta y los inyecta en el prompt.
+# La aplicación NO cambia: sigue llamando a /v1/chat/completions.
+# Carga de documentos: workshop-assets/dia-4/scripts/load_rag.sh
+# (documentos en workshop-assets/dia-4/rag/documentos.json, embeddings nomic-embed-text).
+#
+# SOLUCIÓN aplicada. Ejercicio original (ver Lab_IA_05_RAG.md):
+#   1. Pide al gateway que traiga 2 fragmentos en lugar de 3 (fetch_chunks_count).
+#   2. Endurece la plantilla: si la respuesta no está en el contexto, el asistente
+#      debe responder exactamente "No tengo esa información en las políticas internas."
+# Solución: workshop-assets/dia-4/soluciones/lab_05_rag.yaml
+# =============================================================================
+ai_gateway_policies:
+  - ref: rag-banco
+    ai_gateway: !ref lab-ai-gw#id
+    name: rag-banco
+    display_name: Base de conocimiento del banco (RAG)
+    type: ai-rag-injector
+    config:
+      fetch_chunks_count: 2   # SOLUCIÓN 1
+      inject_as_role: system
+      inject_template: |-
+        Usa SOLO el siguiente contexto de documentos internos del Banco Demo para responder.
+        Si la respuesta no está en el contexto, responde exactamente:
+        "No tengo esa información en las políticas internas."
+        <CONTEXT>
+        <PROMPT>
+      stop_on_failure: false
+      vectordb_namespace: kong_rag_injector
+      embeddings:
+        model:
+          provider: ollama
+          name: nomic-embed-text
+          options:
+            upstream_url: !env AIGW_OLLAMA_URL
+      vectordb:
+        strategy: redis
+        dimensions: 768
+        distance_metric: cosine
+        redis:
+          host: redis-stack
+          port: 6379
+
+ai_gateway_models:
+  - ref: asistente
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: asistente
+    display_name: Asistente con base de conocimiento (RAG)
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [asistente]}
+      model: {name_header: true}
+      logging: {payloads: true}
+    targets:
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+          input_cost: 0.05
+          output_cost: 0.20
+    policies:
+      - !ref rag-banco#name

@@ -1,0 +1,54 @@
+# =============================================================================
+# Día 3 · Demo (instructor) — compresión de prompts con Headroom (WITH_DEMO_EXTRAS=1)
+# AI Gateway 2.2 · TECH PREVIEW. Headroom corre como contenedor (perfil "compresion"
+# de workshop-assets/dia-3/docker-compose.demo.yml). Comprime sobre todo contenido
+# estructurado (JSON, logs, salidas de tools); el texto corto pasa igual.
+# stop_on_error: false => si Headroom no está, el prompt pasa sin comprimir.
+# Origen: kong/config/40-costos-y-cuotas.yaml del Demo Track AI Gateway 2.
+# =============================================================================
+ai_gateway_policies:
+  - ref: compresion-prompts
+    ai_gateway: !ref lab-ai-gw#id
+    name: compresion-prompts
+    display_name: Compresión de prompts (Headroom)
+    type: ai-prompt-compressor
+    config:
+      provider: headroom
+      compressor_url: http://headroom:8787/v1/compress
+      stop_on_error: false
+      timeout: 15000
+      log_text_data: false
+      message_type: [user]
+      compression_ranges:
+        - {min_tokens: 200, max_tokens: 100000, value: 0.5}
+      headroom:
+        proxy_token: !env AIGW_HEADROOM_TOKEN
+        ssl_verify: false
+
+ai_gateway_models:
+  - ref: chat-comprimido
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat-comprimido
+    display_name: Chat con compresión de prompts (Headroom)
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat-comprimido]}
+      model: {name_header: true}
+    targets:
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+          input_cost: 0.05
+          output_cost: 0.20
+    policies:
+      - !ref compresion-prompts#name

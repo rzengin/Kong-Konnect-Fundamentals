@@ -1,0 +1,16 @@
+{
+  "name": "credito - consultar buro (Lab IA 09, desafio)",
+  "request": { "method": "GET", "urlPathPattern": "/credito/v1/buro/[A-Za-z0-9-]+" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "documento": "{{request.pathSegments.[3]}}",
+      "score_buro": 712,
+      "deudas_vigentes_usd": 3200.00,
+      "atrasos_ultimos_12_meses": 0,
+      "fuente": "Buró simulado (WireMock)"
+    },
+    "transformers": ["response-template"]
+  }
+}

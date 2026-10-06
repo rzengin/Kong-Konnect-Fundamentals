@@ -1,0 +1,17 @@
+{
+  "name": "core - consultar cuenta",
+  "request": { "method": "GET", "urlPathPattern": "/core/v1/cuentas/[0-9]+" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "cuenta_id": "{{request.pathSegments.[3]}}",
+      "titular": "Cliente Demo",
+      "estado": "ACTIVA",
+      "moneda": "USD",
+      "saldo_disponible": 12450.75,
+      "limite_diario_transferencias": 10000.00
+    },
+    "transformers": ["response-template"]
+  }
+}

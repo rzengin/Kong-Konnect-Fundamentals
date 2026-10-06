@@ -1,0 +1,111 @@
+# =============================================================================
+# Día 4 · AI Gateway Labs — entorno local del participante (Docker)
+#
+# El Control Plane es el AI Gateway del participante en Konnect
+# ("<DEMO_PREFIX>-ai-gw", versión 2.2). Aquí corren el Data Plane y los servicios
+# de apoyo. Lo levanta scripts/setup_lab.sh (no hace falta llamarlo a mano).
+#
+#   puerto host   servicio
+#   8010          proxy del AI Gateway  (AIGW_PROXY_PORT)  -> POST /v1/chat/completions, /mcp/*, /agentes/*
+#   8110          status del DP          (AIGW_STATUS_PORT)
+#   8089          WireMock               (AIGW_WIREMOCK_PORT) core bancario REST, agentes A2A, proveedor caído
+#   -             Redis Stack            vectores (semántica, caché, RAG) y contadores de cuotas
+#   -             Ollama                 LLMs open-weight en CPU (perfil "ollama")
+#
+# Usamos 8010 (y no 8000) para no chocar con el Data Plane de los Días 1-2 (kong-dp).
+# El DP también se une a la red "kong-workshop" para alcanzar el OTel Collector
+# del stack de observabilidad del curso (Lab IA 08).
+#
+# Requisitos de memoria (CPU, sin GPU): DP ~0,5 GB · Redis ~0,1 GB · WireMock ~0,2 GB
+# · Ollama + llama3.2:1b + qwen3:0.6b + nomic-embed-text ~2,5 GB.
+# =============================================================================
+name: aigw-lab
+
+networks:
+  aigw:
+    name: aigw-lab
+  kong-workshop:
+    name: kong-workshop
+    external: true          # la crea setup_lab.sh si no existe
+
+services:
+  # ---------------------------------------------------------------- Data Plane
+  kong-dp:
+    image: ${KONG_DP_IMAGE:-kong/kong-ai-gateway:2.2.0}   # versión IDÉNTICA a la del AI Gateway en Konnect
+    container_name: aigw-lab-dp
+    hostname: aigw-lab-dp-${DEMO_PREFIX:-alumno}
+    restart: unless-stopped
+    networks: [aigw, kong-workshop]
+    ports:
+      - "${AIGW_PROXY_PORT:-8010}:8000"
+      - "${AIGW_STATUS_PORT:-8110}:8100"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # Ollama nativo en el host (opcional)
+    volumes:
+      # Certificado del DP fuera del repositorio (lo genera scripts/setup_lab.sh)
+      - ${AIGW_STATE_DIR:?ejecuta workshop-assets/dia-4/scripts/setup_lab.sh}/certs:/etc/kong/certs:ro
+    environment:
+      KONG_ROLE: data_plane
+      KONG_DATABASE: "off"
+      KONG_KONNECT_MODE: "on"
+      KONG_VITALS: "off"
+      KONG_CLUSTER_MTLS: pki
+      KONG_CLUSTER_CONTROL_PLANE: ${KONNECT_CLUSTER_HOST:?ejecuta setup_lab.sh}:443
+      KONG_CLUSTER_SERVER_NAME: ${KONNECT_CLUSTER_HOST}
+      KONG_CLUSTER_TELEMETRY_ENDPOINT: ${KONNECT_TELEMETRY_HOST}:443
+      KONG_CLUSTER_TELEMETRY_SERVER_NAME: ${KONNECT_TELEMETRY_HOST}
+      KONG_CLUSTER_CERT: /etc/kong/certs/tls.crt
+      KONG_CLUSTER_CERT_KEY: /etc/kong/certs/tls.key
+      KONG_LUA_SSL_TRUSTED_CERTIFICATE: system
+      KONG_PROXY_LISTEN: "0.0.0.0:8000"
+      KONG_STATUS_LISTEN: "0.0.0.0:8100"
+      KONG_ROUTER_FLAVOR: expressions
+      KONG_TRACING_INSTRUMENTATIONS: all
+      KONG_TRACING_SAMPLING_RATE: "1.0"
+      KONG_NGINX_HTTP_CLIENT_BODY_BUFFER_SIZE: 10m
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    depends_on: [redis-stack, wiremock]
+    mem_limit: 768m
+
+  # ---------------------------------------------------------------- soporte
+  redis-stack:
+    image: redis/redis-stack-server:latest
+    container_name: aigw-lab-redis
+    hostname: redis-stack
+    networks: [aigw]
+    restart: unless-stopped
+    mem_limit: 256m
+
+  wiremock:
+    image: wiremock/wiremock:3.5.4
+    container_name: aigw-lab-wiremock
+    hostname: wiremock
+    networks: [aigw]
+    ports: ["${AIGW_WIREMOCK_PORT:-8089}:8080"]
+    volumes:
+      - ./mocks/wiremock/mappings:/home/wiremock/mappings:ro
+    restart: unless-stopped
+    mem_limit: 384m
+
+  # LLMs locales open-weight (CPU). Desactivar con AIGW_OLLAMA_MODE=host si usas
+  # Ollama instalado en el host (más rápido en Mac con Apple Silicon).
+  ollama:
+    image: ollama/ollama:latest
+    container_name: aigw-lab-ollama
+    hostname: ollama
+    networks: [aigw]
+    volumes: [ollama-models:/root/.ollama]
+    environment:
+      OLLAMA_KEEP_ALIVE: 30m        # mantiene los modelos en memoria durante el lab
+      OLLAMA_NUM_PARALLEL: "2"
+    profiles: [ollama]
+    restart: unless-stopped
+
+volumes:
+  ollama-models:

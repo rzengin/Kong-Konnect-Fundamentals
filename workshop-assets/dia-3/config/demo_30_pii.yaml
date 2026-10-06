@@ -1,0 +1,55 @@
+# =============================================================================
+# Día 3 · Demo (instructor) — anonimización de PII con ai-sanitizer (WITH_DEMO_EXTRAS=1)
+#
+# Requiere el AI PII service de Kong (imagen privada kong/ai-pii:local, perfil "pii"
+# de workshop-assets/dia-3/docker-compose.demo.yml; ver scripts/load_pii_image.sh).
+# La PII se reemplaza por placeholders ANTES de salir hacia el proveedor y se
+# restaura en la respuesta (recover_redacted: true).
+# Origen: kong/config/30-seguridad.yaml del Demo Track AI Gateway 2.
+# =============================================================================
+ai_gateway_policies:
+  - ref: anonimizar-pii
+    ai_gateway: !ref lab-ai-gw#id
+    name: anonimizar-pii
+    display_name: Anonimización de PII
+    type: ai-sanitizer
+    config:
+      host: ai-pii
+      port: 8080
+      scheme: http
+      sanitization_mode: INPUT
+      anonymize: [email, phone, creditcard, nationalid, bank, credentials]
+      redact_type: placeholder
+      recover_redacted: true
+      stop_on_error: true
+      custom_patterns:
+        - name: numero_cuenta_banco_demo
+          regex: '\bBD-\d{8}\b'
+          score: 0.9
+
+ai_gateway_models:
+  - ref: chat-pii
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat-pii
+    display_name: Chat con anonimización de PII
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat-pii]}
+      model: {name_header: true}
+      logging: {payloads: true}
+    targets:
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+    policies:
+      - !ref anonimizar-pii#name

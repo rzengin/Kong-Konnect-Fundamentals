@@ -1,0 +1,17 @@
+{
+  "name": "core - listar transacciones",
+  "request": { "method": "GET", "urlPathPattern": "/core/v1/cuentas/[0-9]+/transacciones" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "cuenta_id": "{{request.pathSegments.[3]}}",
+      "transacciones": [
+        { "id": "tx-9001", "fecha": "2026-10-04T23:41:00Z", "tipo": "TRANSFERENCIA_SALIENTE", "monto": 5500.00, "destino": "cuenta nueva (alta hace 2 h)", "canal": "app" },
+        { "id": "tx-9000", "fecha": "2026-10-04T12:10:00Z", "tipo": "PAGO_TARJETA", "monto": 82.40, "destino": "Supermercado Central", "canal": "pos" },
+        { "id": "tx-8999", "fecha": "2026-10-03T09:02:00Z", "tipo": "DEPOSITO", "monto": 3200.00, "destino": "nomina", "canal": "ach" }
+      ]
+    },
+    "transformers": ["response-template"]
+  }
+}

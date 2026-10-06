@@ -1,0 +1,42 @@
+# =============================================================================
+# Día 3 · Demo (instructor) — policy CUSTOM publicada desde Konnect (WITH_DEMO_EXTRAS=1)
+# AI Gateway 2.2: ai_gateway_custom_policies (type: streaming). El código Lua se
+# publica desde el Control Plane a los Data Planes, SIN reconstruir imágenes.
+# Estado: GA en el producto; BETA en kongctl (1.20.x).
+# Origen: kong/config/80-observabilidad-y-extensiones.yaml del Demo Track AI Gateway 2.
+# =============================================================================
+ai_gateway_custom_policies:
+  - ref: cabecera-gobierno
+    ai_gateway: !ref lab-ai-gw#id
+    name: cabecera-gobierno
+    display_name: Cabecera de gobierno corporativo
+    type: streaming
+    schema: |
+      return {
+        name = "cabecera-gobierno",
+        fields = {
+          { config = { type = "record", fields = {
+              { valor = { type = "string", default = "banco-demo" } },
+          } } },
+        },
+      }
+    handler: |
+      local plugin = { PRIORITY = 900, VERSION = "1.0.0" }
+      function plugin:header_filter(config)
+        kong.response.set_header("X-Gobierno-IA", config.valor)
+        local consumer = kong.client.get_consumer()
+        if consumer then
+          kong.response.set_header("X-Gobierno-Consumer", consumer.username or consumer.id)
+        end
+      end
+      return plugin
+
+ai_gateway_policies:
+  - ref: cabecera-gobierno-global
+    ai_gateway: !ref lab-ai-gw#id
+    name: cabecera-gobierno-global
+    display_name: Cabecera de gobierno (custom, global)
+    type: cabecera-gobierno
+    global: true
+    config:
+      valor: banco-demo

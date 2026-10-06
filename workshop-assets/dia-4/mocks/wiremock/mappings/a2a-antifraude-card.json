@@ -1,0 +1,21 @@
+{
+  "name": "a2a - agent card del agente antifraude",
+  "request": { "method": "GET", "urlPath": "/antifraude/.well-known/agent-card.json" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "protocolVersion": "0.3.0",
+      "name": "Agente Antifraude",
+      "description": "Evalúa el riesgo de fraude de una transacción y devuelve score y recomendación.",
+      "url": "http://wiremock:8080/antifraude/",
+      "version": "1.0.0",
+      "capabilities": { "streaming": false },
+      "defaultInputModes": ["text/plain"],
+      "defaultOutputModes": ["application/json"],
+      "skills": [
+        { "id": "evaluar-riesgo", "name": "Evaluar riesgo de transacción", "description": "Score 0-100 y recomendación (APROBAR, REVISAR, BLOQUEAR).", "tags": ["fraude", "riesgo"] }
+      ]
+    }
+  }
+}

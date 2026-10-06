@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Política de transferencias — Banco Demo",
+    "content": "Política de transferencias del Banco Demo: el límite diario para personas físicas es USD 10.000 y el límite por operación es USD 5.000. Las transferencias a una cuenta destino registrada hace menos de 24 horas quedan retenidas para revisión antifraude si superan USD 1.000. Entre las 22:00 y las 06:00 el límite por operación baja a USD 1.000. El cliente puede pedir un aumento temporal de límite desde la app; se activa en 12 horas tras validación biométrica.",
+    "tags": "transferencias|limites|antifraude"
+  },
+  {
+    "title": "Clasificación de datos — Banco Demo",
+    "content": "Clasificación de datos del Banco Demo: PÚBLICO (sitio web, tarifas publicadas), INTERNO (manuales y procedimientos), CONFIDENCIAL (datos de clientes, contratos) y RESTRINGIDO (documentos de identidad, números de tarjeta, credenciales y claves). Los datos CONFIDENCIALES y RESTRINGIDOS nunca pueden enviarse a un proveedor de IA externo sin anonimización previa en el AI Gateway. Toda excepción la aprueba el CISO y queda registrada en auditoría.",
+    "tags": "seguridad|datos|clasificacion|pii"
+  },
+  {
+    "title": "Uso aprobado de IA generativa — Banco Demo",
+    "content": "Política de IA generativa del Banco Demo: los equipos solo pueden consumir modelos a través del AI Gateway corporativo, nunca con claves propias del proveedor. Los modelos locales (Ollama) se usan para datos que no pueden salir de la red. Cada equipo tiene una cuota mensual de tokens; al superarla el gateway responde HTTP 429. Los agentes solo pueden usar herramientas MCP publicadas en el catálogo corporativo.",
+    "tags": "ia|gobierno|modelos|cuotas|mcp"
+  },
+  {
+    "title": "Tarifas de tarjetas — Banco Demo",
+    "content": "Tarifas de tarjetas del Banco Demo: la tarjeta Clásica no tiene costo anual; la tarjeta Oro cuesta USD 60 al año y la Platinum USD 180 al año, bonificada al 100% con consumos mayores a USD 2.000 mensuales. El adelanto de efectivo tiene un cargo del 3% con un mínimo de USD 5. La reposición por robo o pérdida es gratuita una vez por año.",
+    "tags": "tarjetas|tarifas|productos"
+  },
+  {
+    "title": "Horario de atención y canales — Banco Demo",
+    "content": "Canales del Banco Demo: la app y la banca web funcionan 24x7. El centro de contacto atiende de lunes a viernes de 8:00 a 20:00 y sábados de 9:00 a 13:00. Las sucursales abren de lunes a viernes de 10:00 a 15:00. El bloqueo de tarjetas y cuentas por fraude está disponible 24x7 en la app y por teléfono.",
+    "tags": "canales|horarios|atencion"
+  },
+  {
+    "title": "Política de crédito de consumo — Banco Demo",
+    "content": "Política de crédito de consumo del Banco Demo: el préstamo personal va de USD 1.000 a USD 30.000, con plazos de 6 a 60 meses y sistema de amortización francés. La relación cuota/ingreso máxima es del 35% del ingreso neto mensual. Se requiere un score de buró mínimo de 650; entre 600 y 649 la solicitud necesita un garante; por debajo de 600 no se otorga. No se aceptan solicitantes con atrasos mayores a 90 días en los últimos 12 meses. La inteligencia artificial solo asiste al analista: la aprobación o el rechazo siempre los decide un analista de crédito humano y quedan registrados en el expediente.",
+    "tags": "credito|prestamos|riesgo|scoring"
+  }
+]

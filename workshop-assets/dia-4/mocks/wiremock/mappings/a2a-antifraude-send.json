@@ -1,0 +1,25 @@
+{
+  "name": "a2a - message/send del agente antifraude (JSON-RPC)",
+  "request": {
+    "method": "POST",
+    "urlPath": "/antifraude/",
+    "bodyPatterns": [ { "matchesJsonPath": "$[?(@.method == 'message/send')]" } ]
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "jsonrpc": "2.0",
+      "id": "{{jsonPath request.body '$.id'}}",
+      "result": {
+        "kind": "message",
+        "role": "agent",
+        "messageId": "{{randomValue type='UUID'}}",
+        "parts": [
+          { "kind": "data", "data": { "score_riesgo": 94, "recomendacion": "BLOQUEAR", "motivo": "Transferencia de alto monto a cuenta creada hace menos de 24 h, fuera del horario habitual del cliente." } }
+        ]
+      }
+    },
+    "transformers": ["response-template"]
+  }
+}

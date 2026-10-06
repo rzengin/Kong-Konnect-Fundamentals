@@ -1,0 +1,117 @@
+# =============================================================================
+# Lab IA 04 — Semántica: enrutamiento semántico y caché semántica
+#
+#   auto         balancer.algorithm: semantic  => el SIGNIFICADO del prompt elige el modelo
+#   chat-cache   policy ai-semantic-cache      => preguntas equivalentes se responden desde Redis
+#
+# Embeddings locales: Ollama nomic-embed-text (768 dimensiones). Vectores en Redis.
+# Si cambias una semantic_description o el threshold, borra los vectores de
+# enrutamiento:  workshop-assets/dia-4/scripts/reset_vectores.sh
+#
+# EJERCICIO (ver Lab_IA_04_Semantica_Cache.md):
+#   1. Reduce el TTL de la caché a 600 segundos.
+#   2. Enriquece la semantic_description del target de código con
+#      "expresiones regulares, COBOL, validación de CBU/IBAN" y vuelve a probar.
+# Solución: workshop-assets/dia-4/soluciones/lab_04_semantica_cache.yaml
+# =============================================================================
+ai_gateway_policies:
+  - ref: cache-semantica
+    ai_gateway: !ref lab-ai-gw#id
+    name: cache-semantica
+    display_name: Caché semántica
+    type: ai-semantic-cache
+    config:
+      cache_ttl: 3600
+      message_countback: 1
+      ignore_system_prompts: true
+      stop_on_failure: false
+      embeddings:
+        model:
+          provider: ollama
+          name: nomic-embed-text
+          options:
+            upstream_url: !env AIGW_OLLAMA_URL
+      vectordb:
+        strategy: redis
+        dimensions: 768
+        distance_metric: cosine
+        threshold: 0.5
+        redis: {host: redis-stack, port: 6379}
+
+ai_gateway_models:
+  - ref: auto
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: auto
+    display_name: Enrutamiento semántico
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [auto]}
+      model: {name_header: true}
+      balancer:
+        algorithm: semantic
+        failover_criteria: [error, timeout]
+        embeddings:
+          provider: ollama
+          name: nomic-embed-text
+          config: {type: ollama, upstream_url: !env AIGW_OLLAMA_URL}
+        vectordb:
+          type: redis
+          host: redis-stack
+          port: 6379
+          dimensions: 768
+          distance_metric: cosine
+          threshold: 0.75
+          ssl: false
+    targets:
+      - name: !env AIGW_MODELO_CODIGO
+        provider: ollama
+        semantic_description: >-
+          Escribir o corregir código. Generar una función, un script, una consulta SQL,
+          endpoints REST, pruebas unitarias o la estructura de un proyecto. Write code.
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 384
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        semantic_description: >-
+          Explicar, resumir o comparar conceptos. Preguntas generales sobre productos
+          bancarios, tarjetas, transferencias, regulación y atención al cliente. Responder en texto.
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+
+  - ref: chat-cache
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat-cache
+    display_name: Chat con caché semántica
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat-cache]}
+      model: {name_header: true}
+    targets:
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+          input_cost: 0.05
+          output_cost: 0.20
+    policies:
+      - !ref cache-semantica#name

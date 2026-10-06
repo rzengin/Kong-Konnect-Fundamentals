@@ -1,0 +1,170 @@
+# =============================================================================
+# Lab IA 02 — Gobierno: ACL por modelo, cuotas de TOKENS y presupuesto en USD
+#
+#   policy                        tipo                        qué limita
+#   cuota-tokens-por-plan         ai-rate-limiting-advanced   tokens/min por consumer según su plan
+#   cuota-tokens-por-credencial   ai-rate-limiting-advanced   tokens/hora por API key individual (2.2)
+#   presupuesto-mensual-usd       ai-rate-limiting-advanced   USD por consumer y mes calendario
+#
+#   modelo            ACL               policies
+#   chat-cuotas       todos             cuota-tokens-por-plan + cuota-tokens-por-credencial
+#   codigo            sólo plan-premium cuota-tokens-por-plan
+#   chat-presupuesto  todos             presupuesto-mensual-usd (precio "frontier" ilustrativo)
+#
+# Contadores en Redis => la cuota es global aunque haya N réplicas del Data Plane.
+#
+# EJERCICIO (ver Lab_IA_02_Gobierno_Cuotas.md):
+#   1. Baja la cuota del plan básico a 150 tokens/minuto.
+#   2. Agrega una SEGUNDA ventana al plan básico: 3.000 tokens por hora.
+# Solución: workshop-assets/dia-4/soluciones/lab_02_gobierno_cuotas.yaml
+# =============================================================================
+ai_gateway_policies:
+  - ref: cuota-tokens-por-plan
+    ai_gateway: !ref lab-ai-gw#id
+    name: cuota-tokens-por-plan
+    display_name: Cuota de tokens por plan
+    type: ai-rate-limiting-advanced
+    config:
+      strategy: redis
+      redis: {host: redis-stack, port: 6379}
+      sync_rate: 0
+      window_type: sliding
+      tokens_count_strategy: total_tokens
+      error_message: 'Cuota de tokens del plan agotada. Reintente en unos segundos o solicite un plan superior: '
+      policies:
+        - match:
+            - {type: consumer_group, values: [plan-basico]}
+            - {type: consumer, partition_by: true}
+          limits:
+            - {limit: 300, window_size: 60}
+        - match:
+            - {type: consumer_group, values: [plan-premium]}
+            - {type: consumer, partition_by: true}
+          limits:
+            - {limit: 20000, window_size: 60}
+
+  - ref: cuota-tokens-por-credencial
+    ai_gateway: !ref lab-ai-gw#id
+    name: cuota-tokens-por-credencial
+    display_name: Cuota de tokens por credencial (2.2)
+    type: ai-rate-limiting-advanced
+    config:
+      strategy: redis
+      redis: {host: redis-stack, port: 6379}
+      sync_rate: 0
+      identifier: credential
+      tokens_count_strategy: total_tokens
+      policies:
+        - match:
+            - {type: credential, partition_by: true}
+          limits:
+            - {limit: 50000, window_size: 3600}
+
+  # Presupuesto en DINERO, no en tokens: el costo de cada request se calcula con los
+  # precios declarados en los targets (input_cost / output_cost, USD por 1M tokens).
+  # Límite deliberadamente MUY bajo (USD 0,02) para agotarlo en el lab.
+  - ref: presupuesto-mensual-usd
+    ai_gateway: !ref lab-ai-gw#id
+    name: presupuesto-mensual-usd
+    display_name: Presupuesto mensual en USD
+    type: ai-rate-limiting-advanced
+    config:
+      strategy: redis
+      redis: {host: redis-stack, port: 6379}
+      sync_rate: 0
+      tokens_count_strategy: cost
+      error_message: 'Presupuesto mensual de IA agotado para: '
+      policies:
+        - window_type: calendar
+          timezone: America/Sao_Paulo
+          match:
+            - {type: consumer, partition_by: true}
+          limits:
+            - {limit: 0.02, period: month, month_day: 1, tokens_count_strategy: cost}
+
+ai_gateway_models:
+  - ref: chat-cuotas
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat-cuotas
+    display_name: Chat con cuotas de tokens
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat-cuotas]}
+      model: {name_header: true}
+    targets:
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+          input_cost: 0.05
+          output_cost: 0.20
+    policies:
+      - !ref cuota-tokens-por-plan#name
+      - !ref cuota-tokens-por-credencial#name
+
+  - ref: codigo
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: codigo
+    display_name: Generación de código (premium)
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+      acls:
+        allow: [plan-premium]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [codigo]}
+      model: {name_header: true}
+    targets:
+      - name: !env AIGW_MODELO_CODIGO
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 384
+          input_cost: 0.05
+          output_cost: 0.20
+    policies:
+      - !ref cuota-tokens-por-plan#name
+
+  - ref: chat-presupuesto
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat-presupuesto
+    display_name: Chat con presupuesto mensual en USD
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat-presupuesto]}
+      model: {name_header: true}
+    targets:
+      # Precio ILUSTRATIVO de un modelo "frontier" comercial para que el presupuesto
+      # se agote en pocas llamadas aunque el modelo real sea local.
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+          input_cost: 20.00
+          output_cost: 80.00
+    policies:
+      - !ref presupuesto-mensual-usd#name

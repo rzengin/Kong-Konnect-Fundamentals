@@ -1,0 +1,123 @@
+# =============================================================================
+# Día 3 · Demo (instructor) — modelos comerciales detrás del mismo endpoint
+#
+#   chat-cloud        Gemini Flash 70% / GPT-4.1 mini 30% (multi-proveedor) + presupuesto USD
+#   chat-hibrido      local primero, failover a cloud (soberanía + continuidad)
+#   codigo-frontier   Claude, sólo plan-premium (ACL), cuota por plan
+#
+# Costos: USD por 1M de tokens, ILUSTRATIVOS (ajustar a la lista de precios vigente).
+# *_cost_list = precio por modalidad (2.1). Alimentan Analytics, la policy de
+# presupuesto (tokens_count_strategy: cost) y AI Cost Management.
+# Origen: kong/config/20-modelos.yaml y overlays/local/20-modelos.yaml del Demo Track.
+# Requiere los labs 01-02 en el mismo sync (policies de cuotas y presupuesto).
+# =============================================================================
+_templates:
+  costo-gemini-flash:
+    input_cost: 0.30
+    output_cost: 2.50
+    cache_read_cost: 0.03
+    input_cost_list:
+      - {modal: text, cost: 0.30}
+      - {modal: image, cost: 0.30}
+      - {modal: audio, cost: 1.00}
+  costo-gpt-mini:
+    input_cost: 0.40
+    output_cost: 1.60
+    cache_read_cost: 0.10
+  costo-claude:
+    input_cost: 15.00
+    output_cost: 75.00
+    cache_read_cost: 1.50
+    cache_write_cost: 18.75
+
+ai_gateway_models:
+  - ref: chat-cloud
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat-cloud
+    display_name: Chat cloud (multi-proveedor)
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat-cloud]}
+      model: {name_header: true}
+      logging: {payloads: true}
+      balancer:
+        algorithm: round-robin
+        failover_criteria: [error, timeout, http_429, http_500, http_502, http_503]
+        retries: 3
+    targets:
+      - name: gemini-2.5-flash
+        provider: gemini
+        weight: 70
+        config: {_extends: costo-gemini-flash, type: gemini, max_tokens: 512}
+      - name: gpt-4.1-mini
+        provider: openai
+        weight: 30
+        config: {_extends: costo-gpt-mini, type: openai, max_tokens: 512}
+    policies:
+      - !ref cuota-tokens-por-plan#name
+      - !ref presupuesto-mensual-usd#name
+
+  # Soberanía + continuidad: el modelo local atiende; si cae, responde la nube.
+  - ref: chat-hibrido
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat-hibrido
+    display_name: Chat híbrido (local primero, cloud de respaldo)
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat-hibrido]}
+      model: {name_header: true}
+      balancer:
+        algorithm: round-robin
+        failover_criteria: [error, timeout, http_500, http_502, http_503, http_504]
+        retries: 2
+    targets:
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        weight: 100
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+      - name: gpt-4.1-mini
+        provider: openai
+        weight: 1
+        config: {_extends: costo-gpt-mini, type: openai, max_tokens: 512}
+
+  - ref: codigo-frontier
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: codigo-frontier
+    display_name: Código con modelo frontier (premium)
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+      acls:
+        allow: [plan-premium]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [codigo-frontier]}
+      model: {name_header: true}
+    targets:
+      - name: claude-opus-4-7
+        provider: anthropic
+        config: {_extends: costo-claude, type: anthropic, version: '2023-06-01', max_tokens: 1024}
+    policies:
+      - !ref cuota-tokens-por-plan#name
+      - !ref presupuesto-mensual-usd#name

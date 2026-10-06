@@ -1,0 +1,43 @@
+# =============================================================================
+# Día 3 · Demo (instructor) — proveedores comerciales (WITH_CLOUD=1)
+# La credencial se declara UNA vez (referencia al vault) y la reutilizan los modelos.
+# Gemini con header x-goog-api-key (no query param): en una PoC anterior la
+# referencia de vault en un query param no se resolvía (Google 403).
+# Origen: kong/config/10-proveedores.yaml del Demo Track AI Gateway 2.
+# =============================================================================
+ai_gateway_model_providers:
+  - ref: openai
+    ai_gateway: !ref lab-ai-gw#id
+    name: openai
+    display_name: OpenAI
+    type: openai
+    config:
+      auth:
+        type: basic
+        headers:
+          - name: Authorization
+            value: '{vault://llm-keys/openai-auth-header}'
+
+  - ref: anthropic
+    ai_gateway: !ref lab-ai-gw#id
+    name: anthropic
+    display_name: Anthropic
+    type: anthropic
+    config:
+      auth:
+        type: basic
+        headers:
+          - name: x-api-key
+            value: '{vault://llm-keys/anthropic-api-key}'
+
+  - ref: gemini
+    ai_gateway: !ref lab-ai-gw#id
+    name: gemini
+    display_name: Google Gemini
+    type: gemini
+    config:
+      auth:
+        type: basic
+        headers:
+          - name: x-goog-api-key
+            value: '{vault://llm-keys/gemini-api-key}'

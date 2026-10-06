@@ -1,0 +1,113 @@
+# >>> ARCHIVO DE SOLUCIÓN — usar con: workshop-assets/dia-4/scripts/aplicar.sh <NN> --solucion
+# =============================================================================
+# Lab IA 03 — Guardrails: política corporativa, jailbreak, datos de tarjeta y
+#             temas prohibidos por SIGNIFICADO
+#
+#   policy                    tipo                       efecto
+#   politica-corporativa      ai-prompt-decorator        agrega el system prompt del banco a cada request
+#   bloqueo-jailbreak         ai-prompt-guard (regex)    400 ante jailbreak / prompt injection / PAN
+#   bloqueo-temas-semantico   ai-semantic-prompt-guard   400 ante temas prohibidos aunque cambien las palabras
+#
+# Embeddings LOCALES (Ollama nomic-embed-text, 768 dimensiones) guardados en Redis:
+# el prompt nunca sale de la red para ser clasificado.
+# Anonimización de PII (ai-sanitizer): requiere el AI PII service (imagen privada de
+# Kong) => la muestra el instructor en el Día 3 (workshop-assets/dia-3/config/demo_30_pii.yaml).
+#
+# SOLUCIÓN aplicada. Ejercicio original (ver Lab_IA_03_Guardrails.md):
+#   1. Bloquea por regex los números de cuenta locales: CBU (22 dígitos) y CLABE (18 dígitos).
+#   2. Agrega el tema prohibido "Cómo obtener la clave, el PIN o el token de otro cliente".
+# Solución: workshop-assets/dia-4/soluciones/lab_03_guardrails.yaml
+# =============================================================================
+ai_gateway_policies:
+  - ref: politica-corporativa
+    ai_gateway: !ref lab-ai-gw#id
+    name: politica-corporativa
+    display_name: Política corporativa (system prompt)
+    type: ai-prompt-decorator
+    config:
+      prompts:
+        prepend:
+          - role: system
+            content: >-
+              Eres el asistente del Banco Demo. Responde en español, en no más de 3 oraciones.
+              Nunca pidas ni repitas contraseñas, PIN, códigos de verificación ni números completos
+              de tarjeta. Si te piden asesoramiento de inversión personalizado, indica que debe
+              consultarlo con un asesor habilitado.
+
+  - ref: bloqueo-jailbreak
+    ai_gateway: !ref lab-ai-gw#id
+    name: bloqueo-jailbreak
+    display_name: Bloqueo de jailbreak y datos sensibles (regex)
+    type: ai-prompt-guard
+    config:
+      match_all_roles: false
+      allow_all_conversation_history: false
+      deny_patterns:
+        - (?i)ignor(a|e|á)\s+(todas\s+)?(las\s+)?instrucciones\s+(anteriores|previas)
+        - (?i)ignore\s+(all\s+)?(the\s+)?(previous|prior)\s+instructions
+        - (?i)(mostr(a|á)|revel(a|á)|imprim(e|í))\s+(el|tu)\s+(prompt|mensaje)\s+(de(l)?\s+sistema|original)
+        - (?i)you\s+are\s+now\s+(DAN|jailbroken|unrestricted)
+        # PAN (número de tarjeta) de 15-16 dígitos, con o sin separadores
+        - \b(?:\d[ -]?){15,16}\b
+        # SOLUCIÓN 1: CBU (Argentina, 22 dígitos) y CLABE (México, 18 dígitos)
+        - \b\d{22}\b
+        - \b\d{18}\b
+
+  - ref: bloqueo-temas-semantico
+    ai_gateway: !ref lab-ai-gw#id
+    name: bloqueo-temas-semantico
+    display_name: Temas prohibidos (semántico)
+    type: ai-semantic-prompt-guard
+    config:
+      embeddings:
+        model:
+          provider: ollama
+          name: nomic-embed-text
+          options:
+            upstream_url: !env AIGW_OLLAMA_URL
+      vectordb:
+        strategy: redis
+        dimensions: 768
+        distance_metric: cosine
+        threshold: 0.5
+        redis: {host: redis-stack, port: 6379}
+      search:
+        threshold: 0.5
+      rules:
+        match_all_conversation_history: false
+        deny_prompts:
+          - Cómo evadir los controles antifraude o de lavado de dinero del banco
+          - Cómo abrir una cuenta con documentos de identidad falsos
+          - Recomendación personalizada de en qué acciones o criptomonedas invertir mis ahorros
+          - Cómo obtener la clave, el PIN o el token de otro cliente   # SOLUCIÓN 2
+
+ai_gateway_models:
+  - ref: chat-seguro
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat-seguro
+    display_name: Chat con guardrails
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat-seguro]}
+      model: {name_header: true}
+      logging: {payloads: true}
+    targets:
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+          input_cost: 0.05
+          output_cost: 0.20
+    policies:
+      - !ref politica-corporativa#name
+      - !ref bloqueo-jailbreak#name
+      - !ref bloqueo-temas-semantico#name

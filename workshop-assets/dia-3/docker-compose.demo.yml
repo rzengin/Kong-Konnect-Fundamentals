@@ -1,0 +1,31 @@
+# =============================================================================
+# Día 3 · Override de demos del instructor sobre workshop-assets/dia-4/docker-compose.yml
+# Se usa con WITH_DEMO_EXTRAS=1 (common.sh -> dc agrega este archivo).
+#   headroom (perfil compresion)  ai-prompt-compressor, AI Gateway 2.2 tech preview
+#   ai-pii   (perfil pii)         AI PII service para ai-sanitizer (imagen PRIVADA de Kong:
+#                                 scripts/load_pii_image.sh)
+# Origen: docker-compose.yml del Demo Track AI Gateway 2.
+# =============================================================================
+services:
+  headroom:
+    image: ghcr.io/headroomlabs-ai/headroom:latest
+    container_name: aigw-lab-headroom
+    hostname: headroom
+    command: ["--host", "0.0.0.0", "--port", "8787"]
+    networks: [aigw]
+    ports: ["8787:8787"]
+    environment:
+      HEADROOM_PROXY_TOKEN: ${AIGW_HEADROOM_TOKEN:-sin-configurar}
+      HEADROOM_COMPRESS_ALLOW_REMOTE: "1"   # permite que el gateway (otro contenedor) use /v1/compress
+      HEADROOM_BEACON: "off"
+    profiles: [compresion]
+    restart: unless-stopped
+
+  ai-pii:
+    image: kong/ai-pii:local
+    platform: linux/amd64
+    container_name: aigw-lab-ai-pii
+    hostname: ai-pii
+    networks: [aigw]
+    profiles: [pii]
+    restart: unless-stopped

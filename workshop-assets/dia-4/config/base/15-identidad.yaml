@@ -1,0 +1,100 @@
+# =============================================================================
+# Día 4 · Base 15 — Identidad: quién llama al AI Gateway
+#
+#   - key-auth con el header "apikey" (el key-auth del AI Gateway NO quita el
+#     prefijo "Bearer": los SDK de OpenAI deben enviar "apikey" como header extra)
+#   - Las API keys las genera scripts/setup_lab.sh en $AIGW_STATE_DIR/.env.generated
+#     (fuera del repositorio) y kongctl las lee con !secret / !env.
+#   - Consumer groups = planes / perfiles. Las ACL de modelos, tools MCP y agentes,
+#     y las cuotas de tokens, se definen por grupo.
+#
+#   consumer          grupos                                  uso en los labs
+#   app-web           plan-basico                             app de clientes (cuota baja)
+#   equipo-datos      plan-premium                            equipo interno (cuota alta)
+#   agente-copilot    plan-premium, agentes-operaciones       agente con permisos de escritura
+#   agente-consulta   agentes-lectura                         agente de solo lectura
+# =============================================================================
+ai_gateway_auth_strategies:
+  - ref: lab-key-auth
+    ai_gateway: !ref lab-ai-gw#id
+    name: lab-key-auth
+    display_name: API key corporativa
+    type: key-auth
+    config:
+      key_names: [apikey]
+      key_in_header: true
+      key_in_query: false
+      key_in_body: false
+      hide_credentials: true
+
+ai_gateway_consumers:
+  - ref: app-web
+    ai_gateway: !ref lab-ai-gw#id
+    name: app-web
+    display_name: App web de clientes
+    type: api-key
+    credentials:
+      - ref: app-web-key
+        ai_gateway_consumer: app-web
+        name: app-web-key
+        display_name: app-web-key
+        type: api-key
+        api_key: !secret {source: !env AIGW_KEY_APP_WEB}
+  - ref: equipo-datos
+    ai_gateway: !ref lab-ai-gw#id
+    name: equipo-datos
+    display_name: Equipo de datos
+    type: api-key
+    credentials:
+      - ref: equipo-datos-key
+        ai_gateway_consumer: equipo-datos
+        name: equipo-datos-key
+        display_name: equipo-datos-key
+        type: api-key
+        api_key: !secret {source: !env AIGW_KEY_EQUIPO_DATOS}
+  - ref: agente-copilot
+    ai_gateway: !ref lab-ai-gw#id
+    name: agente-copilot
+    display_name: Agente copiloto de operaciones
+    type: api-key
+    credentials:
+      - ref: agente-copilot-key
+        ai_gateway_consumer: agente-copilot
+        name: agente-copilot-key
+        display_name: agente-copilot-key
+        type: api-key
+        api_key: !secret {source: !env AIGW_KEY_AGENTE_COPILOT}
+  - ref: agente-consulta
+    ai_gateway: !ref lab-ai-gw#id
+    name: agente-consulta
+    display_name: Agente de consultas (solo lectura)
+    type: api-key
+    credentials:
+      - ref: agente-consulta-key
+        ai_gateway_consumer: agente-consulta
+        name: agente-consulta-key
+        display_name: agente-consulta-key
+        type: api-key
+        api_key: !secret {source: !env AIGW_KEY_AGENTE_CONSULTA}
+
+ai_gateway_consumer_groups:
+  - ref: plan-basico
+    ai_gateway: !ref lab-ai-gw#id
+    name: plan-basico
+    display_name: Plan básico (apps)
+    consumers: [!ref app-web#name]
+  - ref: plan-premium
+    ai_gateway: !ref lab-ai-gw#id
+    name: plan-premium
+    display_name: Plan premium (equipos internos)
+    consumers: [!ref equipo-datos#name, !ref agente-copilot#name]
+  - ref: agentes-operaciones
+    ai_gateway: !ref lab-ai-gw#id
+    name: agentes-operaciones
+    display_name: Agentes con permisos de escritura
+    consumers: [!ref agente-copilot#name]
+  - ref: agentes-lectura
+    ai_gateway: !ref lab-ai-gw#id
+    name: agentes-lectura
+    display_name: Agentes de solo lectura
+    consumers: [!ref agente-consulta#name]

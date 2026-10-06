@@ -1,0 +1,14 @@
+{
+  "name": "core - bloquear cuenta (accion destructiva)",
+  "request": { "method": "POST", "urlPathPattern": "/core/v1/cuentas/[0-9]+/bloqueo" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "cuenta_id": "{{request.pathSegments.[3]}}",
+      "resultado": "BLOQUEADA",
+      "mensaje": "Cuenta bloqueada preventivamente. Transferencias salientes suspendidas."
+    },
+    "transformers": ["response-template"]
+  }
+}

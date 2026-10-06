@@ -1,0 +1,16 @@
+{
+  "name": "core - listar tarjetas de un cliente (Lab IA 06, ejercicio)",
+  "request": { "method": "GET", "urlPathPattern": "/core/v1/clientes/[A-Za-z0-9-]+/tarjetas" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "cliente_id": "{{request.pathSegments.[3]}}",
+      "tarjetas": [
+        { "numero": "**** **** **** 4821", "tipo": "CREDITO_ORO", "estado": "ACTIVA", "limite_usd": 5000.00 },
+        { "numero": "**** **** **** 9930", "tipo": "DEBITO", "estado": "ACTIVA", "limite_usd": 1500.00 }
+      ]
+    },
+    "transformers": ["response-template"]
+  }
+}

@@ -1,0 +1,25 @@
+# =============================================================================
+# Día 3 · Demo (instructor, OPCIONAL) — Metering & Billing (WITH_METERING=1)
+# Requiere el add-on Konnect Metering & Billing en la org. Si se aplicara sin
+# licencia rompería todo el sync: por eso sólo se incluye con WITH_METERING=1.
+#   meter_ai_token_usage: por cada request a un modelo emite eventos kong.llm_request
+#   (tokens de entrada y de salida) hacia la ingesta de Metering & Billing.
+#   subject = AI Consumer autenticado => se asocia a un customer de billing.
+# Variables: METERING_INGEST_TOKEN (System Account token con rol Ingest) y,
+# opcional, METERING_INGEST_ENDPOINT (default <KONNECT_ADDR>/v3/openmeter/events).
+# Origen: kong/opcional/90-metering-billing.yaml del Demo Track AI Gateway 2.
+# =============================================================================
+ai_gateway_policies:
+  - ref: metering-y-billing
+    ai_gateway: !ref lab-ai-gw#id
+    name: metering-y-billing
+    display_name: Metering & Billing (tokens por consumer)
+    type: metering-and-billing
+    global: true
+    config:
+      ingest_endpoint: !env AIGW_METERING_INGEST_ENDPOINT
+      api_token: !env AIGW_METERING_INGEST_TOKEN
+      meter_api_requests: false
+      meter_ai_token_usage: true
+      subject:
+        look_up_value_in: consumer

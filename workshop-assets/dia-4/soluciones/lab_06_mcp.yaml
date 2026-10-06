@@ -1,0 +1,103 @@
+# >>> ARCHIVO DE SOLUCIÓN — usar con: workshop-assets/dia-4/scripts/aplicar.sh <NN> --solucion
+# =============================================================================
+# Lab IA 06 — MCP: APIs REST existentes como tools, bundling y ACL por agente
+#
+# Las APIs del "core bancario" (WireMock) son REST, NO son MCP. El gateway las
+# publica como tools MCP sin escribir un servidor MCP:
+#   core-cuentas       conversion-only   consultar_cuenta, listar_transacciones
+#   core-operaciones   conversion-only   bloquear_cuenta (destructiva, sólo agentes-operaciones)
+#   mercado            conversion-only   tipo_de_cambio
+#   banco-mcp          listener          BUNDLING: un único endpoint /mcp/banco con las 3 fuentes
+#
+# Gobierno por agente (ACL por consumer group):
+#   agentes-lectura      ve y usa sólo las tools de lectura
+#   agentes-operaciones  además ve bloquear_cuenta
+# Una tool no autorizada NO aparece en tools/list y su ejecución se rechaza.
+#
+# SOLUCIÓN aplicada. Ejercicio original (ver Lab_IA_06_MCP.md):
+#   Publica la API GET /core/v1/clientes/{cliente_id}/tarjetas como una nueva tool
+#   de solo lectura "listar_tarjetas" dentro de core-cuentas.
+# Solución: workshop-assets/dia-4/soluciones/lab_06_mcp.yaml
+# =============================================================================
+ai_gateway_mcp_servers:
+  - ref: core-cuentas
+    ai_gateway: !ref lab-ai-gw#id
+    type: conversion-only
+    name: core-cuentas
+    display_name: Core bancario — cuentas
+    config:
+      url: http://wiremock:8080
+    tools:
+      - name: consultar_cuenta
+        description: Devuelve estado, saldo disponible y límite diario de una cuenta del Banco Demo.
+        method: GET
+        path: /core/v1/cuentas/{cuenta_id}
+        annotations: {title: Consultar cuenta, read_only_hint: true, destructive_hint: false}
+        parameters:
+          - {name: cuenta_id, in: path, required: true, description: Número de cuenta, schema: {type: string}}
+      - name: listar_transacciones
+        description: Lista las últimas transacciones de una cuenta (fecha, tipo, monto, destino, canal).
+        method: GET
+        path: /core/v1/cuentas/{cuenta_id}/transacciones
+        annotations: {title: Listar transacciones, read_only_hint: true, destructive_hint: false}
+        parameters:
+          - {name: cuenta_id, in: path, required: true, description: Número de cuenta, schema: {type: string}}
+      # SOLUCIÓN: nueva tool de solo lectura sobre una API REST existente
+      - name: listar_tarjetas
+        description: Lista las tarjetas de un cliente (número enmascarado, tipo, estado y límite).
+        method: GET
+        path: /core/v1/clientes/{cliente_id}/tarjetas
+        annotations: {title: Listar tarjetas, read_only_hint: true, destructive_hint: false}
+        parameters:
+          - {name: cliente_id, in: path, required: true, description: Identificador del cliente, schema: {type: string}}
+
+  - ref: core-operaciones
+    ai_gateway: !ref lab-ai-gw#id
+    type: conversion-only
+    name: core-operaciones
+    display_name: Core bancario — operaciones
+    config:
+      url: http://wiremock:8080
+    tools:
+      - name: bloquear_cuenta
+        description: Bloquea preventivamente una cuenta y suspende las transferencias salientes.
+        method: POST
+        path: /core/v1/cuentas/{cuenta_id}/bloqueo
+        annotations: {title: Bloquear cuenta, read_only_hint: false, destructive_hint: true}
+        access:
+          acls:
+            allow: [agentes-operaciones]
+        parameters:
+          - {name: cuenta_id, in: path, required: true, description: Número de cuenta, schema: {type: string}}
+
+  - ref: mercado
+    ai_gateway: !ref lab-ai-gw#id
+    type: conversion-only
+    name: mercado
+    display_name: Datos de mercado
+    config:
+      url: http://wiremock:8080
+    tools:
+      - name: tipo_de_cambio
+        description: Cotizaciones del dólar frente a monedas de América Latina.
+        method: GET
+        path: /mercado/v1/tipo-cambio
+        annotations: {title: Tipo de cambio, read_only_hint: true, destructive_hint: false}
+
+  # Bundling: un único endpoint MCP que agrega las tools de los tres servidores
+  - ref: banco-mcp
+    ai_gateway: !ref lab-ai-gw#id
+    type: listener
+    name: banco-mcp
+    display_name: Banco Demo — MCP corporativo
+    sources: [core-cuentas, core-operaciones, mercado]
+    access:
+      acl_attribute_type: consumer
+      auth_strategies: [!ref lab-key-auth#name]
+      default_tool_acls:
+        allow: [agentes-operaciones, agentes-lectura]
+    config:
+      route:
+        paths: [/mcp/banco]
+        methods: [GET, POST, DELETE]
+      logging: {payloads: true, audits: true}

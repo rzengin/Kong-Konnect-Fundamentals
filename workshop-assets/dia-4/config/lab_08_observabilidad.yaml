@@ -1,0 +1,45 @@
+# =============================================================================
+# Lab IA 08 — Observabilidad de IA: OpenTelemetry -> OTel Collector ->
+#             OpenObserve (trazas, métricas, logs) + Arize Phoenix (vista LLM)
+#
+# Reutiliza el stack de observabilidad del curso (Día 1 · Módulo 06 / Día 2 · Lab 07):
+#   workshop-assets/dia-1/06-observability/scripts/setup-observability.sh
+# El Collector está en la red Docker "kong-workshop"; el Data Plane del AI Gateway
+# también se une a esa red, por eso lo alcanza como http://otel-collector:4318.
+#
+# AI Gateway 2.2 emite atributos OpenInference (modelo, tokens, prompt/respuesta):
+# Phoenix los muestra como spans de LLM. Konnect Analytics recibe además la
+# telemetría del DP sin configurar nada.
+#
+# service.name = AIGW_OTEL_SERVICE_NAME (por defecto "aigw-<DEMO_PREFIX>"): es el
+# filtro en OpenObserve y el nombre del proyecto en Phoenix.
+#
+# EJERCICIO (ver Lab_IA_08_Observabilidad.md):
+#   1. Agrega el atributo de recurso deployment.environment: workshop-ia
+#   2. Reduce el intervalo de envío de métricas a 15 segundos.
+# Solución: workshop-assets/dia-4/soluciones/lab_08_observabilidad.yaml
+# =============================================================================
+ai_gateway_policies:
+  - ref: trazas-otel
+    ai_gateway: !ref lab-ai-gw#id
+    name: trazas-otel
+    display_name: OpenTelemetry (trazas, métricas y logs de IA)
+    type: opentelemetry
+    global: true
+    config:
+      traces_endpoint: !env AIGW_OTEL_TRACES_ENDPOINT
+      logs_endpoint: !env AIGW_OTEL_LOGS_ENDPOINT
+      metrics:
+        endpoint: !env AIGW_OTEL_METRICS_ENDPOINT
+        push_interval: 30
+        enable_ai_metrics: true
+        enable_request_metrics: true
+        enable_latency_metrics: true
+        enable_bandwidth_metrics: true
+        enable_consumer_attribute: true
+        enable_upstream_health_metrics: true
+      sampling_rate: 1
+      propagation:
+        default_format: w3c
+      resource_attributes:
+        service.name: !env AIGW_OTEL_SERVICE_NAME

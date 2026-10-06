@@ -1,0 +1,9 @@
+{
+  "name": "mercado - tipo de cambio",
+  "request": { "method": "GET", "urlPathPattern": "/mercado/v1/tipo-cambio" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": { "base": "USD", "fecha": "2026-10-05", "cotizaciones": { "BRL": 5.31, "MXN": 18.42, "COP": 4012.50, "ARS": 1185.00, "PEN": 3.71, "CLP": 942.10 } }
+  }
+}

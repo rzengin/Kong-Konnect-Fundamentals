@@ -1,0 +1,16 @@
+# =============================================================================
+# Día 4 · Base 00 — AI Gateway del participante (creado en Konnect en el Lab IA 00)
+#
+# El AI Gateway "<DEMO_PREFIX>-ai-gw" ya existe en Konnect y NO lo gestiona kongctl
+# (_external). kongctl gestiona sólo sus colecciones hijas (proveedores, modelos,
+# policies, MCP servers, agentes, consumers...) y las reconcilia por completo en
+# cada `kongctl sync` (crea, actualiza y BORRA lo que no esté declarado).
+#
+# __AI_GATEWAY_ID__ es un marcador: scripts/aplicar.sh lo reemplaza por el ID real
+# (AI_GATEWAY_ID, descubierto por scripts/setup_lab.sh) en un directorio temporal.
+# No edites este archivo a mano.
+# =============================================================================
+ai_gateways:
+  - ref: lab-ai-gw
+    _external:
+      id: __AI_GATEWAY_ID__

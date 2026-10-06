@@ -1,0 +1,118 @@
+# =============================================================================
+# Lab IA 01 — Un endpoint, muchos LLMs: balanceo, failover y passthrough
+#
+#   modelo virtual      qué demuestra                                   ruta
+#   chat                balanceo ponderado entre 2 modelos (70/30)      POST /v1/chat/completions
+#   chat-resiliente     failover: el target principal "está caído"      POST /v1/chat/completions
+#   local-passthrough   API NATIVA de Ollama sin transformar (2.2)      /passthrough/ollama/*
+#
+# El cliente elige el modelo con el campo "model" del body (route.model.body_param).
+# Costos: USD por 1M de tokens. Con modelos locales el costo real es la
+# infraestructura propia: aquí se declara un "costo interno" ILUSTRATIVO para
+# poder mostrar chargeback en Analytics (Lab IA 08).
+#
+# EJERCICIO (ver docs/dia-4-ai-gateway-labs/Lab_IA_01_Multi_LLM_Failover.md):
+#   1. Cambia el reparto de "chat" a 50/50.
+#   2. Agrega un segundo alias "asistente-general" al modelo "chat"
+#      (route.model.values admite varios alias desde 2.1).
+# Solución: workshop-assets/dia-4/soluciones/lab_01_multi_llm.yaml
+# =============================================================================
+ai_gateway_models:
+  - ref: chat
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat
+    display_name: Chat general (balanceo entre modelos locales)
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat]}
+      model: {name_header: true}          # header X-Kong-LLM-Model en la respuesta
+      logging: {payloads: true}
+      balancer:
+        algorithm: round-robin
+        failover_criteria: [error, timeout, http_429, http_500, http_502, http_503]
+        retries: 3
+    targets:
+      - name: !env AIGW_MODELO_GENERAL      # llama3.2:1b por defecto
+        provider: ollama
+        weight: 70
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+          input_cost: 0.05
+          output_cost: 0.20
+      - name: !env AIGW_MODELO_CODIGO       # qwen3:0.6b por defecto
+        provider: ollama
+        weight: 30
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+          input_cost: 0.05
+          output_cost: 0.20
+
+  - ref: chat-resiliente
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: chat-resiliente
+    display_name: Chat con failover
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [chat-resiliente]}
+      model: {name_header: true}
+      balancer:
+        # El target principal apunta a un endpoint que responde 503 (WireMock simula
+        # la caída del nodo de inferencia). El gateway reintenta en el siguiente
+        # target sin que el cliente se entere.
+        algorithm: round-robin
+        failover_criteria: [error, timeout, http_500, http_502, http_503, http_504]
+        retries: 3
+    targets:
+      - name: !env AIGW_MODELO_CODIGO
+        provider: ollama
+        weight: 100
+        config:
+          type: ollama
+          upstream_url: http://wiremock:8080/proveedor-caido/api/chat
+          max_tokens: 256
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        weight: 1
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+
+  # Passthrough (2.2): el body NO se transforma. El cliente habla la API nativa de
+  # Ollama y el gateway igual aplica autenticación, ACL, rate limiting y analytics.
+  - ref: local-passthrough
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: local-passthrough
+    display_name: Ollama nativo (passthrough)
+    capabilities: [generate]
+    formats: [{type: passthrough}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+    config:
+      route:
+        paths: [/passthrough/ollama]
+    targets:
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_URL

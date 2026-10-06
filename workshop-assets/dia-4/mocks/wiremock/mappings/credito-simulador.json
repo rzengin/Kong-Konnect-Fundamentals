@@ -1,0 +1,16 @@
+{
+  "name": "credito - simular prestamo (Lab IA 09, desafio)",
+  "request": { "method": "GET", "urlPath": "/credito/v1/simulador" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "monto_usd": "{{request.query.monto}}",
+      "plazo_meses": "{{request.query.plazo}}",
+      "tasa_nominal_anual": 0.24,
+      "sistema": "frances",
+      "nota": "Simulación ilustrativa. La cuota exacta la calcula el core de préstamos."
+    },
+    "transformers": ["response-template"]
+  }
+}

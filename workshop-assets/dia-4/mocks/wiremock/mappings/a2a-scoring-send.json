@@ -1,0 +1,25 @@
+{
+  "name": "a2a - message/send del agente de scoring (JSON-RPC)",
+  "request": {
+    "method": "POST",
+    "urlPath": "/scoring/",
+    "bodyPatterns": [ { "matchesJsonPath": "$[?(@.method == 'message/send')]" } ]
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "jsonrpc": "2.0",
+      "id": "{{jsonPath request.body '$.id'}}",
+      "result": {
+        "kind": "message",
+        "role": "agent",
+        "messageId": "{{randomValue type='UUID'}}",
+        "parts": [
+          { "kind": "data", "data": { "score_interno": 742, "banda_riesgo": "B", "relacion_cuota_ingreso": 0.28, "observacion": "Dentro de política. Requiere validación de ingresos por un analista." } }
+        ]
+      }
+    },
+    "transformers": ["response-template"]
+  }
+}

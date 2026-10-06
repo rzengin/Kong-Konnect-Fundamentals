@@ -1,0 +1,9 @@
+{
+  "name": "proveedor LLM caído (escenario 01: failover)",
+  "request": { "urlPathPattern": "/proveedor-caido/.*" },
+  "response": {
+    "status": 503,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": { "error": { "message": "Service Unavailable (simulado)", "type": "server_error" } }
+  }
+}

@@ -1,0 +1,48 @@
+# =============================================================================
+# Lab IA 09 — DESAFÍO FINAL (opcional): Asistente de crédito gobernado
+#
+# Objetivo: publicar para el canal de crédito un asistente de IA que cumpla las
+# reglas del banco SIN cambiar la aplicación. Ya tienes declarada la identidad
+# (consumer app-credito + grupo canal-credito). Completa los TODO.
+#
+# Requisitos (detalle y criterios de aceptación en Lab_IA_09_Desafio_Credito.md):
+#   R1. Modelo "asistente-credito" (POST /v1/chat/completions) sólo para canal-credito.
+#   R2. System prompt de analista de crédito: la IA asiste, NO aprueba ni rechaza.
+#   R3. Reutiliza los guardrails del Lab 03 (jailbreak + PAN) y el RAG del Lab 05.
+#   R4. Cuota propia: 2.000 tokens/minuto por consumer.
+#   R5. Tools MCP en /mcp/credito: consultar_buro y simular_prestamo (APIs REST
+#       de WireMock /credito/v1/...), visibles para canal-credito y agentes-operaciones.
+#
+# Pistas: copia y adapta bloques de lab_02 (cuota), lab_03 (decorator), lab_05
+# (modelo con RAG) y lab_06 (conversion-only + listener). Las policies declaradas
+# en otros archivos se referencian con !ref <nombre>#name.
+# Solución: workshop-assets/dia-4/soluciones/lab_09_desafio_credito.yaml
+# =============================================================================
+ai_gateway_consumers:
+  - ref: app-credito
+    ai_gateway: !ref lab-ai-gw#id
+    name: app-credito
+    display_name: App del canal de crédito
+    type: api-key
+    credentials:
+      - ref: app-credito-key
+        ai_gateway_consumer: app-credito
+        name: app-credito-key
+        display_name: app-credito-key
+        type: api-key
+        api_key: !secret {source: !env AIGW_KEY_APP_CREDITO}
+
+ai_gateway_consumer_groups:
+  - ref: canal-credito
+    ai_gateway: !ref lab-ai-gw#id
+    name: canal-credito
+    display_name: Canal de crédito
+    consumers: [!ref app-credito#name]
+
+# TODO R2 + R4: ai_gateway_policies  (politica-credito: ai-prompt-decorator;
+#                                     cuota-credito: ai-rate-limiting-advanced)
+
+# TODO R1 + R3: ai_gateway_models    (asistente-credito)
+
+# TODO R5: ai_gateway_mcp_servers    (credito-core: conversion-only;
+#                                     credito-mcp: listener en /mcp/credito)

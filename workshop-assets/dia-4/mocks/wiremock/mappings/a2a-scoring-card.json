@@ -1,0 +1,21 @@
+{
+  "name": "a2a - agent card del agente de scoring crediticio (Lab IA 07, ejercicio)",
+  "request": { "method": "GET", "urlPath": "/scoring/.well-known/agent-card.json" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "protocolVersion": "0.3.0",
+      "name": "Agente de Scoring Crediticio",
+      "description": "Calcula un score interno de riesgo crediticio para una solicitud de préstamo personal.",
+      "url": "http://wiremock:8080/scoring/",
+      "version": "1.0.0",
+      "capabilities": { "streaming": false },
+      "defaultInputModes": ["text/plain"],
+      "defaultOutputModes": ["application/json"],
+      "skills": [
+        { "id": "score-credito", "name": "Score de crédito", "description": "Score 0-1000, banda de riesgo y relación cuota/ingreso.", "tags": ["credito", "riesgo"] }
+      ]
+    }
+  }
+}

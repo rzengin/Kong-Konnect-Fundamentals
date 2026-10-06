@@ -1,0 +1,140 @@
+# =============================================================================
+# SOLUCIÓN — Lab IA 09 · Desafío final: Asistente de crédito gobernado
+# Requiere los labs 02 (no usa sus policies, pero sí el patrón), 03 (bloqueo-jailbreak)
+# y 05 (rag-banco) aplicados en el mismo sync (aplicar.sh 09 lo hace).
+# =============================================================================
+ai_gateway_consumers:
+  - ref: app-credito
+    ai_gateway: !ref lab-ai-gw#id
+    name: app-credito
+    display_name: App del canal de crédito
+    type: api-key
+    credentials:
+      - ref: app-credito-key
+        ai_gateway_consumer: app-credito
+        name: app-credito-key
+        display_name: app-credito-key
+        type: api-key
+        api_key: !secret {source: !env AIGW_KEY_APP_CREDITO}
+
+ai_gateway_consumer_groups:
+  - ref: canal-credito
+    ai_gateway: !ref lab-ai-gw#id
+    name: canal-credito
+    display_name: Canal de crédito
+    consumers: [!ref app-credito#name]
+
+ai_gateway_policies:
+  # R2 — la IA asiste al analista; la decisión es humana (requisito de riesgo/regulatorio)
+  - ref: politica-credito
+    ai_gateway: !ref lab-ai-gw#id
+    name: politica-credito
+    display_name: Política del asistente de crédito
+    type: ai-prompt-decorator
+    config:
+      prompts:
+        prepend:
+          - role: system
+            content: >-
+              Eres el asistente de analistas de crédito del Banco Demo. Responde en español y en
+              no más de 4 oraciones. Explica criterios y cálculos citando la política de crédito.
+              NUNCA apruebes ni rechaces una solicitud: la decisión final es siempre de un analista
+              humano. No pidas ni repitas datos de tarjetas, claves ni documentos completos.
+
+  # R4 — cuota propia del canal
+  - ref: cuota-credito
+    ai_gateway: !ref lab-ai-gw#id
+    name: cuota-credito
+    display_name: Cuota de tokens del canal de crédito
+    type: ai-rate-limiting-advanced
+    config:
+      strategy: redis
+      redis: {host: redis-stack, port: 6379}
+      sync_rate: 0
+      window_type: sliding
+      tokens_count_strategy: total_tokens
+      error_message: 'Cuota de tokens del canal de crédito agotada: '
+      policies:
+        - match:
+            - {type: consumer_group, values: [canal-credito]}
+            - {type: consumer, partition_by: true}
+          limits:
+            - {limit: 2000, window_size: 60}
+
+ai_gateway_models:
+  # R1 + R3
+  - ref: asistente-credito
+    ai_gateway: !ref lab-ai-gw#id
+    type: model
+    name: asistente-credito
+    display_name: Asistente de crédito gobernado
+    capabilities: [generate]
+    formats: [{type: openai}]
+    access:
+      auth_strategies: [!ref lab-key-auth#name]
+      acls:
+        allow: [canal-credito]
+    config:
+      route:
+        paths: [/v1]
+        methods: [POST]
+        model: {body_param: model, values: [asistente-credito]}
+      model: {name_header: true}
+      logging: {payloads: true}
+    targets:
+      - name: !env AIGW_MODELO_GENERAL
+        provider: ollama
+        config:
+          type: ollama
+          upstream_url: !env AIGW_OLLAMA_CHAT_URL
+          max_tokens: 256
+          input_cost: 0.05
+          output_cost: 0.20
+    policies:
+      - !ref politica-credito#name
+      - !ref bloqueo-jailbreak#name
+      - !ref rag-banco#name
+      - !ref cuota-credito#name
+
+ai_gateway_mcp_servers:
+  # R5 — APIs REST de crédito como tools MCP
+  - ref: credito-core
+    ai_gateway: !ref lab-ai-gw#id
+    type: conversion-only
+    name: credito-core
+    display_name: Core de crédito
+    config:
+      url: http://wiremock:8080
+    tools:
+      - name: consultar_buro
+        description: Devuelve el score de buró, deudas vigentes y atrasos de los últimos 12 meses de un solicitante.
+        method: GET
+        path: /credito/v1/buro/{documento}
+        annotations: {title: Consultar buró, read_only_hint: true, destructive_hint: false}
+        parameters:
+          - {name: documento, in: path, required: true, description: Documento del solicitante, schema: {type: string}}
+      - name: simular_prestamo
+        description: Simula un préstamo personal (cuota mensual estimada) para un monto en USD y un plazo en meses.
+        method: GET
+        path: /credito/v1/simulador
+        annotations: {title: Simular préstamo, read_only_hint: true, destructive_hint: false}
+        parameters:
+          - {name: monto, in: query, required: true, description: Monto solicitado en USD, schema: {type: string}}
+          - {name: plazo, in: query, required: true, description: Plazo en meses, schema: {type: string}}
+
+  - ref: credito-mcp
+    ai_gateway: !ref lab-ai-gw#id
+    type: listener
+    name: credito-mcp
+    display_name: MCP del canal de crédito
+    sources: [credito-core]
+    access:
+      acl_attribute_type: consumer
+      auth_strategies: [!ref lab-key-auth#name]
+      default_tool_acls:
+        allow: [canal-credito, agentes-operaciones]
+    config:
+      route:
+        paths: [/mcp/credito]
+        methods: [GET, POST, DELETE]
+      logging: {payloads: true, audits: true}

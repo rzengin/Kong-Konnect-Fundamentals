@@ -1,0 +1,23 @@
+# =============================================================================
+# Día 4 · Base 10 — Proveedores de modelos
+#
+# En los labs NO se necesitan claves de pago: el único proveedor es Ollama, que
+# corre en Docker junto al Data Plane (o en el host, ver AIGW_OLLAMA_URL) con
+# modelos open-weight pequeños aptos para CPU:
+#   AIGW_MODELO_GENERAL  llama3.2:1b      (~1,3 GB)  chat general
+#   AIGW_MODELO_CODIGO   qwen3:0.6b       (~0,5 GB)  "premium" / código
+#   embeddings           nomic-embed-text (~0,3 GB, 768 dimensiones)
+#
+# La credencial del proveedor se declara UNA vez y la reutilizan todos los modelos.
+# Proveedores comerciales (OpenAI, Anthropic, Gemini): opcionales, ver
+# workshop-assets/dia-3/config/demo_10_proveedores_comerciales.yaml (WITH_CLOUD=1).
+# =============================================================================
+ai_gateway_model_providers:
+  - ref: ollama
+    ai_gateway: !ref lab-ai-gw#id
+    name: ollama
+    display_name: Ollama (local, open-weight)
+    type: ollama
+    config:
+      auth:
+        type: basic
