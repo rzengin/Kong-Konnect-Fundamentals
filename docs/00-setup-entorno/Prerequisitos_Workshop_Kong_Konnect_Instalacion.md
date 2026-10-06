@@ -38,14 +38,14 @@ consuma instalando herramientas básicas o resolviendo bloqueos de red.
 
     [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/rzengin/Kong-Konnect-Fundamentals?quickstart=1)
 
-    1. Pulsa el botón (o en GitHub: **Code → Codespaces → Create codespace on main**). Elige una máquina de **4 núcleos / 8 GB** o más.
+    1. Pulsa el botón (o en GitHub: **Code → Codespaces → Create codespace on main**). Elige la máquina de **4 núcleos / 16 GB** (es la que exige el devcontainer y la necesaria para el Día 4 con Ollama).
     2. Espera a que termine la creación: el contenedor ejecuta `docs/00-setup-entorno/scripts/install_prereqs.sh` automáticamente.
     3. Define tus variables (mejor como [secretos de Codespaces](https://github.com/settings/codespaces) `KONNECT_TOKEN` y `DEMO_PREFIX`, o en la terminal):
        ```bash
        export KONNECT_TOKEN="kpat_..."   # entregado por el instructor
        export DEMO_PREFIX="tu_nombre"
        ```
-    4. Los puertos del laboratorio se reenvían solos (pestaña **Ports**): 8000/8443 proxy de Kong, 8001 Admin API, 5080 OpenObserve, 6006 Phoenix, 4318 OTLP. Donde las guías digan `http://localhost:<puerto>`, usa `curl` desde la terminal del Codespace o abre la URL reenviada desde la pestaña **Ports**.
+    4. Los puertos del laboratorio se reenvían solos (pestaña **Ports**): 8000/8443 proxy de Kong, 8001 Admin API, 5080 OpenObserve, 6006 Phoenix, 4318 OTLP y, para los Días 3–4, 8010 proxy del AI Gateway, 8110 status del Data Plane y 8089 WireMock. Donde las guías digan `http://localhost:<puerto>`, usa `curl` desde la terminal del Codespace o abre la URL reenviada desde la pestaña **Ports**.
 
     Con el camino A puedes saltar directamente a la [sección 4](#4-configuracion-requerida-en-kong-konnect) (configuración en Konnect); las secciones 2–3 solo aplican a la instalación local.
 
@@ -62,6 +62,7 @@ consuma instalando herramientas básicas o resolviendo bloqueos de red.
 | curl | CLI curl disponible (v7.0+) | Probar APIs, Konnect, mocks y endpoints locales. |
 | jq | Procesador JSON de línea de comandos (v1.6+) | Leer respuestas JSON de APIs y scripts. |
 | decK | decK CLI (v1.65+) o versión indicada por el instructor | Sincronizar servicios, rutas, plugins y consumers contra Konnect. |
+| kongctl | kongctl CLI (v1.20.1+) | Días 3–4: configuración declarativa del AI Gateway en Konnect (ver [sección 8](#8-dias-3-y-4-ai-gateway-requisitos-adicionales)). |
 | Insomnia | Aplicación desktop Insomnia (v8.0+) | Importar colecciones, OpenAPI y ejecutar pruebas manuales o Runner. |
 | Terraform | Terraform CLI (v1.5+), requerido para ejercicios APIOps/Portal/Catalog | Gestionar recursos de plataforma cuando el laboratorio lo incluya. |
 | Node.js / npm / inso | Node.js LTS (v18+) y, si aplica, Insomnia CLI | Ejecutar pruebas por terminal con inso y utilitarios de apoyo. |
@@ -326,7 +327,9 @@ instructor variables alternativas.
 | Puerto local | Servicio típico | Uso en laboratorio |
 |-------------|----------------|--------------------|
 | 8000 | Kong Proxy | Entrada principal para probar APIs expuestas por Kong. |
-| 8010 | Segundo Data Plane opcional | Ejercicio de clustering / escalabilidad. |
+| 8010 | Segundo Data Plane opcional / Proxy del AI Gateway | Día 2: ejercicio de clustering / escalabilidad. Días 3–4: proxy del AI Gateway (`AIGW_PROXY_PORT` si ambos coinciden). |
+| 8110 | Status del Data Plane del AI Gateway | Health check del Data Plane 2.2 (Días 3–4). |
+| 8089 | WireMock (AI Gateway) | Core bancario REST (→ MCP), agentes A2A y proveedor caído (Días 3–4). |
 | 8080 | Prism Mock | Mock de API basado en OpenAPI. |
 | 9081 | httpbin-backend | Backend echo para validar headers, body y transformaciones. |
 | 8082 | WireMock | Mock de APIs de negocio. |
@@ -399,7 +402,32 @@ curl -i http://localhost:8000/qualquer-rota
 
 
 
-# 8. Referencias oficiales para instalación
+# 8. Días 3 y 4 — AI Gateway (requisitos adicionales)
+
+Los Días 3 y 4 usan **Kong AI Gateway 2.2** (Control Plane en Konnect + Data Plane `kong/kong-ai-gateway:2.2.0` en Docker) junto con Redis Stack, WireMock y **Ollama** con modelos open-weight pequeños (CPU, sin claves de pago). Además de lo anterior, cada participante necesita:
+
+| **Requisito** | **Detalle** | **Validación** |
+|---|---|---|
+| kongctl | **v1.20.1 o superior** (la 1.16 no conoce las entidades de AI Gateway 2.1/2.2). Binarios en la release [v1.20.1](https://github.com/Kong/kongctl/releases/tag/v1.20.1); `install_prereqs.sh` lo instala o lo actualiza. | `kongctl version` |
+| Docker | Al menos **8 GB de RAM** asignados a Docker (10–12 GB si además se levanta el stack de observabilidad del Lab IA 08). | `docker info` |
+| Disco | **~6 GB libres**: imagen del Data Plane, Redis Stack, WireMock, Ollama y ~2,1 GB de modelos (`llama3.2:1b`, `qwen3:0.6b`, `nomic-embed-text`). | `docker system df` |
+| jq, curl, openssl, python3 | Las mismas de los Días 1–2 (confirmar `jq`). | `jq --version && python3 --version` |
+| Puertos libres | `8010` (proxy del AI Gateway), `8110` (status del Data Plane), `8089` (WireMock). Configurables con `AIGW_PROXY_PORT`, `AIGW_STATUS_PORT` y `AIGW_WIREMOCK_PORT`. | Ver [sección 5.1](#51-puertos-locales-que-deben-estar-libres) |
+| Konnect | Permiso para crear un **AI Gateway** (versión 2.2) en la organización del curso; el PAT del participante debe poder administrarlo. | Lab IA 00 |
+| Red | Salida HTTPS a `registry.ollama.ai` / `ollama.com` (modelos), `github.com` (kongctl) y `ghcr.io`. | Ver [Requerimientos de Red](Requerimientos_Red_Workshop.md) |
+
+!!! warning "Codespaces: máquina de 4 núcleos / 16 GB"
+    El devcontainer del curso exige una máquina de **4 núcleos / 16 GB** (`hostRequirements`), suficiente para los cuatro días. La de 2 núcleos / 8 GB **no alcanza** para el Día 4 con Ollama (Data Plane + Redis + WireMock + Ollama + modelos). Si creas un Codespace sin el devcontainer (por ejemplo, un Codespace en blanco), elige igualmente la máquina de 4 núcleos / 16 GB.
+
+Validación previa (también se hace en el Health Check del final del Día 3):
+
+```bash
+kongctl version
+docker pull kong/kong-ai-gateway:2.2.0
+docker pull ollama/ollama:latest
+```
+
+# 9. Referencias oficiales para instalación
 
 Estas referencias se incluyen para alumnos que necesiten validar
 compatibilidad, versiones actuales o instrucciones alternativas de

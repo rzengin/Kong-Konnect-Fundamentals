@@ -37,14 +37,14 @@ consumed by installing basic tools or resolving network blocks.
 
     [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/rzengin/Kong-Konnect-Fundamentals?quickstart=1)
 
-    1. Click the button (or on GitHub: **Code → Codespaces → Create codespace on main**). Pick a **4-core / 8 GB** machine or larger.
+    1. Click the button (or on GitHub: **Code → Codespaces → Create codespace on main**). Pick the **4-core / 16 GB** machine (required by the devcontainer and needed for Day 4 with Ollama).
     2. Wait for creation to finish: the container runs `docs/00-setup-entorno/scripts/install_prereqs.sh` automatically.
     3. Set your variables (preferably as [Codespaces secrets](https://github.com/settings/codespaces) `KONNECT_TOKEN` and `DEMO_PREFIX`, or in the terminal):
        ```bash
        export KONNECT_TOKEN="kpat_..."   # provided by the instructor
        export DEMO_PREFIX="your_name"
        ```
-    4. Lab ports are forwarded automatically (**Ports** tab): 8000/8443 Kong proxy, 8001 Admin API, 5080 OpenObserve, 6006 Phoenix, 4318 OTLP. Wherever the guides say `http://localhost:<port>`, use `curl` from the Codespace terminal or open the forwarded URL from the **Ports** tab.
+    4. Lab ports are forwarded automatically (**Ports** tab): 8000/8443 Kong proxy, 8001 Admin API, 5080 OpenObserve, 6006 Phoenix, 4318 OTLP and, for Days 3–4, 8010 AI Gateway proxy, 8110 Data Plane status and 8089 WireMock. Wherever the guides say `http://localhost:<port>`, use `curl` from the Codespace terminal or open the forwarded URL from the **Ports** tab.
 
     With path A you can jump straight to [section 4](#4-required-configuration-in-kong-konnect) (Konnect configuration); sections 2–3 only apply to a local install.
 
@@ -61,6 +61,7 @@ consumed by installing basic tools or resolving network blocks.
 | curl | curl CLI available (v7.0+) | Test APIs, Konnect, mocks, and local endpoints. |
 | jq | Command-line JSON processor (v1.6+) | Read JSON responses from APIs and scripts. |
 | decK | decK CLI (v1.65+) or version indicated by the instructor | Synchronize services, routes, plugins, and consumers against Konnect. |
+| kongctl | kongctl CLI (v1.20.1+) | Days 3–4: declarative configuration of the AI Gateway in Konnect (see [section 8](#8-days-3-and-4-ai-gateway-additional-requirements)). |
 | Insomnia | Insomnia desktop application (v8.0+) | Import collections, OpenAPI, and run manual tests or Runner. |
 | Terraform | Terraform CLI (v1.5+), required for APIOps/Portal/Catalog exercises | Manage platform resources when the lab includes it. |
 | Node.js / npm / inso | Node.js LTS (v18+) and, if applicable, Insomnia CLI | Run terminal tests with inso and supporting utilities. |
@@ -323,7 +324,9 @@ alternative variables.
 | Local Port | Typical Service | Usage in Lab |
 |-------------|----------------|--------------------|
 | 8000 | Kong Proxy | Main entry point for testing APIs exposed by Kong. |
-| 8010 | Optional Second Data Plane | Clustering / scalability exercise. |
+| 8010 | Optional Second Data Plane / AI Gateway proxy | Day 2: clustering / scalability exercise. Days 3–4: AI Gateway proxy (set `AIGW_PROXY_PORT` if both clash). |
+| 8110 | AI Gateway Data Plane status | Health check of the 2.2 Data Plane (Days 3–4). |
+| 8089 | WireMock (AI Gateway) | Banking core REST APIs (→ MCP), A2A agents and failing provider (Days 3–4). |
 | 8080 | Prism Mock | API Mock based on OpenAPI. |
 | 9081 | httpbin-backend | Echo backend to validate headers, body, and transformations. |
 | 8082 | WireMock | Business API Mock. |
@@ -396,7 +399,32 @@ curl -i http://localhost:8000/any-route
 
 
 
-# 8. Official Installation References
+# 8. Days 3 and 4 — AI Gateway (Additional Requirements)
+
+Days 3 and 4 use **Kong AI Gateway 2.2** (Control Plane in Konnect + `kong/kong-ai-gateway:2.2.0` Data Plane on Docker) together with Redis Stack, WireMock and **Ollama** with small open-weight models (CPU, no paid API keys). In addition to the above, each participant needs:
+
+| **Requirement** | **Details** | **Validation** |
+|---|---|---|
+| kongctl | **v1.20.1 or later** (1.16 does not know the AI Gateway 2.1/2.2 entities). Binaries in the [v1.20.1](https://github.com/Kong/kongctl/releases/tag/v1.20.1) release; `install_prereqs.sh` installs or upgrades it. | `kongctl version` |
+| Docker | At least **8 GB of RAM** allocated to Docker (10–12 GB if you also run the observability stack of AI Lab 08). | `docker info` |
+| Disk | **~6 GB free**: Data Plane image, Redis Stack, WireMock, Ollama and ~2.1 GB of models (`llama3.2:1b`, `qwen3:0.6b`, `nomic-embed-text`). | `docker system df` |
+| jq, curl, openssl, python3 | Same as Days 1–2 (make sure `jq` is installed). | `jq --version && python3 --version` |
+| Free ports | `8010` (AI Gateway proxy), `8110` (Data Plane status), `8089` (WireMock). Configurable with `AIGW_PROXY_PORT`, `AIGW_STATUS_PORT` and `AIGW_WIREMOCK_PORT`. | See [section 5.1](#51-local-ports-that-must-be-free) |
+| Konnect | Permission to create an **AI Gateway** (version 2.2) in the course organization; the participant's PAT must be able to manage it. | AI Lab 00 |
+| Network | Outbound HTTPS to `registry.ollama.ai` / `ollama.com` (models), `github.com` (kongctl) and `ghcr.io`. | See [Network Requirements](Requerimientos_Red_Workshop.md) |
+
+!!! warning "Codespaces: 4-core / 16 GB machine"
+    The course devcontainer requires a **4-core / 16 GB** machine (`hostRequirements`), which covers all four days. The 2-core / 8 GB machine is **not enough** for Day 4 with Ollama (Data Plane + Redis + WireMock + Ollama + models). If you create a Codespace without the devcontainer (for example, a blank Codespace), choose the 4-core / 16 GB machine as well.
+
+Pre-check (also done in the Health Check at the end of Day 3):
+
+```bash
+kongctl version
+docker pull kong/kong-ai-gateway:2.2.0
+docker pull ollama/ollama:latest
+```
+
+# 9. Official Installation References
 
 These references are included for students who need to validate
 compatibility, current versions, or alternative installation

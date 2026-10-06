@@ -1,6 +1,6 @@
 {
     // Entorno del asistente para GitHub Codespaces / Dev Containers (camino A recomendado).
-    // Incluye Docker (docker-in-docker), decK, kongctl, inso, Terraform, Node.js, Python y jq.
+    // Incluye Docker (docker-in-docker), decK, kongctl (>= 1.20.1, Días 3-4), inso, Terraform, Node.js, Python y jq.
     // Las herramientas CLI las instala el mismo script que se usa en una instalación local.
     "name": "Kong Konnect Fundamentals",
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
@@ -10,20 +10,26 @@
             "moby": true
         }
     },
-    // Kong DP + OIDC/OPA/Kafka + stack de observabilidad (~1.2 GB) necesitan memoria.
+    // Kong DP + OIDC/OPA/Kafka + stack de observabilidad (~1.2 GB) necesitan memoria, y el
+    // Día 4 (AI Gateway DP 2.2 + Redis + WireMock + Ollama con ~2.1 GB de modelos) no entra en
+    // la máquina de 2 núcleos / 8 GB: se exige la de 4 núcleos / 16 GB (32 GB de disco).
     "hostRequirements": {
         "cpus": 4,
-        "memory": "8gb"
+        "memory": "16gb",
+        "storage": "32gb"
     },
     "postCreateCommand": "bash docs/00-setup-entorno/scripts/install_prereqs.sh",
-    "forwardPorts": [8000, 8001, 8443, 5080, 6006, 4318],
+    "forwardPorts": [8000, 8001, 8443, 5080, 6006, 4318, 8010, 8110, 8089],
     "portsAttributes": {
         "8000": { "label": "Kong proxy (HTTP)", "onAutoForward": "notify" },
         "8001": { "label": "Kong Admin API / docs locales", "onAutoForward": "silent" },
         "8443": { "label": "Kong proxy (HTTPS)", "protocol": "https", "onAutoForward": "notify" },
         "5080": { "label": "OpenObserve", "onAutoForward": "notify" },
         "6006": { "label": "Arize Phoenix", "onAutoForward": "notify" },
-        "4318": { "label": "OTLP HTTP (Collector)", "onAutoForward": "silent" }
+        "4318": { "label": "OTLP HTTP (Collector)", "onAutoForward": "silent" },
+        "8010": { "label": "AI Gateway proxy (Días 3-4)", "onAutoForward": "notify" },
+        "8110": { "label": "AI Gateway DP status (Días 3-4)", "onAutoForward": "silent" },
+        "8089": { "label": "WireMock AI Gateway (Días 3-4)", "onAutoForward": "silent" }
     },
     // KONNECT_TOKEN y DEMO_PREFIX: definirlos como secretos de Codespaces del usuario
     // (github.com/settings/codespaces) o exportarlos en la terminal; nunca en el repo.

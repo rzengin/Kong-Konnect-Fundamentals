@@ -15,7 +15,17 @@ echo -e "${YELLOW}======================================================${NC}\n"
 
 OS="$(uname -s)"
 DECK_VERSION="1.65.1"
-KONGCTL_VERSION="1.20.0"
+KONGCTL_VERSION="1.20.1"
+# Días 3-4 (AI Gateway 2.x): kongctl < 1.20.1 no conoce las entidades de AI Gateway 2.1/2.2.
+KONGCTL_MIN_VERSION="1.20.1"
+
+# true si kongctl está instalado y su versión es >= KONGCTL_MIN_VERSION
+kongctl_ok() {
+  command -v kongctl &> /dev/null || return 1
+  local v
+  v="$(kongctl version 2>/dev/null | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)"
+  [ -n "$v" ] && [ "$(printf '%s\n%s\n' "$KONGCTL_MIN_VERSION" "$v" | sort -V | head -n 1)" = "$KONGCTL_MIN_VERSION" ]
+}
 INSO_VERSION="13.3.0"
 
 if [ "$OS" = "Darwin" ]; then
@@ -44,7 +54,14 @@ if [ "$OS" = "Darwin" ]; then
   
   if ! command -v python3 &> /dev/null; then brew install python@3.12 || true; else echo "python3 ya instalado"; fi
   if ! command -v deck &> /dev/null; then brew install kong/deck/deck || true; else echo "deck ya instalado"; fi
-  if ! command -v kongctl &> /dev/null; then brew install kong/kongctl/kongctl || true; else echo "kongctl ya instalado"; fi
+  if ! command -v kongctl &> /dev/null; then
+    brew install kong/kongctl/kongctl || true
+  elif ! kongctl_ok; then
+    echo "kongctl anterior a ${KONGCTL_MIN_VERSION}: actualizando..."
+    brew upgrade kong/kongctl/kongctl || true
+  else
+    echo "kongctl ya instalado (>= ${KONGCTL_MIN_VERSION})"
+  fi
   if ! command -v inso &> /dev/null; then brew install --cask inso || true; else echo "inso ya instalado"; fi
   
   if ! command -v terraform &> /dev/null; then
@@ -104,9 +121,9 @@ elif [ "$OS" = "Linux" ]; then
     rm -rf /tmp/deck.tar.gz /tmp/deck-x
   fi
 
-  # kongctl (CLI de Konnect)
-  if ! command -v kongctl &> /dev/null; then
-    echo "Instalando kongctl..."
+  # kongctl (CLI de Konnect) — se instala o se actualiza si es anterior a KONGCTL_MIN_VERSION
+  if ! kongctl_ok; then
+    echo "Instalando kongctl ${KONGCTL_VERSION}..."
     curl -fsSL "https://github.com/Kong/kongctl/releases/download/v${KONGCTL_VERSION}/kongctl_linux_${ARCH}.zip" -o /tmp/kongctl.zip
     rm -rf /tmp/kongctl-x && mkdir -p /tmp/kongctl-x
     unzip -o -q /tmp/kongctl.zip -d /tmp/kongctl-x
@@ -148,6 +165,7 @@ docker version --format 'Docker Client: {{.Client.Version}}' || echo -e "${RED}d
 docker compose version || echo -e "${RED}docker compose falló${NC}"
 deck version || echo -e "${RED}deck falló${NC}"
 kongctl version || echo -e "${RED}kongctl falló${NC}"
+kongctl_ok || echo -e "${RED}kongctl debe ser >= ${KONGCTL_MIN_VERSION} para los Días 3-4 (AI Gateway)${NC}"
 inso --version || echo -e "${YELLOW}inso no disponible (opcional)${NC}"
 jq --version || echo -e "${RED}jq falló${NC}"
 terraform version | head -n 1 || echo -e "${RED}terraform falló${NC}"
