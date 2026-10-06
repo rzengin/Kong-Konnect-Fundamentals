@@ -496,7 +496,7 @@ lab_07_observabilidad() {
     pass "Tráfico generado."
 
     echo -e "\n  ${WHITE}${BOLD}[ℹ] ¿Cómo comprobarlo manualmente?${NC}"
-    echo -e "      OpenObserve: http://localhost:5080 (usuario: ${ZO_ROOT_USER_EMAIL:-admin@kong.com} | contraseña: ${ZO_ROOT_USER_PASSWORD:-Kong12345678!})"
+    echo -e "      OpenObserve: http://localhost:5080 (credenciales: ./workshop-assets/dia-1/06-observability/scripts/setup-observability.sh status)"
     echo -e "        Traces / Logs / Metrics -> stream 'default' -> filtra service_name='TUPREFIJO_kong_dp'"
     echo -e "      Phoenix:     http://localhost:6006 -> proyecto 'TUPREFIJO_kong_dp'"
     pausa

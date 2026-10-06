@@ -177,7 +177,7 @@ for i in {1..10}; do curl -k -s -o /dev/null -w "HTTP Code: %{http_code}\n" http
 
 ### Demonstração 3: OpenObserve — Traces, Logs, Métricas e Dashboards
 
-1. Abra `http://localhost:5080` e faça login com o usuário root da stack (por padrão `admin@kong.com` / `Kong12345678!`, configurável em `otel-stack/.env`).
+1. Abra `http://localhost:5080` e faça login com o usuário root da stack (email padrão `admin@kong.com`; a senha é **aleatória**: `setup-observability.sh` a gera na primeira execução em `otel-stack/.env` —permissões 600, fora do git— e a exibe no final; `setup-observability.sh status` a mostra novamente).
 2. **Traces (Rastreamento Distribuído):**
     - Menu esquerdo → **Traces**. Selecione o stream `default` e um intervalo de tempo recente (ex. *Past 15 minutes*).
     - Filtre por serviço: `service_name = 'kong-gateway'` (o OpenObserve converte os pontos dos atributos em sublinhados: `service.name` → `service_name`).

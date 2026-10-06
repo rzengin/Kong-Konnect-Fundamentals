@@ -98,11 +98,22 @@ Al terminar, el script imprime algo como:
 ```text
  OpenObserve (traces, métricas, logs, dashboards): http://localhost:5080
    Usuario:    admin@kong.com
-   Contraseña: Kong12345678!
+   Contraseña: <contraseña aleatoria generada en la primera ejecución>
+   (guardadas en .../otel-stack/.env; vuelve a verlas con: .../setup-observability.sh status)
  Arize Phoenix (trazas orientadas a LLM/IA):       http://localhost:6006
  OTLP (destino de Kong):
    Desde el Data Plane (red kong-workshop): http://otel-collector:4318/v1/{traces,logs,metrics}
 ```
+
+!!! info "Credenciales de OpenObserve"
+    No hay contraseña por defecto: en la primera ejecución el script genera `workshop-assets/dia-1/06-observability/otel-stack/.env` (permisos `600`, excluido de git) con una **contraseña aleatoria** y la muestra al final. Para volver a verla en cualquier momento:
+
+    ```bash
+    ./workshop-assets/dia-1/06-observability/scripts/setup-observability.sh status
+    # o bien: cat workshop-assets/dia-1/06-observability/otel-stack/.env
+    ```
+
+    El email del usuario es configurable al generar el archivo: `ZO_ROOT_USER_EMAIL=tu@email.com ./workshop-assets/dia-1/06-observability/scripts/setup-observability.sh`.
 
 **Puntos Clave:**
 
@@ -183,9 +194,8 @@ curl -s -i http://localhost:8000/api/v1/mock | head -20
 ## Paso 4: Analizar en OpenObserve
 
 1. Abre el navegador en `http://localhost:5080` e inicia sesión:
-    - **Usuario:** `admin@kong.com`
-    - **Contraseña:** `Kong12345678!`
-    *(o las credenciales definidas en `otel-stack/.env`)*
+    - **Usuario:** el email de `otel-stack/.env` (por defecto `admin@kong.com`)
+    - **Contraseña:** la generada en el Paso 1 (`./workshop-assets/dia-1/06-observability/scripts/setup-observability.sh status` la vuelve a mostrar)
 2. **Trazas:**
     - Ve a la sección **Traces** en el menú izquierdo y selecciona el stream `default`.
     - Ajusta el rango de tiempo a *Past 15 minutes*.

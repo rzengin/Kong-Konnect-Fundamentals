@@ -11,14 +11,16 @@
 # lo alcance como http://otel-collector:4318. Usa scripts/setup-observability.sh
 # para levantarlo (crea la red si no existe y espera a que todo esté sano).
 #
-# Credenciales: variables ZO_ROOT_USER_EMAIL / ZO_ROOT_USER_PASSWORD
-# (archivo .env junto a este compose; ver .env.example).
+# Credenciales: variables ZO_ROOT_USER_EMAIL / ZO_ROOT_USER_PASSWORD del archivo
+# .env junto a este compose. setup-observability.sh lo genera en la primera
+# ejecución con una contraseña aleatoria (chmod 600, no versionado).
+# No hay contraseña por defecto: sin .env el compose falla a propósito.
 # ==============================================================================
 name: otel-stack
 
 x-zo-credentials: &zo-credentials
   ZO_ROOT_USER_EMAIL: ${ZO_ROOT_USER_EMAIL:-admin@kong.com}
-  ZO_ROOT_USER_PASSWORD: ${ZO_ROOT_USER_PASSWORD:-Kong12345678!}
+  ZO_ROOT_USER_PASSWORD: ${ZO_ROOT_USER_PASSWORD:?Falta ZO_ROOT_USER_PASSWORD - ejecuta scripts/setup-observability.sh para generar otel-stack/.env}
 
 services:
   openobserve:

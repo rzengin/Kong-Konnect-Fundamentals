@@ -13,6 +13,12 @@
 # Imágenes offline (opcional): si existe la carpeta ../docker-images con los .tar
 # generados por save-images.sh, se cargan desde ahí en lugar de descargarse.
 # Variable OTEL_IMAGES_DIR para usar otra carpeta.
+#
+# Credenciales de OpenObserve: en la primera ejecución se genera
+# otel-stack/.env (permisos 600, no versionado) con una contraseña aleatoria.
+# El email del usuario root es configurable: ZO_ROOT_USER_EMAIL=yo@empresa.com ./setup-observability.sh
+# (solo tiene efecto al generar el .env; después, editar otel-stack/.env y hacer 'reset').
+# Para ver las credenciales en cualquier momento: ./setup-observability.sh status
 # ==============================================================================
 
 set -euo pipefail
@@ -34,20 +40,64 @@ IMAGES=(
 )
 IMAGES_DIR="${OTEL_IMAGES_DIR:-${BASE_DIR}/docker-images}"
 
-# Credenciales: .env del stack (si existe) o valores por defecto del compose
-if [ -f "${STACK_DIR}/.env" ]; then
-  set -a; . "${STACK_DIR}/.env"; set +a
-fi
-ZO_ROOT_USER_EMAIL="${ZO_ROOT_USER_EMAIL:-admin@kong.com}"
-ZO_ROOT_USER_PASSWORD="${ZO_ROOT_USER_PASSWORD:-Kong12345678!}"
+ENV_FILE="${STACK_DIR}/.env"
+DEFAULT_EMAIL="admin@kong.com"
+DATA_VOLUME="otel-stack_openobserve-data"
+
+# Genera una contraseña aleatoria (alfanumérica, 24 caracteres: sin símbolos
+# para no tener problemas de quoting en .env ni en Basic Auth).
+gen_password() {
+  local pw=""
+  while [ "${#pw}" -lt 24 ]; do
+    pw="${pw}$(LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom 2>/dev/null | head -c 24 || true)"
+  done
+  printf '%s' "${pw:0:24}"
+}
+
+# Crea otel-stack/.env en la primera ejecución (nunca sobrescribe uno existente).
+ensure_env() {
+  if [ -f "$ENV_FILE" ]; then
+    chmod 600 "$ENV_FILE" 2>/dev/null || true
+    return 0
+  fi
+  local email="${ZO_ROOT_USER_EMAIL:-$DEFAULT_EMAIL}"
+  (
+    umask 077
+    cat > "$ENV_FILE" <<EOF
+# Generado por setup-observability.sh el $(date '+%Y-%m-%d %H:%M:%S').
+# Credenciales del usuario root de OpenObserve (también las usa el Collector
+# para la ingesta OTLP). NO versionar este archivo (está en .gitignore).
+# Para cambiarlas: editar este archivo y ejecutar 'setup-observability.sh reset' + 'setup-observability.sh'.
+ZO_ROOT_USER_EMAIL=${email}
+ZO_ROOT_USER_PASSWORD=$(gen_password)
+EOF
+  )
+  chmod 600 "$ENV_FILE"
+  echo -e "  ${GREEN}[NUEVO]${NC}  credenciales de OpenObserve generadas en ${ENV_FILE} (chmod 600)"
+  if docker volume inspect "$DATA_VOLUME" > /dev/null 2>&1; then
+    echo -e "  ${YELLOW}Aviso:${NC} ya existe el volumen '${DATA_VOLUME}' creado con otras credenciales."
+    echo -e "         OpenObserve conserva el usuario root original: ejecuta '$0 reset' y vuelve a levantar el stack."
+  fi
+}
+
+load_env() {
+  if [ -f "$ENV_FILE" ]; then
+    set -a; . "$ENV_FILE"; set +a
+  fi
+}
 
 print_access() {
   echo -e "\n${GREEN}======================================================${NC}"
   echo -e "${GREEN} Stack de observabilidad listo${NC}"
   echo -e "${GREEN}======================================================${NC}"
   echo -e " OpenObserve (traces, métricas, logs, dashboards): http://localhost:5080"
-  echo -e "   Usuario:    ${ZO_ROOT_USER_EMAIL}"
-  echo -e "   Contraseña: ${ZO_ROOT_USER_PASSWORD}"
+  if [ -n "${ZO_ROOT_USER_PASSWORD:-}" ]; then
+    echo -e "   Usuario:    ${ZO_ROOT_USER_EMAIL}"
+    echo -e "   Contraseña: ${ZO_ROOT_USER_PASSWORD}"
+    echo -e "   (guardadas en ${ENV_FILE}; vuelve a verlas con: $0 status)"
+  else
+    echo -e "   ${YELLOW}Credenciales aún no generadas:${NC} ejecuta $0 (sin argumentos)."
+  fi
   echo -e "   (organización 'default'; las señales llegan al stream 'default')"
   echo -e " Arize Phoenix (trazas orientadas a LLM/IA):       http://localhost:6006"
   echo -e "   Sin login. Cada service.name aparece como un proyecto."
@@ -85,23 +135,27 @@ if ! command -v curl > /dev/null 2>&1; then
   exit 1
 fi
 
+load_env
 case "$ACTION" in
   down)
-    "${COMPOSE[@]}" down
+    ZO_ROOT_USER_PASSWORD="${ZO_ROOT_USER_PASSWORD:-unused}" "${COMPOSE[@]}" down
     echo -e "${GREEN}Stack detenido (datos conservados).${NC}"
     exit 0
     ;;
   reset)
-    "${COMPOSE[@]}" down -v
+    ZO_ROOT_USER_PASSWORD="${ZO_ROOT_USER_PASSWORD:-unused}" "${COMPOSE[@]}" down -v
     echo -e "${GREEN}Stack detenido y datos eliminados.${NC}"
     exit 0
     ;;
   status)
-    "${COMPOSE[@]}" ps
+    ZO_ROOT_USER_PASSWORD="${ZO_ROOT_USER_PASSWORD:-unused}" "${COMPOSE[@]}" ps
     print_access
     exit 0
     ;;
-  up) ;;
+  up)
+    ensure_env
+    load_env
+    ;;
   *)
     echo "Uso: $0 [up|status|down|reset]"
     exit 1
